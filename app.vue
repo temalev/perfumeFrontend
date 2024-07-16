@@ -3,5 +3,4 @@
     <NuxtRouteAnnouncer />
     <NuxtWelcome />
   </div>
-  </div>
 </template>
