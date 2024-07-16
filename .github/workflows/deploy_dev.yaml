@@ -22,9 +22,5 @@ jobs:
           script: |
             cd ~/frontend_dev
             git pull
-            npm i -y
-            npm run build
-            rm -rf /var/www/frontend_dev
-            cp -rf build /var/www/frontend_dev
 
 
