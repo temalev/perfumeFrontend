@@ -2,7 +2,7 @@
   <div>
     <!-- <NuxtRouteAnnouncer />
     <NuxtWelcome /> -->
-    Привет, Андрей! Ну где ты там? Ну обними скорей!!!
+    Тут будет сайт! А пока так
 
   </div>
 </template>
