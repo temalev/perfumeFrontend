@@ -1,8 +1,8 @@
 <template>
   <div>
-    <NuxtRouteAnnouncer />
-    <NuxtWelcome />
+    <!-- <NuxtRouteAnnouncer />
+    <NuxtWelcome /> -->
     Привет, Андрей! Ну где ты там? Ну обними скорей
-    
+
   </div>
 </template>
