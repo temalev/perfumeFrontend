@@ -22,5 +22,6 @@ jobs:
           script: |
             cd ~/frontend_dev
             git pull
+            docker compose up --force-recreate
 
 
