@@ -22,6 +22,6 @@ jobs:
           script: |
             cd ~/frontend_dev
             git pull
-            docker compose up --force-recreate -d --no-deps --build frontend_dev
+            docker compose up --force-recreate -d --no-deps --build frontend_dev --remove-orphans
 
 
