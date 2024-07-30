@@ -27,4 +27,42 @@ jobs:
             docker-compose build --no-cache
             docker compose up --force-recreate -d --no-deps --remove-orphans --build frontend_dev
 
+      - name: Send success message
+        if: ${{ success() }}
+        uses: appleboy/telegram-action@master
+        with:
+          to: ${{ secrets.TELEGRAM_TO }}
+          token: ${{ secrets.TELEGRAM_TOKEN }}
+          message: |
+            ✅ @mytemalev успешный деплой на дев:
+
+            Репозиторий: ${{ github.repository }}
+      
+      - name: Send error message
+        if: ${{ failure() }}
+        uses: appleboy/telegram-action@master
+        with:
+          to: ${{ secrets.TELEGRAM_TO }}
+          token: ${{ secrets.TELEGRAM_TOKEN }}
+          message: |
+            ❌ @mytemalev ошибка деплоя на дев:
+
+            Репозиторий: ${{ github.repository }}
+
+            Посмотреть: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+
+      - name: Send cancelled message
+        if: ${{ cancelled() }}
+        uses: appleboy/telegram-action@master
+        with:
+          to: ${{ secrets.TELEGRAM_TO }}
+          token: ${{ secrets.TELEGRAM_TOKEN }}
+          message: |
+            ⛔️ @mytemalev деплой на дев отменен:
+
+            Репозиторий: ${{ github.repository }}
+
+            Посмотреть: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+
+
 
