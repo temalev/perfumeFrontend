@@ -22,7 +22,7 @@
 
       <div class="btn-pay d-flex-column">
         <button class="add-to-cart d-flex align-center j-c">
-          <NuxtIcon name="🚀" />
+          <Icon name="🚀" />
         </button>
         <button class="add-to-cart d-flex align-center j-c">+</button>
       </div>
