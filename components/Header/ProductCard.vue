@@ -1,31 +1,34 @@
 <template>
-  <div class="card d-flex-column">
-    <div class="img d-flex j-c">
-      <img :src="`src/assets/${imageUrl}`" :alt="product.name">
-    </div>
-    
-    <div class="info">
+	<div class="card d-flex-column">
+		<div class="img d-flex j-c">
+			<img
+				:src="`src/assets/${imageUrl}`"
+				:alt="product.name"
+			>
+		</div>
 
-      <div class="info-name d-flex-column align-flex-start">
-        <span class="category">{{ product.category }}</span>
-        <span class="name">{{ product.name }}</span>
-      </div>
-      <div class="pay d-flex-row j-sb">
-        <div class="info-price d-flex align-flex-end ">
-          <span class="new-price">{{ product.price }}</span>
-          <span class="old-price" v-if="product.oldPrice">{{ product.oldPrice }}</span>
-        </div>
+		<div class="info">
+			<div class="info-name d-flex-column align-flex-start">
+				<span class="category">{{ product.category }}</span>
+				<span class="name">{{ product.name }}</span>
+			</div>
+			<div class="pay d-flex-row j-sb">
+				<div class="info-price d-flex align-flex-end ">
+					<span class="new-price">{{ product.price }}</span>
+					<span
+						v-if="product.oldPrice"
+						class="old-price"
+					>{{ product.oldPrice }}</span>
+				</div>
 
-        <div class="btn-pay">
-          <button class="add-to-cart d-flex align-center j-c">
-            +
-          </button>
-        </div>
-      </div>
-      
-
-    </div>
-  </div>
+				<div class="btn-pay">
+					<button class="add-to-cart d-flex align-center j-c">
+						+
+					</button>
+				</div>
+			</div>
+		</div>
+	</div>
 </template>
 
 <script>
@@ -35,8 +38,8 @@ export default {
   props: {
     product: {
       type: Object,
-      required: true
-    }
+      required: true,
+		}
   }
 };
 </script>
@@ -64,7 +67,6 @@ img {
   font-weight: 400;
   line-height: 15.43px;
   text-align: center;
-
 
 }
 .new-price {

@@ -1,14 +1,14 @@
 <template>
-  <div>
-    <Header />
-    body
-  </div>
+	<div>
+		<Header />
+		body
+	</div>
 </template>
 
 <script>
 export default {
 
-}
+};
 </script>
 
 <style>
