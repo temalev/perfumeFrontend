@@ -8,7 +8,7 @@ export default withNuxt({
       {
         ignoreWhenNoAttributes: true,
         ignoreWhenEmpty: true,
-        ignores: ["pre", "textarea", ...INLINE_ELEMENTS],
+        ignores: ["pre", "textarea"],
         externalIgnores: [],
       },
     ],
