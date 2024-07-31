@@ -26,8 +26,6 @@
 </template>
 
 <script>
-import "../global.css";
-
 export default {
   props: {
     product: {

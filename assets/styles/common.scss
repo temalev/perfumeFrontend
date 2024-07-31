@@ -59,6 +59,11 @@
   flex-direction: column;
 }
 
+.d-flex-row {
+  display: flex;
+  flex-direction: row;
+}
+
 .align-center {
   align-items: center;
 }
@@ -110,6 +115,33 @@ label {
 
 .el-popper {
   max-width: 300px;
+}
+.align-center {
+  align-items: center;
+}
+
+.align-flex-start {
+  align-items: flex-start;
+}
+
+.align-flex-end {
+  align-items: flex-end;
+}
+
+.j-c {
+  justify-content: center;
+}
+
+.j-s {
+  justify-content: flex-start;
+}
+
+.j-e {
+  justify-content: flex-end;
+}
+
+.j-sb {
+  justify-content: space-between;
 }
 
 ::v-deep {
