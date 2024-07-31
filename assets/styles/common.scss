@@ -144,6 +144,19 @@ label {
   justify-content: space-between;
 }
 
+.text-gray {
+  color: #00000075;
+}
+
+a {
+  &.text-gray {
+    transition: .2s;
+    &:hover {
+      color: rgb(0, 0, 0) !important;
+    }
+}
+}
+
 ::v-deep {
   .el-popper {
     width: 200px !important;
