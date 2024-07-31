@@ -6,7 +6,7 @@ export default defineNuxtConfig({
 	eslint: {
 		config: {
 			stylistic: {
-				indent: 'tab',
+				// indent: 'tab',
 				semi: true,
 			},
 		},
