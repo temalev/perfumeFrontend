@@ -16,11 +16,11 @@ export default {
       products: [
         {
           id: 1,
-          imageUrl: "parf.png",
-          category: "ПАРФЮМЕРНЫЙ ЭКСТРАКТ",
-          name: "Clove Tonka",
-          oldPrice: "2500₽",
-          price: "1990₽",
+          imageUrl: 'parf.png',
+          category: 'ПАРФЮМЕРНЫЙ ЭКСТРАКТ',
+          name: 'Clove Tonka',
+          oldPrice: '2500₽',
+          price: '1990₽',
         },
       ],
     };
