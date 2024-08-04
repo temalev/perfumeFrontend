@@ -3,7 +3,7 @@
     <img src="~/assets/img/logo.webp" alt="" width="140" height="50px" />
     <nav>
       <ul class="d-flex gap-4">
-        <li><NuxtLink class="text-gray" to="/about">КАТАЛОГ</NuxtLink></li>
+        <li><NuxtLink class="text-gray" to="/about">КАТАЛОГ test</NuxtLink></li>
         <li><NuxtLink class="text-gray" to="/posts/1">БРЕНДЫ</NuxtLink></li>
         <li><NuxtLink class="text-gray" to="/posts/2">СКИДКИ</NuxtLink></li>
       </ul>
