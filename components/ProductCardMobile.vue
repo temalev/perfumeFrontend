@@ -21,10 +21,13 @@
       </div>
 
       <div class="btn-pay d-flex-column">
-        <button class="add-to-cart d-flex align-center j-c">
-          <Icon name="🚀" />
+        <button class="ico-btn d-flex align-center j-c">
+          <Icon name="fa6-regular:heart" style="font-size: 20px" />
         </button>
-        <button class="add-to-cart d-flex align-center j-c">+</button>
+        <button class="ico-btn d-flex align-center j-c">
+          <Icon name="heroicons-solid:plus-sm" style="font-size: 20px" />
+          <Icon name="ph:shopping-cart-simple-bold" style="font-size: 20px" />
+        </button>
       </div>
     </div>
   </div>

@@ -1,0 +1,27 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    text-decoration: none;
+    list-style: none;
+    font-family: 'anselmSans', sans-serif;
+}
+
+.ico-btn {
+    border: none;
+    outline: none;
+    background-color: transparent;
+    cursor: pointer;
+
+    & span {
+        transition: .2s;
+        color: #bebebe;
+    }
+
+    &:hover {
+      & span {
+        color: #000;
+    }
+
+}
+}
