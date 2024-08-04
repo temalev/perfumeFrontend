@@ -9,6 +9,7 @@
         <span class="category">{{ product.category }}</span>
         <span class="name">{{ product.name }}</span>
       </div>
+
       <div class="pay d-flex-row j-sb">
         <div class="info-price d-flex align-flex-end">
           <span class="new-price">{{ product.price }}</span>
