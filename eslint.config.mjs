@@ -14,7 +14,6 @@ export default withNuxt({
     ],
     "vue/html-indent": [
       "error",
-      type,
       {
         attribute: 1,
         baseIndent: 1,
