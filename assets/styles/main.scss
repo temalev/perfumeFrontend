@@ -5,6 +5,9 @@
     text-decoration: none;
     list-style: none;
     font-family: 'anselmSans', sans-serif;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 .ico-btn {
