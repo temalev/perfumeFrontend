@@ -1,11 +1,13 @@
 FROM node:18.16.0
 
-ENV APP_ROOT /web
+WORKDIR /web
 
-WORKDIR ${APP_ROOT}
-ADD . ${APP_ROOT}
+COPY package*.json ./
 
 RUN npm i --force
 
+COPY . .
+
 RUN npm run build
+
 CMD node .output/server/index.mjs
