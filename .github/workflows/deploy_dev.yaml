@@ -34,6 +34,8 @@ jobs:
             ✅ @mytemalev успешный деплой на дев:
 
             Репозиторий: ${{ github.repository }}
+
+            [Перейти на сайт](https://dev.parfburo.com/)
       
       - name: Send error message
         if: ${{ failure() }}
