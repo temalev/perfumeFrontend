@@ -1,24 +1,56 @@
 <template>
-  <desktop class="desktop" />
+  <div>
+    <desktop class="desktop" />
+    <mobile class="mobile" />
+  </div>
 </template>
 
 <script>
 import desktop from './desktop.vue';
+import mobile from './mobile.vue';
+
 export default {
-  components: { desktop },
+  components: { desktop, mobile },
+  data() {
+    return {
+      isLeftMenu: false,
+    };
+  },
 };
 </script>
 
 <style scoped lang="scss">
-@media (min-width: 1280px) {
+@media (min-width: 800px) {
   .desktop {
     display: flex;
   }
+  .mobile {
+    display: none;
+  }
+  .left-menu {
+    display: none;
+  }
 }
 
-@media (max-width: 1280px) {
+@media (max-width: 800px) {
   .desktop {
     display: none;
+  }
+  .mobile {
+    display: flex;
+  }
+  .left-menu {
+    display: flex;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background: rgba(255, 255, 255, 0.43);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    z-index: 2;
   }
 }
 
