@@ -12,7 +12,7 @@ jobs:
     steps:
       - name: Set start time
         id: start-time
-        run: echo "START_TIME=$(date -u +"%Y-%m-%dT%H:%M:%SZ")" >> $GITHUB_ENV
+        run: echo "START_TIME=$(date -u +"%Y-%m-%d %H:%M:%S")" >> $GITHUB_ENV
 
       - name: Checkout code
         uses: actions/checkout@v3
@@ -30,15 +30,18 @@ jobs:
 
       - name: Set end time
         id: end-time
-        run: echo "END_TIME=$(date -u +"%Y-%m-%dT%H:%M:%SZ")" >> $GITHUB_ENV
+        run: echo "END_TIME=$(date -u +"%Y-%m-%d %H:%M:%S")" >> $GITHUB_ENV
 
       - name: Calculate duration
         id: duration
         run: |
-          START_TIME=$(date -d ${{ env.START_TIME }} +%s)
-          END_TIME=$(date -d ${{ env.END_TIME }} +%s)
+          START_TIME=$(date -d "${{ env.START_TIME }}" +%s)
+          END_TIME=$(date -d "${{ env.END_TIME }}" +%s)
           DURATION=$((END_TIME - START_TIME))
-          echo "DURATION=${DURATION}" >> $GITHUB_ENV
+          MINUTES=$((DURATION / 60))
+          SECONDS=$((DURATION % 60))
+          FORMATTED_DURATION=$(printf "%02d:%02d" $MINUTES $SECONDS)
+          echo "DURATION=${FORMATTED_DURATION}" >> $GITHUB_ENV
 
       - name: Send success message
         if: ${{ success() }}
@@ -55,9 +58,9 @@ jobs:
 
             Время начала сборки: ${{ env.START_TIME }}
             Время завершения сборки: ${{ env.END_TIME }}
-            Длительность сборки: ${{ env.DURATION }} секунд
+            Длительность сборки: ${{ env.DURATION }}
 
-            https://dev.parfburo.com/
+            https://dev.parfburo.com
 
       - name: Send error message
         if: ${{ failure() }}
@@ -68,13 +71,11 @@ jobs:
           message: |
             ❌ @mytemalev ошибка деплоя на дев:
 
-            ${{ github.event.head_commit.message }}
-
             Репозиторий: ${{ github.repository }}
 
             Время начала сборки: ${{ env.START_TIME }}
             Время завершения сборки: ${{ env.END_TIME }}
-            Длительность сборки: ${{ env.DURATION }} секунд
+            Длительность сборки: ${{ env.DURATION }}
 
             Посмотреть: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
 
@@ -87,12 +88,10 @@ jobs:
           message: |
             ⛔️ @mytemalev деплой на дев отменен:
 
-            ${{ github.event.head_commit.message }}
-
             Репозиторий: ${{ github.repository }}
 
             Время начала сборки: ${{ env.START_TIME }}
             Время завершения сборки: ${{ env.END_TIME }}
-            Длительность сборки: ${{ env.DURATION }} секунд
+            Длительность сборки: ${{ env.DURATION }}
 
             Посмотреть: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
