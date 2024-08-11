@@ -1,14 +1,16 @@
 <template>
   <header>
-    <div
-      class="btnMenu"
-      :class="isLeftMenu ? 'active' : ''"
-      @click="(isLeftMenu = !isLeftMenu), onMenu()"
-    >
-      <span></span>
+    <div class="wrapper">
+      <div
+        class="btnMenu"
+        :class="isLeftMenu ? 'active' : ''"
+        @click="(isLeftMenu = !isLeftMenu), onMenu()"
+      >
+        <span></span>
+      </div>
     </div>
     <img src="~/assets/img/logo.webp" alt="" width="140" height="50px" />
-
+    <Icon name="ph:magnifying-glass-bold" style="font-size: 20px" />
     <div v-if="isLeftMenu" class="left-menu">
       <nav>
         <ul class="d-flex-column gap-4 m-4">
