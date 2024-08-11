@@ -47,7 +47,8 @@ export default {
 <style scoped lang="scss">
 .card {
   width: 300px;
-  box-shadow: 0px 0px 20px 2px rgba(108, 108, 108, 0.309);
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px,
+    rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
 }
 
 img {

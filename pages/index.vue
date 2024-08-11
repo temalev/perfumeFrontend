@@ -75,7 +75,7 @@ export default {
   display: flex;
   gap: 20px;
   overflow-x: auto;
-  padding: 20px;
+  padding: 20px 20px 40px 20px;
 }
 
 .offers {
