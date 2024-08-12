@@ -3,6 +3,7 @@
     <div class="d-flex" style="position: relative">
       <!-- <img src="/img/bg.png" alt="" width="100%" /> -->
       <video
+        ref="video"
         playsinline
         autoplay
         loop
@@ -69,6 +70,9 @@ export default {
         },
       ],
     };
+  },
+  mounted() {
+    this.$refs.video.play();
   },
 };
 </script>
