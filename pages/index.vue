@@ -7,7 +7,7 @@
         autoplay
         loop
         muted
-        preload="auto"
+        controls="true"
         style="height: 600px; width: 100%; object-fit: cover"
       >
         <source src="/video/bg.webm" type="video/webM" />
