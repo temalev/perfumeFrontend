@@ -19,7 +19,7 @@
       <li class="pointer">
         <Icon name="fa6-regular:heart" style="font-size: 20px" />
       </li>
-      <li class="pointer">
+      <li class="pointer" @click="$emit('openShopBag')">
         <Icon name="ph:shopping-cart-simple-bold" style="font-size: 20px" />
       </li>
     </ul>

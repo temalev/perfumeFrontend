@@ -1,19 +1,22 @@
 <template>
   <div>
-    <desktop class="desktop" />
+    <desktop @openShopBag="isDrawer = true" class="desktop" />
     <mobile class="mobile" />
+    <drawer v-if="isDrawer" @close="isDrawer = false" />
   </div>
 </template>
 
 <script>
+import Drawer from '../ui/Drawer.vue';
 import desktop from './desktop.vue';
 import mobile from './mobile.vue';
 
 export default {
-  components: { desktop, mobile },
+  components: { desktop, mobile, Drawer },
   data() {
     return {
       isLeftMenu: false,
+      isDrawer: true,
     };
   },
 };
