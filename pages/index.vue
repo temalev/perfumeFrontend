@@ -10,7 +10,7 @@
         muted
         style="height: 600px; width: 100%; object-fit: cover"
       >
-        <source src="/video/bg.webm" type="video/webM" />
+        <source src="/video/bg.mp4" type="video/mp4" />
       </video>
       <div class="text-container">
         <div class="text">
