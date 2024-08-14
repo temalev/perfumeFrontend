@@ -77,7 +77,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped lang="scss">
 .text-container {
   position: absolute;
   top: 0;
