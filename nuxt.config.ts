@@ -4,6 +4,11 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   css: ['~/assets/styles/main.scss', '~/assets/styles/common.scss'],
   modules: ['@nuxt/eslint', 'nuxt-icon', '@nuxt/fonts'],
+  runtimeConfig: {
+    public: {
+      apiBaseUrl: process.env.PUBLIC_API_BASE_URL,
+    }
+  },
   fonts: {
     providers: {
       custom: '~/providers/custom',

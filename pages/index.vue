@@ -58,15 +58,15 @@ export default {
       media: [
         {
           id: 1,
-          url: 'https://841301.selcdn.ru/rkTech/perfume/files/312323398_An_47hahcYBrMaQDk_QnHWM5Le0uNRUDdckjQRj2ag3H6ZcziaOdt.webm',
+          url: 'https://841301.selcdn.ru/rkTech/perfume/files/312323398_An_47hahcYBrMaQDk_QnHWM5Le0uNRUDdckjQRj2ag3H6ZcziaOdt.mp4',
         },
         {
           id: 2,
-          url: 'https://841301.selcdn.ru/rkTech/perfume/files/312323398_An8vOkxQj_Vo05XENunbqMDLcBSyuu43pxJS0E9148qYBK4HKgL_QaeVnP3x.webm',
+          url: 'https://841301.selcdn.ru/rkTech/perfume/files/312323398_An8vOkxQj_Vo05XENunbqMDLcBSyuu43pxJS0E9148qYBK4HKgL_QaeVnP3x.mp4',
         },
         {
           id: 3,
-          url: 'https://841301.selcdn.ru/rkTech/perfume/files/312323398_An_hvv49_8TEFfGLgPlj2VgFEdmixlO0wnacygRW1BFZSlL_0XdxDNpwe2.webm',
+          url: 'https://841301.selcdn.ru/rkTech/perfume/files/312323398_An_hvv49_8TEFfGLgPlj2VgFEdmixlO0wnacygRW1BFZSlL_0XdxDNpwe2.mp4',
         },
       ],
     };

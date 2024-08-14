@@ -1,6 +1,6 @@
 <template>
   <div>
-    <desktop @openShopBag="isDrawer = true" class="desktop" />
+    <desktop class="desktop" @open-shop-bag="isDrawer = true" />
     <mobile class="mobile" />
     <drawer v-if="isDrawer" @close="isDrawer = false" />
   </div>
@@ -10,6 +10,7 @@
 import Drawer from '../ui/Drawer.vue';
 import desktop from './desktop.vue';
 import mobile from './mobile.vue';
+import { getCategory, getBrands } from '@/api/productApi.js';
 
 export default {
   components: { desktop, mobile, Drawer },
@@ -18,6 +19,28 @@ export default {
       isLeftMenu: false,
       isDrawer: false,
     };
+  },
+  mounted() {
+    this.getCategory();
+    this.getBrands();
+  },
+  methods: {
+    async getCategory() {
+      try {
+        const res = await getCategory();
+        console.log(res);
+      } catch (e) {
+        console.error(e);
+      }
+    },
+    async getBrands() {
+      try {
+        const res = await getBrands();
+        console.log(res);
+      } catch (e) {
+        console.error(e);
+      }
+    },
   },
 };
 </script>
