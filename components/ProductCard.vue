@@ -57,6 +57,7 @@ img {
   top: 200px;
   left: 76px;
   background-color: #999;
+  object-fit: cover;
 }
 
 .img-container {

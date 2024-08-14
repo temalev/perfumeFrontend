@@ -16,7 +16,7 @@ export default {
   data() {
     return {
       isLeftMenu: false,
-      isDrawer: true,
+      isDrawer: false,
     };
   },
 };
