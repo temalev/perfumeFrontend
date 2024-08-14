@@ -104,6 +104,7 @@ export default {
   display: flex;
   justify-content: center;
   gap: 12px;
+  flex-wrap: wrap;
 }
 
 .offers {
