@@ -105,6 +105,13 @@ export default {
   justify-content: center;
   gap: 12px;
   flex-wrap: wrap;
+  overflow: auto;
+}
+
+@media (max-width: 600px) {
+  .info {
+    height: 600px;
+  }
 }
 
 .offers {
