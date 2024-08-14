@@ -7,7 +7,7 @@
       muted
       style="height: 600px; width: 100%; object-fit: cover"
     >
-      <source :src="data.url" type="video/webM" />
+      <source :src="data.url" type="video/mp4" />
     </video>
   </div>
 </template>
