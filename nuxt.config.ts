@@ -11,7 +11,7 @@ export default defineNuxtConfig({
         ? process.env.PUBLIC_API_BASE_URL
         : process.env.DEV_API_BASE_URL,
     },
-    // Можете добавить и другие приватные конфигурации здесь
+    devApiBaseUrl: process.env.DEV_API_BASE_URL, // доступно только на сервере
   },
   fonts: {
     providers: {
