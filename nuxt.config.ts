@@ -8,7 +8,10 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: {
       apiBaseUrl: process.env.PUBLIC_API_BASE_URL,
-    }
+    },
+    dev: {
+      apiBaseUrl: process.env.DEV_API_BASE_URL,
+    },
   },
   fonts: {
     providers: {

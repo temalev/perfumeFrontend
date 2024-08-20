@@ -15,7 +15,9 @@
       <nav>
         <ul class="d-flex-column gap-4 m-4">
           <li><NuxtLink class="text-gray" to="/about">КАТАЛОГ</NuxtLink></li>
-          <li><NuxtLink class="text-gray" to="/posts/1">БРЕНДЫ</NuxtLink></li>
+          <li>
+            <button class="text" @click="$emit('openBrands')">БРЕНДЫ</button>
+          </li>
           <li><NuxtLink class="text-gray" to="/posts/2">СКИДКИ</NuxtLink></li>
         </ul>
       </nav>
