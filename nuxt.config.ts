@@ -35,3 +35,7 @@ export default defineNuxtConfig({
     },
   },
 });
+
+console.log('PUBLIC_API_BASE_URL:', process.env.PUBLIC_API_BASE_URL);
+console.log('DEV_API_BASE_URL:', process.env.DEV_API_BASE_URL);
+console.log('NODE_ENV:', process.env.NODE_ENV);
