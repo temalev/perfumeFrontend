@@ -33,9 +33,8 @@ export default {
   methods: {
     async getProducts() {
       this.getProductsProcess = true;
+      this.products = [];
       const params = this.$route.query;
-      console.log(params);
-
       try {
         const res = await getProducts(params);
         this.products = res;
