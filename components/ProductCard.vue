@@ -1,7 +1,7 @@
 <template>
   <div class="card d-flex-column">
     <div class="img-container d-flex j-c">
-      <img :src="image(imageUrl)" :alt="data.name" />
+      <img :src="image(data.imageUrl)" :alt="data.name" />
       <button class="ico-btn d-flex align-center j-c">
         <Icon name="fa6-regular:heart" style="font-size: 20px" />
       </button>
@@ -33,7 +33,7 @@ export default {
   props: {
     data: {
       type: Object,
-      required: true,
+      default: null,
     },
   },
   methods: {
@@ -47,8 +47,14 @@ export default {
 <style scoped lang="scss">
 .card {
   width: 300px;
-  box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px,
-    rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
+  box-shadow: rgba(50, 50, 93, 0.123) 0px 13px 27px -5px,
+    rgba(0, 0, 0, 0.093) 0px 8px 16px -8px;
+  cursor: pointer;
+  transition: 0.2s;
+  &:hover {
+    box-shadow: rgba(50, 50, 93, 0.044) 0px 13px 27px -5px,
+      rgba(0, 0, 0, 0.034) 0px 8px 16px -8px;
+  }
 }
 
 img {

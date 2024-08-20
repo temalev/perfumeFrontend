@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="d-flex-column">
     <Head>
       <Title>parfBuro</Title>
     </Head>

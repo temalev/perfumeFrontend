@@ -16,8 +16,8 @@
 export default {
   props: {
     data: {
-      type: String,
-      default: '',
+      type: Object,
+      default: null,
     },
   },
 };
@@ -25,8 +25,11 @@ export default {
 
 <style scoped lang="scss">
 .media {
-  width: 300px;
+  width: 400px;
   height: 600px;
   background: #eee;
+  @media (max-width: 500px) {
+    scroll-snap-align: center;
+  }
 }
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <div class="d-flex-column">
+  <div class="body-home-page">
     <div class="d-flex" style="position: relative">
       <!-- <img src="/img/bg.png" alt="" width="100%" /> -->
       <video
@@ -19,7 +19,7 @@
         </div>
       </div>
     </div>
-    <div class="info m-8">
+    <div ref="info" class="info">
       <media-card v-for="item in media" :key="item.id" :data="item" />
     </div>
     <div class="offers m-8">
@@ -72,12 +72,24 @@ export default {
     };
   },
   mounted() {
-    this.$refs.video.play();
+    const info = this.$refs.info;
+    // info.addEventListener('scroll', function () {
+    //   if (this.scrollTop + this.clientHeight >= this.scrollHeight) {
+    //     console.log('Достигнут конец элемента!', info);
+    //     info.style.position = 'relative';
+    //   }
+    // });
   },
 };
 </script>
 
 <style scoped lang="scss">
+.body-home-page {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: scroll;
+}
 .text-container {
   position: absolute;
   top: 0;
@@ -105,12 +117,16 @@ export default {
   justify-content: center;
   gap: 12px;
   flex-wrap: wrap;
-  overflow: auto;
+  overflow: scroll;
+  flex-shrink: 0;
+  margin-top: 32px;
+  scroll-behavior: smooth;
 }
 
 @media (max-width: 600px) {
   .info {
     height: 600px;
+    scroll-snap-type: y mandatory;
   }
 }
 
