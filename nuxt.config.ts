@@ -7,9 +7,11 @@ export default defineNuxtConfig({
   ssr: true,
   runtimeConfig: {
     public: {
-      apiBaseUrl: process.env.PUBLIC_API_BASE_URL,
+      apiBaseUrl: process.env.NODE_ENV === 'production'
+        ? process.env.PUBLIC_API_BASE_URL
+        : process.env.DEV_API_BASE_URL,
     },
-    devApiBaseUrl: process.env.DEV_API_BASE_URL,
+    // Можете добавить и другие приватные конфигурации здесь
   },
   fonts: {
     providers: {
