@@ -1,5 +1,5 @@
 <template>
-  <div class="products">
+  <div v-loading="getProductsProcess" class="products">
     <h1>{{ $route.query.brand }}</h1>
     <div class="products-list">
       <product-card
@@ -18,20 +18,21 @@ export default {
   data() {
     return {
       products: [],
+      getProductsProcess: false,
     };
   },
-  mounted() {
-    this.getProducts();
-  },
-
   watch: {
     '$route.query'() {
       this.getProducts();
     },
   },
+  mounted() {
+    this.getProducts();
+  },
 
   methods: {
     async getProducts() {
+      this.getProductsProcess = true;
       const params = this.$route.query;
       console.log(params);
 
@@ -41,6 +42,7 @@ export default {
       } catch (e) {
         console.error(e);
       }
+      this.getProductsProcess = false;
     },
   },
 };
@@ -48,6 +50,7 @@ export default {
 
 <style scoped lang="scss">
 .products {
+  height: calc(100vh - 50px);
   display: flex;
   flex-direction: column;
   margin: 20px 40px;
