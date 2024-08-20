@@ -9,9 +9,7 @@ export default defineNuxtConfig({
     public: {
       apiBaseUrl: process.env.PUBLIC_API_BASE_URL,
     },
-    dev: {
-      apiBaseUrl: process.env.DEV_API_BASE_URL,
-    },
+    devApiBaseUrl: process.env.DEV_API_BASE_URL,
   },
   fonts: {
     providers: {
