@@ -1,6 +1,7 @@
 export async function getCategory() {
   const config = useRuntimeConfig();
   const apiUrl = config.public.apiBaseUrl || config.devApiBaseUrl;
+  console.log('API URL:', apiUrl);
 
   try {
     const response = await fetch(`${apiUrl}/categories`, {
