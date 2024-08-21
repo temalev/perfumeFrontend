@@ -3,6 +3,15 @@ export default defineNuxtConfig({
   compatibilityDate: '2024-04-03',
   devtools: { enabled: true },
   css: ['~/assets/styles/main.scss', '~/assets/styles/common.scss'],
+  vite: {
+    css: {
+      preprocessorOptions: {
+        scss: {
+          additionalData: `@import "~/assets/styles/variables.scss";`,
+        },
+      },
+    },
+  },
   modules: ['@nuxt/eslint', 'nuxt-icon', '@nuxt/fonts'],
   ssr: true,
   runtimeConfig: {

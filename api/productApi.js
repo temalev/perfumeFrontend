@@ -33,7 +33,7 @@ export async function getBrands() {
     });
 
     if (!response.ok) {
-      throw new Error('Ошибка при получении категорий');
+      throw new Error('Ошибка при получении брендов');
     }
 
     const data = await response.json();
@@ -59,7 +59,28 @@ export async function getProducts(params) {
     });
 
     if (!response.ok) {
-      throw new Error('Ошибка при получении категорий');
+      throw new Error('Ошибка при получении товаров');
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
+export async function getProduct(params) {
+  const config = useRuntimeConfig();
+  const apiUrl = config.public.URL;
+
+  try {
+    const response = await fetch(`${apiUrl}/products/${params}`, {
+      method: 'GET',
+    });
+
+    if (!response.ok) {
+      throw new Error('Ошибка при получении карточки товара');
     }
 
     const data = await response.json();

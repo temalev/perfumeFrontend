@@ -72,7 +72,7 @@ export default {
 .brand {
   transition: 0.2s;
   &:hover {
-    color: #a6a6a6;
+    color: $color-light;
   }
 }
 </style>

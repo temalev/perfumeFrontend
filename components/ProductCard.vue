@@ -1,5 +1,8 @@
 <template>
-  <div class="card d-flex-column">
+  <div
+    class="card d-flex-column"
+    @click="$router.push({ name: 'productCard', query: { slug: data.slug } })"
+  >
     <div class="img-container d-flex j-c">
       <img :src="image(data.imageUrl)" :alt="data.name" />
       <button class="ico-btn d-flex align-center j-c">
