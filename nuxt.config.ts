@@ -7,11 +7,9 @@ export default defineNuxtConfig({
   ssr: true,
   runtimeConfig: {
     public: {
-      apiBaseUrl: process.env.NODE_ENV === 'production'
-        ? process.env.PUBLIC_API_BASE_URL
-        : process.env.DEV_API_BASE_URL,
+      URL: process.env.URL || 'https://z.parfburo.com/api/v1',
+      NODE_ENV: process.env.NODE_ENV || 'production',
     },
-    devApiBaseUrl: process.env.DEV_API_BASE_URL, // доступно только на сервере
   },
   fonts: {
     providers: {

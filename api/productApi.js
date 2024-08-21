@@ -1,8 +1,8 @@
 export async function getCategory() {
   const config = useRuntimeConfig();
-  const apiUrl = config.public.apiBaseUrl || config.devApiBaseUrl;
-  console.log('API URL:', apiUrl);
-  console.log('config', config);
+  const apiUrl = config.public.URL;
+
+  console.log(config);
 
   try {
     const response = await fetch(`${apiUrl}/categories`, {
@@ -23,7 +23,9 @@ export async function getCategory() {
 
 export async function getBrands() {
   const config = useRuntimeConfig();
-  const apiUrl = config.public.apiBaseUrl;
+  const apiUrl = config.public.URL;
+
+  console.log(config);
 
   try {
     const response = await fetch(`${apiUrl}/products/brands`, {
@@ -44,7 +46,9 @@ export async function getBrands() {
 
 export async function getProducts(params) {
   const config = useRuntimeConfig();
-  const apiUrl = config.public.apiBaseUrl;
+  const apiUrl = config.public.URL;
+
+  console.log(config);
 
   const queryString = new URLSearchParams(params).toString();
 
