@@ -99,6 +99,7 @@ export default {
   list-style-type: none;
   padding: 0;
   margin: 0;
+  width: 100%;
 }
 
 .cascader-item:hover .cascader-sub-list {
