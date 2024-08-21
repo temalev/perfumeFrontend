@@ -7,7 +7,8 @@
         class="breadcrumb-item"
         @click="$router.push({ name: item.route })"
       >
-        <pre>{{ item.name }} {{ separate(i) }}</pre>
+        <span class="breadcrumb-item-text">{{ item.name }}</span>
+        <span>{{ separate(i) }}</span>
       </li>
     </ul>
   </nav>
@@ -23,9 +24,7 @@ export default {
   },
   methods: {
     separate(index) {
-      console.log(index, this.data.length);
-
-      return this.data.length - 1 == index ? '' : '/ ';
+      return this.data.length - 1 == index ? '' : ' / ';
     },
   },
 };
@@ -37,9 +36,15 @@ export default {
 }
 
 .breadcrumb-item {
-  cursor: pointer;
-  &:hover {
-    color: $color-light;
+  &-text {
+    cursor: pointer;
+    &:hover {
+      color: $color-light;
+    }
+  }
+
+  &:last-child {
+    margin-left: 4px;
   }
 }
 </style>
