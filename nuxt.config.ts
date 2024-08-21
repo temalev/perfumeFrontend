@@ -7,7 +7,7 @@ export default defineNuxtConfig({
   ssr: true,
   runtimeConfig: {
     public: {
-      URL: process.env.URL || 'https://z.parfburo.com/api/v1',
+      URL: process.env.URL || process.env.PUBLIC_API_BASE_URL,
       NODE_ENV: process.env.NODE_ENV || 'production',
     },
   },
