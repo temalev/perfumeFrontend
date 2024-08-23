@@ -1,0 +1,35 @@
+name: Lint
+
+on: [pull_request]
+
+
+jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16.20'
+
+      - name: Install dependencies
+        run: npm i --force --only=dev
+
+      - name: Run linter
+        run: npm run lint
+
+      - name: Send error message
+        if: ${{ failure() }}
+        uses: appleboy/telegram-action@master
+        with:
+          to: ${{ secrets.TELEGRAM_TO }}
+          token: ${{ secrets.TELEGRAM_TOKEN }}
+          message: |
+            ❌ @mytemalev ошибка линтера:
+            Репозиторий: ${{ github.repository }}
+            Часть кода: server
+            Посмотреть: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}

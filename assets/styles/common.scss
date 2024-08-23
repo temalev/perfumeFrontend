@@ -1,0 +1,169 @@
+@for $i from 0 through 16 {
+  .m-#{$i} {
+    margin: $i * 4px !important;
+  }
+  .mb-#{$i} {
+    margin-bottom: $i * 4px !important;
+  }
+  .mt-#{$i} {
+    margin-top: $i * 4px !important;
+  }
+  .ml-#{$i} {
+    margin-left: $i * 4px !important;
+  }
+  .mr-#{$i} {
+    margin-right: $i * 4px !important;
+  }
+
+  .p-#{$i} {
+    padding: $i * 4px !important;
+  }
+  .px-#{$i} {
+    padding-right: $i * 4px !important;
+    padding-left: $i * 4px !important;
+  }
+  .py-#{$i} {
+    padding-top: $i * 4px !important;
+    padding-bottom: $i * 4px !important;
+  }
+  .pb-#{$i} {
+    padding-bottom: $i * 4px !important;
+  }
+  .pt-#{$i} {
+    padding-top: $i * 4px !important;
+  }
+  .pl-#{$i} {
+    padding-left: $i * 4px !important;
+  }
+  .pr-#{$i} {
+    padding-right: $i * 4px !important;
+  }
+
+  .gap-#{$i} {
+    gap: $i * 4px !important;
+  }
+}
+
+@for $i from 0 through 100 { 
+  .w#{$i} {
+    width: $i * 1% !important;
+  }
+}
+
+.d-flex {
+  display: flex;
+}
+
+.d-flex-column {
+  display: flex;
+  flex-direction: column;
+}
+
+.d-flex-row {
+  display: flex;
+  flex-direction: row;
+}
+
+.align-center {
+  align-items: center;
+}
+
+.align-flex-start {
+  align-items: flex-start;
+}
+
+.align-flex-end {
+  align-items: flex-end;
+}
+
+.j-c {
+  justify-content: center;
+}
+
+.capture {
+  font-size: 11px;
+  color: #6c6c6c;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+
+.el-color-picker__trigger {
+  border-radius: 50% !important;
+}
+
+.el-color-picker__color {
+  border-radius: 50% !important;
+}
+
+.el-color-picker__color-inner {
+  border-radius: 50% !important;
+}
+
+.el-dialog__body {
+  padding: 10px 20px !important;
+}
+
+.el-button--primary {
+  background-color: #2c2c2c !important;
+  border-color: #2c2c2c !important;
+}
+label {
+  font-size: 16px !important;
+}
+.el-select-dropdown__item.selected {
+  color: #2c2c2c !important;
+}
+
+.el-popper {
+  max-width: 300px;
+}
+.align-center {
+  align-items: center;
+}
+
+.align-flex-start {
+  align-items: flex-start;
+}
+
+.align-flex-end {
+  align-items: flex-end;
+}
+
+.j-c {
+  justify-content: center;
+}
+
+.j-s {
+  justify-content: flex-start;
+}
+
+.j-e {
+  justify-content: flex-end;
+}
+
+.j-sb {
+  justify-content: space-between;
+}
+
+.text-gray {
+  color: #00000075;
+}
+
+a {
+  &.text-gray {
+    transition: .2s;
+    &:hover {
+      color: rgb(0, 0, 0) !important;
+    }
+}
+}
+
+::v-deep {
+  .el-popper {
+    width: 200px !important;
+  }
+
+}
