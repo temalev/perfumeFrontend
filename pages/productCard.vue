@@ -2,11 +2,12 @@
   <div v-loading="getProductProcess" class="product-card">
     <bread-crumb :data="breadcrumb" />
     <div class="d-flex gap-4">
-      <img :src="image(data?.imageUrl)" :alt="data?.name" />
+      <img :src="image(data?.images[0])" :alt="data?.name" />
       <div class="d-flex-column">
         <h1>{{ product?.name }}</h1>
         <span>Артикул: {{ product?.article }}</span>
         <div class="price">{{ product?.price }} ₽</div>
+        <UiButton loading>button</UiButton>
       </div>
     </div>
     <p>{{ product?.description }}</p>
@@ -44,6 +45,8 @@ export default {
 
   methods: {
     image(url) {
+      console.log(url);
+
       return url ? `src/assets/${url}` : '/img/no_image.png';
     },
     async getProduct() {

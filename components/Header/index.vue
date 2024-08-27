@@ -5,16 +5,18 @@
       @openCatalog="isCatalog = true"
       @open-shop-bag="isDrawer = true"
       @openBrands="isBrandsModal = true"
+      @login="isLoginModal = true"
     />
     <mobile class="mobile" />
 
-    <drawer v-if="isDrawer" @close="isDrawer = false" />
+    <shop-bag v-if="isDrawer" @close="isDrawer = false" />
     <brands-modal
       v-if="isBrandsModal"
       :data="brands"
       @close="isBrandsModal = false"
     />
     <cascader :data="category" v-if="isCatalog" @close="isCatalog = false" />
+    <log-in v-if="isLoginModal" @close="isLoginModal = false" />
   </div>
 </template>
 
@@ -26,20 +28,32 @@ import Cascader from '../ui/Cascader/Cascader.vue';
 import desktop from './desktop.vue';
 import mobile from './mobile.vue';
 import { getCategory, getBrands } from '@/api/productApi.js';
+import LogIn from '../LogIn.vue';
+import ShopBag from '../ShopBag.vue';
 
 export default {
-  components: { desktop, mobile, Drawer, BrandsModal, Cascader },
+  components: {
+    desktop,
+    mobile,
+    Drawer,
+    BrandsModal,
+    Cascader,
+    LogIn,
+    ShopBag,
+  },
   data() {
     return {
       isLeftMenu: false,
       isDrawer: false,
       isBrandsModal: false,
       isCatalog: false,
+      isLoginModal: false,
 
       brands: [],
       category: [],
     };
   },
+
   mounted() {
     this.getCategory();
     this.getBrands();

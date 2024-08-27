@@ -90,3 +90,86 @@ export async function getProduct(params) {
     throw error;
   }
 }
+
+export async function getCodeFromSms(requestData) {
+  const config = useRuntimeConfig();
+  const apiUrl = config.public.URL;
+
+  try {
+    const response = await fetch(`${apiUrl}/auth/code/sms`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json', // Указываем, что данные в формате JSON
+      },
+      body: JSON.stringify(requestData), // Преобразуем объект data в строку JSON
+    });
+
+    if (!response.ok) {
+      throw new Error('Ошибка при получении кода');
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
+export async function getCodeFromCall(requestData) {
+  const config = useRuntimeConfig();
+  const apiUrl = config.public.URL;
+
+  try {
+    const response = await fetch(`${apiUrl}/auth/code/call`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json', // Указываем, что данные в формате JSON
+      },
+      body: JSON.stringify(requestData), // Преобразуем объект data в строку JSON
+    });
+
+    if (!response.ok) {
+      throw new Error('Ошибка при получении кода');
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
+export async function login(requestData) {
+  const config = useRuntimeConfig();
+  const apiUrl = config.public.URL;
+
+  try {
+    const response = await fetch(`${apiUrl}/auth/login`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(requestData),
+    });
+
+    if (!response.ok) {
+      throw new Error('Ошибка при получении кода');
+    }
+
+    const data = await response.json();
+
+    if (data.accessToken) {
+      const cookie = useCookie('accessToken');
+      cookie.value = data.accessToken;
+
+      return data;
+    } else {
+      throw new Error('Токен доступа не найден в ответе');
+    }
+  } catch (error) {
+    console.error('Ошибка:', error.message);
+    throw error;
+  }
+}

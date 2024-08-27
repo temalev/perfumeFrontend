@@ -152,6 +152,11 @@ label {
   color: #00000075;
 }
 
+.text-secondary {
+  color: #0000007a;
+  font-size: 11px;
+}
+
 a {
   &.text-gray {
     transition: .2s;
@@ -159,11 +164,4 @@ a {
       color: rgb(0, 0, 0) !important;
     }
 }
-}
-
-::v-deep {
-  .el-popper {
-    width: 200px !important;
-  }
-
 }

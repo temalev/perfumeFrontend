@@ -1,19 +1,19 @@
 <template>
   <div class="card d-flex-row">
     <div class="img d-flex">
-      <img :src="imgUrl" :alt="product.name" />
+      <img :src="imgUrl" :alt="product?.name" />
     </div>
 
     <div class="main-info d-flex-row j-sb">
       <div class="info d-flex-column j-sb">
         <div class="info-name d-flex-column align-flex-start">
-          <span class="name">{{ product.name }}</span>
-          <span class="category">{{ product.category }}</span>
+          <span class="name">{{ product?.name }}</span>
+          <span class="category">{{ product?.category }}</span>
         </div>
         <div class="pay d-flex-row j-sb">
           <div class="info-price d-flex align-flex-end">
-            <span class="new-price">{{ product.price }}</span>
-            <span class="old-price" v-if="product.oldPrice">{{
+            <span class="new-price">{{ product?.price }}</span>
+            <span class="old-price" v-if="product?.oldPrice">{{
               product.oldPrice
             }}</span>
           </div>
@@ -43,7 +43,7 @@ export default {
   },
   computed: {
     imgUrl() {
-      return `/img/${this.product.imageUrl}`;
+      return `/img/${this.product?.imageUrl}`;
     },
   },
 };
@@ -56,11 +56,12 @@ export default {
 }
 
 img {
-  width: 100%;
+  width: 100px;
   height: 100%;
   top: 200px;
   left: 76px;
   background-color: #999;
+  flex-shrink: 0;
 }
 .product-price {
   margin-bottom: 1rem;
