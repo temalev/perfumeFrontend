@@ -14,7 +14,7 @@
 
 <script>
 import Modal from '~/components/ui/Modal.vue';
-import { useCookie } from '#app';
+import { getMe } from '@/api/productApi.js';
 
 export default {
   components: { Modal },
@@ -25,16 +25,16 @@ export default {
     };
   },
   mounted() {
-    // Проверяем наличие токена на клиентской стороне
-    const accessToken = useCookie('accessToken');
-    this.token = accessToken.value;
-
-    if (this.token) {
-      console.log('Токен найден:', this.token);
-    } else {
-      console.log('Токен не найден');
-      // Вы можете выполнить перенаправление или другие действия здесь
-    }
+    this.getMe();
+  },
+  methods: {
+    async getMe() {
+      try {
+        const res = await getMe();
+      } catch (e) {
+        console.error(e);
+      }
+    },
   },
 };
 </script>

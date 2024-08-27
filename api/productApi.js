@@ -173,3 +173,30 @@ export async function login(requestData) {
     throw error;
   }
 }
+
+export async function getMe() {
+  const config = useRuntimeConfig();
+  const apiUrl = config.public.URL;
+
+  const cookie = useCookie('accessToken');
+  const token = cookie.value;
+  try {
+    const response = await fetch(`${apiUrl}/users/me`, {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error('Ошибка при получении данных');
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Ошибка:', error.message);
+    throw error;
+  }
+}
