@@ -22,15 +22,18 @@ export default {
     return {
       isModal: false,
       token: null, // Хранит значение токена, если он есть
+      user: null,
     };
   },
   mounted() {
+    this.user = useState('user', () => null);
     this.getMe();
   },
   methods: {
     async getMe() {
       try {
         const res = await getMe();
+        this.user = res;
       } catch (e) {
         console.error(e);
       }

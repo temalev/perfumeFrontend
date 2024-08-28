@@ -28,7 +28,7 @@
         <Icon
           name="ri:account-circle-line"
           style="font-size: 20px"
-          @click="$emit('login')"
+          @click="user ? $router.push({ name: 'userCard' }) : $emit('login')"
         />
       </li>
       <li class="pointer">
@@ -43,7 +43,14 @@
 </template>
 
 <script>
-export default {};
+export default {
+  props: {
+    user: {
+      type: Object,
+      default: null,
+    },
+  },
+};
 </script>
 
 <style scoped lang="scss">

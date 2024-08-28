@@ -2,6 +2,7 @@
   <div>
     <desktop
       class="desktop"
+      :user="user"
       @openCatalog="isCatalog = true"
       @open-shop-bag="isDrawer = true"
       @openBrands="isBrandsModal = true"
@@ -51,6 +52,7 @@ export default {
 
       brands: [],
       category: [],
+      user: useState('user'),
     };
   },
 
