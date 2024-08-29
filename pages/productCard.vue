@@ -2,7 +2,7 @@
   <div v-loading="getProductProcess" class="product-card">
     <bread-crumb :data="breadcrumb" />
     <div class="d-flex gap-4">
-      <img :src="image(data?.images[0])" :alt="data?.name" />
+      <img :src="image(product?.images[0])" :alt="data?.name" />
       <div class="d-flex-column">
         <h1>{{ product?.name }}</h1>
         <span>Артикул: {{ product?.article }}</span>
@@ -47,7 +47,7 @@ export default {
     image(url) {
       console.log(url);
 
-      return url ? `src/assets/${url}` : '/img/no_image.png';
+      return url ? url : '/img/no_image.png';
     },
     async getProduct() {
       this.getProductProcess = true;
@@ -75,6 +75,10 @@ export default {
   display: flex;
   flex-direction: column;
   gap: 12px;
+
+  img {
+    width: 50%;
+  }
 }
 
 .price {
