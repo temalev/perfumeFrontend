@@ -4,7 +4,7 @@
     @click="$router.push({ name: 'productCard', query: { slug: data.slug } })"
   >
     <div class="img-container d-flex j-c">
-      <img :src="image(data.imageUrl)" :alt="data.name" />
+      <img :src="image(data.images[0])" :alt="data.name" />
       <button class="ico-btn d-flex align-center j-c">
         <Icon name="fa6-regular:heart" style="font-size: 20px" />
       </button>
@@ -22,7 +22,10 @@
           </span>
         </div>
 
-        <button class="ico-btn d-flex align-center j-c">
+        <button
+          class="ico-btn d-flex align-center j-c"
+          @click.stop="addToShopBag(data.id)"
+        >
           <Icon name="heroicons-solid:plus-sm" style="font-size: 20px" />
           <Icon name="ph:shopping-cart-simple-bold" style="font-size: 20px" />
         </button>
@@ -41,7 +44,10 @@ export default {
   },
   methods: {
     image(url) {
-      return url ? `src/assets/${url}` : '/img/no_image.png';
+      return url ? url : '/img/no_image.png';
+    },
+    addToShopBag(id) {
+      localStorage.setItem('orders', JSON.stringify(id));
     },
   },
 };

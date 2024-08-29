@@ -12,6 +12,9 @@
       <button class="ico-btn d-flex align-center j-c" @click="onClose">
         <Icon name="material-symbols-light:close" style="font-size: 40px" />
       </button>
+      <div class="drawer-content">
+        <slot></slot>
+      </div>
     </div>
   </div>
 </template>
@@ -66,6 +69,10 @@ export default {
   height: 100%;
   background-color: #fff;
   animation: open 0.2s ease-out;
+}
+
+.drawer-content {
+  padding: 20px;
 }
 
 .drawer-close {

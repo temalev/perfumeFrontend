@@ -25,12 +25,17 @@
         <Icon name="ph:magnifying-glass-bold" style="font-size: 20px" />
       </li>
       <li class="pointer">
-        <Icon name="ri:account-circle-line" style="font-size: 20px" />
+        <Icon
+          name="ri:account-circle-line"
+          style="font-size: 20px"
+          @click="user ? $router.push({ name: 'userCard' }) : $emit('login')"
+        />
       </li>
       <li class="pointer">
         <Icon name="fa6-regular:heart" style="font-size: 20px" />
       </li>
       <li class="pointer" @click="$emit('openShopBag')">
+        <div class="counter"><span>13</span></div>
         <Icon name="ph:shopping-cart-simple-bold" style="font-size: 20px" />
       </li>
     </ul>
@@ -38,7 +43,14 @@
 </template>
 
 <script>
-export default {};
+export default {
+  props: {
+    user: {
+      type: Object,
+      default: null,
+    },
+  },
+};
 </script>
 
 <style scoped lang="scss">
@@ -72,6 +84,29 @@ header {
     display: flex;
     align-items: center;
     justify-content: center;
+    position: relative;
+
+    .counter {
+      position: absolute;
+      top: -10px;
+      right: -10px;
+      width: 20px;
+      height: 20px;
+      background-color: red;
+      color: #fff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 600;
+      z-index: 9;
+      flex-shrink: 0;
+
+      span {
+        height: 13px;
+      }
+    }
   }
 }
 </style>
