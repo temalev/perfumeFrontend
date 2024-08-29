@@ -71,12 +71,13 @@ img {
   height: 250px;
   top: 200px;
   left: 76px;
-  background-color: #999;
-  object-fit: cover;
+  object-fit: contain;
+  background: #fff;
 }
 
 .img-container {
   position: relative;
+  background: #fff;
   & .ico-btn {
     position: absolute;
     top: 20px;
