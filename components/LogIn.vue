@@ -69,6 +69,8 @@ export default {
       };
       try {
         const res = await login(data);
+        this.$router.push('userCard');
+        this.$emit('close');
       } catch (e) {
         console.error(e);
       }
