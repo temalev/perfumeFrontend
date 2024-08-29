@@ -140,6 +140,8 @@ export default {
 
   img {
     width: 50%;
+    max-height: 500px;
+    object-fit: contain;
   }
 }
 
