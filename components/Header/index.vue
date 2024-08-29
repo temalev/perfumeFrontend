@@ -3,9 +3,15 @@
     <desktop
       class="desktop"
       :user="user"
-      @openCatalog="isCatalog = true"
+      @openCatalog="
+        isCatalog = true;
+        isBrandsModal = false;
+      "
       @open-shop-bag="isDrawer = true"
-      @openBrands="isBrandsModal = true"
+      @openBrands="
+        isBrandsModal = true;
+        isCatalog = false;
+      "
       @login="isLoginModal = true"
     />
     <mobile class="mobile" />
@@ -59,6 +65,12 @@ export default {
   mounted() {
     this.getCategory();
     this.getBrands();
+  },
+  watch: {
+    '$route.name'(val) {
+      this.isBrandsModal = false;
+      this.isCatalog = false;
+    },
   },
   methods: {
     async getCategory() {
