@@ -91,6 +91,27 @@ export async function getProduct(params) {
   }
 }
 
+export async function getGroupProduct(params) {
+  const config = useRuntimeConfig();
+  const apiUrl = config.public.URL;
+
+  try {
+    const response = await fetch(`${apiUrl}/products/group/${params}`, {
+      method: 'GET',
+    });
+
+    if (!response.ok) {
+      throw new Error('Ошибка при получении группы');
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
 export async function getCodeFromSms(requestData) {
   const config = useRuntimeConfig();
   const apiUrl = config.public.URL;
