@@ -14,6 +14,13 @@
               v-for="option in options"
               :key="option.id"
               class="options-item"
+              :class="{ active: option.capacity === product.capacity }"
+              @click="
+                $router.push({
+                  name: productCard,
+                  query: { slug: option.slug },
+                })
+              "
             >
               {{ option.capacity }}
             </div>
@@ -196,6 +203,11 @@ export default {
   transition: 0.2s;
 
   &:hover {
+    background-color: #000;
+    color: #fff;
+  }
+
+  &.active {
     background-color: #000;
     color: #fff;
   }
