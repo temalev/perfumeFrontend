@@ -106,11 +106,15 @@ export default {
 
   methods: {
     image(url) {
-      console.log(url);
-
       return url ? url : '/img/no_image.png';
     },
     async getProduct() {
+      this.breadcrumb = [
+        {
+          name: 'Главная',
+          route: 'index',
+        },
+      ];
       this.getProductProcess = true;
       try {
         const res = await getProduct(this.$route.query.slug);
