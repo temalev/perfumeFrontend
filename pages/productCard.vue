@@ -97,7 +97,7 @@ export default {
   },
   watch: {
     '$route.query'() {
-      this.getProducts();
+      this.getProduct();
     },
   },
   mounted() {
