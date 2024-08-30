@@ -31,9 +31,9 @@
           <UiTheButton @click="addToShopBag(product.slug)">
             Добавить в корзину
           </UiTheButton>
-          <UiTheButton @click="addToFavorites(product.slug)"
-            >Добавить в избранное</UiTheButton
-          >
+          <UiTheButton @click="addToFavorites(product.slug)">
+            Добавить в избранное
+          </UiTheButton>
         </div>
         <div class="product-card-info">
           <div class="product-card-info-header">Подробные характеристики</div>
