@@ -23,10 +23,10 @@
       <media-card v-for="item in media" :key="item.id" :data="item" />
     </div>
     <div class="offers m-8">
-      <h1>Хиты</h1>
+      <h1>Специальные предложения</h1>
       <div class="slider">
         <product-card
-          v-for="product in products"
+          v-for="product in productsHit"
           :data="product"
           :key="product.id"
         />
@@ -36,7 +36,7 @@
       <h1>Новинки</h1>
       <div class="slider">
         <product-card
-          v-for="product in products"
+          v-for="product in productsSale"
           :data="product"
           :key="product.id"
         />
@@ -50,11 +50,15 @@ import products from 'assets/mock/products.json';
 import ProductCard from '~/components/ProductCard.vue';
 import MediaCard from '~/components/MediaCard.vue';
 
+import { getProducts } from '@/api/productApi.js';
+
 export default {
   components: { ProductCard, MediaCard },
   data() {
     return {
       products: products,
+      productsHit: [],
+      productsSale: [],
       media: [
         {
           id: 1,
@@ -73,12 +77,36 @@ export default {
   },
   mounted() {
     const info = this.$refs.info;
-    // info.addEventListener('scroll', function () {
-    //   if (this.scrollTop + this.clientHeight >= this.scrollHeight) {
-    //     console.log('Достигнут конец элемента!', info);
-    //     info.style.position = 'relative';
-    //   }
-    // });
+    this.getProductsHit();
+    this.getProductsSale();
+  },
+  methods: {
+    async getProductsHit() {
+      this.getProductsProcess = true;
+      const params = {
+        isHit: true,
+      };
+      try {
+        const res = await getProducts(params);
+        this.productsHit = res;
+      } catch (e) {
+        console.error(e);
+      }
+      this.getProductsProcess = false;
+    },
+    async getProductsSale() {
+      this.getProductsProcess = true;
+      const params = {
+        isSale: true,
+      };
+      try {
+        const res = await getProducts(params);
+        this.productsSale = res;
+      } catch (e) {
+        console.error(e);
+      }
+      this.getProductsProcess = false;
+    },
   },
 };
 </script>
