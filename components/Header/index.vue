@@ -3,9 +3,16 @@
     <desktop
       class="desktop"
       :user="user"
-      @openCatalog="isCatalog = true"
+      :ordersSlugs="ordersSlugs"
+      @openCatalog="
+        isCatalog = true;
+        isBrandsModal = false;
+      "
       @open-shop-bag="isDrawer = true"
-      @openBrands="isBrandsModal = true"
+      @openBrands="
+        isBrandsModal = true;
+        isCatalog = false;
+      "
       @login="isLoginModal = true"
     />
     <mobile class="mobile" />
@@ -17,7 +24,11 @@
       @close="isBrandsModal = false"
     />
     <cascader :data="category" v-if="isCatalog" @close="isCatalog = false" />
-    <log-in v-if="isLoginModal" @close="isLoginModal = false" />
+    <log-in
+      v-if="isLoginModal"
+      @close="isLoginModal = false"
+      @success="$router.push('userCard')"
+    />
   </div>
 </template>
 
@@ -53,12 +64,22 @@ export default {
       brands: [],
       category: [],
       user: useState('user'),
+      ordersSlugs: useState('ordersSlugs'),
     };
   },
 
   mounted() {
     this.getCategory();
     this.getBrands();
+    setTimeout(() => {
+      console.log(this.ordersSlugs);
+    }, 10);
+  },
+  watch: {
+    '$route.name'(val) {
+      this.isBrandsModal = false;
+      this.isCatalog = false;
+    },
   },
   methods: {
     async getCategory() {

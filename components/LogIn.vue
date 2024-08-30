@@ -69,6 +69,8 @@ export default {
       };
       try {
         const res = await login(data);
+        this.$emit('success');
+        this.$emit('close');
       } catch (e) {
         console.error(e);
       }

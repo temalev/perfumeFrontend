@@ -4,12 +4,18 @@
       <div
         class="btnMenu"
         :class="isLeftMenu ? 'active' : ''"
-        @click="(isLeftMenu = !isLeftMenu), onMenu()"
+        @click="isLeftMenu = !isLeftMenu"
       >
         <span></span>
       </div>
     </div>
-    <img src="~/assets/img/logo.webp" alt="" width="140" height="50px" />
+    <img
+      src="~/assets/img/logo.webp"
+      alt=""
+      width="140"
+      height="50px"
+      @click="$router.push('/')"
+    />
     <Icon name="ph:magnifying-glass-bold" style="font-size: 20px" />
     <div v-if="isLeftMenu" class="left-menu">
       <nav>
@@ -37,9 +43,6 @@ export default {
 
 <style lang="scss" scoped>
 header {
-  position: fixed;
-  top: 0;
-  left: 0;
   width: 100%;
   display: flex;
   align-items: center;
@@ -66,14 +69,11 @@ header {
 .left-menu {
   display: flex;
   position: fixed;
-  width: 100%;
+  width: 100vw;
   height: 100vh;
   top: 50px;
   left: 0;
-  background: rgba(255, 255, 255, 0.43);
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-  backdrop-filter: blur(5px);
-  -webkit-backdrop-filter: blur(5px);
+  background-color: #fff;
   z-index: 2;
 }
 .btnMenu {

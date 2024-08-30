@@ -5,11 +5,28 @@
 </template>
 
 <script>
+import { getMe } from '@/api/productApi.js';
+
 export default {
   data() {
     return {
       user: useState('user'),
     };
+  },
+  mounted() {
+    if (!this.user) {
+      this.getMe();
+    }
+  },
+  methods: {
+    async getMe() {
+      try {
+        const res = await getMe();
+        this.user = res;
+      } catch (e) {
+        console.error(e);
+      }
+    },
   },
 };
 </script>

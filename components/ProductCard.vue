@@ -47,7 +47,7 @@ export default {
       return url ? url : '/img/no_image.png';
     },
     addToShopBag(id) {
-      localStorage.setItem('orders', JSON.stringify(id));
+      localStorage.setItem('ordersSlugs', JSON.stringify(id));
     },
   },
 };
@@ -71,12 +71,13 @@ img {
   height: 250px;
   top: 200px;
   left: 76px;
-  background-color: #999;
-  object-fit: cover;
+  object-fit: contain;
+  background: #fff;
 }
 
 .img-container {
   position: relative;
+  background: #fff;
   & .ico-btn {
     position: absolute;
     top: 20px;
