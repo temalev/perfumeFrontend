@@ -7,17 +7,14 @@
     <Header />
     <div class="main">
       <slot />
-      <modal v-if="isModal" @close="isModal = false" />
     </div>
   </div>
 </template>
 
 <script>
-import Modal from '~/components/ui/Modal.vue';
 import { getMe } from '@/api/productApi.js';
 
 export default {
-  components: { Modal },
   data() {
     return {
       isModal: false,
@@ -28,6 +25,10 @@ export default {
   mounted() {
     this.user = useState('user', () => null);
     this.getMe();
+    useState('ordersSlugs', () => {
+      const slugs = window.localStorage.getItem('ordersSlugs');
+      return slugs ? slugs.split(',') : [];
+    });
   },
   methods: {
     async getMe() {

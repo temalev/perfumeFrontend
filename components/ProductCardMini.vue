@@ -1,7 +1,7 @@
 <template>
   <div class="card d-flex-row">
     <div class="img d-flex">
-      <img :src="imgUrl" :alt="product?.name" />
+      <img :src="imgUrl(product?.images[0])" :alt="product?.name" />
     </div>
 
     <div class="main-info d-flex-row j-sb">
@@ -12,21 +12,19 @@
         </div>
         <div class="pay d-flex-row j-sb">
           <div class="info-price d-flex align-flex-end">
-            <span class="new-price">{{ product?.price }}</span>
-            <span class="old-price" v-if="product?.oldPrice">{{
-              product.oldPrice
-            }}</span>
+            <span class="new-price">{{ product?.capacity }} мл.</span>
+            <span class="new-price">{{ product.count }} шт.</span>
           </div>
         </div>
       </div>
 
       <div class="btn-pay d-flex-column">
         <button class="ico-btn d-flex align-center j-c">
-          <Icon name="fa6-regular:heart" style="font-size: 20px" />
-        </button>
-        <button class="ico-btn d-flex align-center j-c">
-          <Icon name="heroicons-solid:plus-sm" style="font-size: 20px" />
-          <Icon name="ph:shopping-cart-simple-bold" style="font-size: 20px" />
+          <Icon
+            name="material-symbols-light:close"
+            style="font-size: 20px"
+            @click="$emit('drop', product.id)"
+          />
         </button>
       </div>
     </div>
@@ -41,9 +39,9 @@ export default {
       required: true,
     },
   },
-  computed: {
-    imgUrl() {
-      return `/img/${this.product?.imageUrl}`;
+  methods: {
+    imgUrl(url) {
+      return url ? url : '/img/no_image.png';
     },
   },
 };
@@ -57,10 +55,11 @@ export default {
 
 img {
   width: 100px;
-  height: 100%;
+  height: 100px;
+  object-fit: contain;
   top: 200px;
   left: 76px;
-  background-color: #999;
+  background-color: #ffffff;
   flex-shrink: 0;
 }
 .product-price {

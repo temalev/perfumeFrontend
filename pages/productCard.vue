@@ -1,8 +1,8 @@
 <template>
   <div v-loading="getProductProcess" class="product-card">
     <bread-crumb :data="breadcrumb" />
-    <div class="d-flex gap-4">
-      <img :src="image(product?.images[0])" :alt="data?.name" />
+    <div class="product-card-content gap-4">
+      <img :src="image(product?.images[0])" :alt="product?.name" />
       <div class="d-flex-column">
         <h1>{{ product?.name }}</h1>
         <span>Артикул: {{ product?.article }}</span>
@@ -27,8 +27,12 @@
           </div>
         </div>
         <div class="d-flex gap-2">
-          <UiTheButton>Добавить в избранное</UiTheButton>
-          <UiTheButton>Добавить в корзину</UiTheButton>
+          <UiTheButton @click="addToFavorites(product.slug)"
+            >Добавить в избранное</UiTheButton
+          >
+          <UiTheButton @click="addToShopBag(product.slug)">
+            Добавить в корзину
+          </UiTheButton>
         </div>
         <div class="product-card-info">
           <div class="product-card-info-header">Подробные характеристики</div>
@@ -52,16 +56,6 @@
             </li>
             <li class="product-card-info-item">
               <div class="product-card-info-item-label">
-                <div class="product-card-info-item-label-text">
-                  Группа ароматов
-                </div>
-                <div class="filled-container" />
-              </div>
-
-              <span>фужерные</span>
-            </li>
-            <li class="product-card-info-item">
-              <div class="product-card-info-item-label">
                 <div class="product-card-info-item-label-text">Страна</div>
                 <div class="filled-container" />
               </div>
@@ -73,15 +67,21 @@
       </div>
     </div>
     <p>{{ product?.description }}</p>
+    <log-in
+      v-if="isLoginModal"
+      @close="isLoginModal = false"
+      @success="addToFavorites()"
+    />
   </div>
 </template>
 
 <script>
 import { getProduct, getGroupProduct } from '@/api/productApi.js';
 import BreadCrumb from '~/components/ui/BreadCrumb.vue';
+import LogIn from '~/components/LogIn.vue';
 
 export default {
-  components: { BreadCrumb },
+  components: { BreadCrumb, LogIn },
   data() {
     return {
       product: null,
@@ -93,6 +93,9 @@ export default {
         },
       ],
       options: [],
+      ordersSlugs: useState('ordersSlugs'),
+      user: useState('user'),
+      isLoginModal: false,
     };
   },
   watch: {
@@ -105,6 +108,25 @@ export default {
   },
 
   methods: {
+    addToFavorites() {
+      if (this.user) {
+      } else {
+        this.isLoginModal = true;
+      }
+    },
+    addToShopBag(slug) {
+      if (window.localStorage.getItem('ordersSlugs')) {
+        this.ordersSlugs.push(slug);
+        if (this.ordersSlug?.length) {
+          window.localStorage.setItem('ordersSlugs', this.ordersSlugs);
+        } else {
+          window.localStorage.removeItem('ordersSlugs');
+        }
+      } else {
+        this.ordersSlugs.push(slug);
+        window.localStorage.setItem('ordersSlugs', slug);
+      }
+    },
     image(url) {
       return url ? url : '/img/no_image.png';
     },
@@ -153,6 +175,17 @@ export default {
     width: 50%;
     max-height: 500px;
     object-fit: contain;
+  }
+
+  &-content {
+    display: flex;
+  }
+}
+
+@media (max-width: 800px) {
+  .product-card-content {
+    display: flex;
+    flex-direction: column;
   }
 }
 

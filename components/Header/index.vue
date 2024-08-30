@@ -3,6 +3,7 @@
     <desktop
       class="desktop"
       :user="user"
+      :ordersSlugs="ordersSlugs"
       @openCatalog="
         isCatalog = true;
         isBrandsModal = false;
@@ -23,7 +24,11 @@
       @close="isBrandsModal = false"
     />
     <cascader :data="category" v-if="isCatalog" @close="isCatalog = false" />
-    <log-in v-if="isLoginModal" @close="isLoginModal = false" />
+    <log-in
+      v-if="isLoginModal"
+      @close="isLoginModal = false"
+      @success="$router.push('userCard')"
+    />
   </div>
 </template>
 
@@ -59,12 +64,16 @@ export default {
       brands: [],
       category: [],
       user: useState('user'),
+      ordersSlugs: useState('ordersSlugs'),
     };
   },
 
   mounted() {
     this.getCategory();
     this.getBrands();
+    setTimeout(() => {
+      console.log(this.ordersSlugs);
+    }, 10);
   },
   watch: {
     '$route.name'(val) {

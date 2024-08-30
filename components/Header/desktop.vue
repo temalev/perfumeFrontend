@@ -35,7 +35,9 @@
         <Icon name="fa6-regular:heart" style="font-size: 20px" />
       </li>
       <li class="pointer" @click="$emit('openShopBag')">
-        <div class="counter"><span>13</span></div>
+        <div class="counter">
+          <span>{{ ordersSlugs?.length }}</span>
+        </div>
         <Icon name="ph:shopping-cart-simple-bold" style="font-size: 20px" />
       </li>
     </ul>
@@ -48,6 +50,10 @@ export default {
     user: {
       type: Object,
       default: null,
+    },
+    ordersSlugs: {
+      type: Array,
+      default: () => [],
     },
   },
 };

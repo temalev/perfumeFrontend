@@ -47,7 +47,7 @@ export default {
       return url ? url : '/img/no_image.png';
     },
     addToShopBag(id) {
-      localStorage.setItem('orders', JSON.stringify(id));
+      localStorage.setItem('ordersSlugs', JSON.stringify(id));
     },
   },
 };
