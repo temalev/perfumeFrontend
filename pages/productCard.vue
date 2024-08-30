@@ -14,7 +14,7 @@
               v-for="option in options"
               :key="option.id"
               class="options-item"
-              :class="{ active: option.capacity === product.capacity }"
+              :class="{ active: option.id === product.id }"
               @click="
                 $router.push({
                   name: productCard,
