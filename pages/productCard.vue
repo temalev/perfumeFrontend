@@ -5,7 +5,7 @@
       <img :src="image(product?.images[0])" :alt="product?.name" />
       <div class="d-flex-column">
         <h1>{{ product?.name }}</h1>
-        <span>Артикул: {{ product?.article }}</span>
+        <span class="text-secondary">Артикул: {{ product?.article }}</span>
 
         <div class="options mt-4">
           <div class="options-label">Объем/мл</div>
