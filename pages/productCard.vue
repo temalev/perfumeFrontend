@@ -6,8 +6,8 @@
       <div class="d-flex-column">
         <h1>{{ product?.name }}</h1>
         <span>Артикул: {{ product?.article }}</span>
-        <div class="price mt-4">{{ product?.price }} ₽</div>
-        <div class="options">
+
+        <div class="options mt-4">
           <div class="options-label">Объем/мл</div>
           <div class="options-item-list">
             <div
@@ -26,13 +26,14 @@
             </div>
           </div>
         </div>
+        <div class="price mb-4">{{ product?.price }} ₽</div>
         <div class="d-flex gap-2">
-          <UiTheButton @click="addToFavorites(product.slug)"
-            >Добавить в избранное</UiTheButton
-          >
           <UiTheButton @click="addToShopBag(product.slug)">
             Добавить в корзину
           </UiTheButton>
+          <UiTheButton @click="addToFavorites(product.slug)"
+            >Добавить в избранное</UiTheButton
+          >
         </div>
         <div class="product-card-info">
           <div class="product-card-info-header">Подробные характеристики</div>

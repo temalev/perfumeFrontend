@@ -34,7 +34,7 @@ button {
   padding: 12px;
   background-color: #000;
   color: #fff;
-  border-radius: 4px;
+  border-radius: 12px;
   transition: all 0.2s;
   &:hover {
     background-color: #252525;
