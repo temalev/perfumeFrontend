@@ -4,11 +4,11 @@
       <img :src="imgUrl(product?.images[0])" :alt="product?.name" />
     </div>
 
-    <div class="main-info d-flex-row j-sb">
+    <div class="main-info d-flex-row j-sb align-flex-start">
       <div class="info d-flex-column j-sb">
         <div class="info-name d-flex-column align-flex-start">
           <span class="name">{{ product?.name }}</span>
-          <span class="category">{{ product?.category }}</span>
+          <span class="category">{{ product?.type }}</span>
         </div>
         <div class="pay d-flex-row j-sb">
           <div class="info-price d-flex align-flex-end">
@@ -18,8 +18,9 @@
         </div>
       </div>
 
-      <div class="btn-pay d-flex-column">
-        <button class="ico-btn d-flex align-center j-c">
+      <div class="btn-pay d-flex">
+        <span class="new-price">{{ product?.price }} ₽ </span>
+        <button class="ico-btn d-flex j-c">
           <Icon
             name="material-symbols-light:close"
             style="font-size: 20px"
