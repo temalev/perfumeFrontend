@@ -1,11 +1,16 @@
 <template>
   <div
     class="card d-flex-column"
-    @click="$router.push({ name: 'productCard', query: { slug: data.slug } })"
+    @click.self="
+      $router.push({ name: 'productCard', query: { slug: data.slug } })
+    "
   >
     <div class="img-container d-flex j-c">
       <img :src="image(data.images[0])" :alt="data.name" />
-      <button class="ico-btn d-flex align-center j-c">
+      <button
+        class="ico-btn d-flex align-center j-c"
+        @click="addToFavorites(data.slug)"
+      >
         <Icon name="fa6-regular:heart" style="font-size: 20px" />
       </button>
     </div>
@@ -24,30 +29,62 @@
 
         <button
           class="ico-btn d-flex align-center j-c"
-          @click.stop="addToShopBag(data.id)"
+          @click.stop="addToShopBag(data.slug)"
         >
           <Icon name="heroicons-solid:plus-sm" style="font-size: 20px" />
           <Icon name="ph:shopping-cart-simple-bold" style="font-size: 20px" />
         </button>
       </div>
     </div>
+    <log-in
+      v-if="isLoginModal"
+      @close="isLoginModal = false"
+      @success="addToFavorites()"
+    />
   </div>
 </template>
 
 <script>
+import LogIn from '~/components/LogIn.vue';
 export default {
+  components: { LogIn },
   props: {
     data: {
       type: Object,
       default: null,
     },
   },
+  data() {
+    return {
+      ordersSlugs: useState('ordersSlugs'),
+      user: useState('user'),
+      isLoginModal: false,
+    };
+  },
   methods: {
     image(url) {
       return url ? url : '/img/no_image.png';
     },
-    addToShopBag(id) {
-      localStorage.setItem('ordersSlugs', JSON.stringify(id));
+    addToFavorites() {
+      if (this.user) {
+      } else {
+        this.isLoginModal = true;
+      }
+    },
+    addToShopBag(slug) {
+      console.log(slug);
+
+      if (window.localStorage.getItem('ordersSlugs')) {
+        this.ordersSlugs.push(slug);
+        if (this.ordersSlug?.length) {
+          window.localStorage.setItem('ordersSlugs', this.ordersSlugs);
+        } else {
+          window.localStorage.removeItem('ordersSlugs');
+        }
+      } else {
+        this.ordersSlugs.push(slug);
+        window.localStorage.setItem('ordersSlugs', slug);
+      }
     },
   },
 };
