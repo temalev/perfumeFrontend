@@ -1,15 +1,10 @@
 <template>
-  <div
-    class="card d-flex-column"
-    @click.self="
-      $router.push({ name: 'productCard', query: { slug: data.slug } })
-    "
-  >
+  <div class="card d-flex-column" @click="handleCardClick">
     <div class="img-container d-flex j-c">
       <img :src="image(data.images[0])" :alt="data.name" />
       <button
         class="ico-btn d-flex align-center j-c"
-        @click="addToFavorites(data.slug)"
+        @click.stop="addToFavorites(data.slug)"
       >
         <Icon name="fa6-regular:heart" style="font-size: 20px" />
       </button>
@@ -38,8 +33,11 @@
     </div>
     <log-in
       v-if="isLoginModal"
-      @close="isLoginModal = false"
-      @success="addToFavorites()"
+      @close="handleLoginClose"
+      @success="
+        addToFavorites();
+        preventCardClick = true;
+      "
     />
   </div>
 </template>
@@ -59,9 +57,23 @@ export default {
       ordersSlugs: useState('ordersSlugs'),
       user: useState('user'),
       isLoginModal: false,
+      preventCardClick: false,
     };
   },
   methods: {
+    handleCardClick() {
+      if (!this.preventCardClick) {
+        this.$router.push({
+          name: 'productCard',
+          query: { slug: this.data.slug },
+        });
+      }
+      this.preventCardClick = false;
+    },
+    handleLoginClose() {
+      this.isLoginModal = false;
+      this.preventCardClick = true;
+    },
     image(url) {
       return url ? url : '/img/no_image.png';
     },

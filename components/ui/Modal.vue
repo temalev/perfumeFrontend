@@ -28,11 +28,11 @@ export default {
   methods: {
     onClose() {
       this.isClosed = true;
+      this.$emit('close');
     },
     onAnimationEnd() {
       if (this.isClosed) {
         this.isHidden = true;
-        this.$emit('close');
       }
     },
     beforeUnmount() {
