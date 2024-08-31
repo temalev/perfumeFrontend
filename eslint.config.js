@@ -2,6 +2,7 @@ import withNuxt from './.nuxt/eslint.config.mjs';
 
 export default withNuxt({
   files: ['**/*.vue'],
+  extends: ['eslint:recommended', 'plugin:prettier/recommended'],
   rules: {
     // vue disabled
     'vue/html-self-closing': 'off',
@@ -22,6 +23,8 @@ export default withNuxt({
     // 'vue/no-unregistered-components': 'error',
     // 'vue/require-name-property': 'error',
     'vue/script-indent': 'warn',
+    'arrow-parens': ['error', 'as-needed'],
+    'prettier/prettier': ['error', { arrowParens: 'avoid' }],
 
     // eslint
     'no-console': ['error', { allow: ['info', 'warn', 'error'] }],

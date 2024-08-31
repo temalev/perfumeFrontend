@@ -1,14 +1,22 @@
 <template>
-  <drawer @close="$emit('close')">
+  <drawer
+    @close="$emit('close')"
+    :positioning="step === 'placeAnOrder' ? 'center' : 'left'"
+  >
     <div class="shop-bag">
       <h1>Корзина</h1>
-      <div v-loading="getProductProcess" class="order-list">
-        <product-card-mini
-          v-for="order in orders"
-          :key="order.id"
-          :product="order"
-          @drop="dropItem"
-        />
+      <div class="shop-bag-main">
+        <div v-loading="getProductProcess" class="order-list">
+          <product-card-mini
+            v-for="order in orders"
+            :key="order.id"
+            :product="order"
+            @drop="dropItem"
+          />
+        </div>
+        <UiTheButton class="w100" @click="step = 'placeAnOrder'">
+          Оформить заказ
+        </UiTheButton>
       </div>
     </div>
   </drawer>
@@ -27,17 +35,18 @@ export default {
       ordersSlugs: useState('ordersSlugs'),
       orders: [],
       getProductProcess: false,
+      step: 'orderFormation',
     };
   },
   mounted() {
-    this.ordersSlugs?.forEach((slug) => {
+    this.ordersSlugs?.forEach(slug => {
       this.getProduct(slug);
     });
   },
   methods: {
     dropItem(id) {
-      this.orders = this.orders.filter((item) => item.id !== id);
-      this.ordersSlugs = this.orders.map((el) => el.slug);
+      this.orders = this.orders.filter(item => item.id !== id);
+      this.ordersSlugs = this.orders.map(el => el.slug);
       window.localStorage.setItem('ordersSlugs', this.ordersSlugs);
     },
     async getProduct(slug) {
@@ -45,9 +54,7 @@ export default {
       try {
         const res = await getProduct(slug);
         // Проверяем, есть ли продукт с таким же slug в массиве orders
-        const existingProduct = this.orders.find(
-          (order) => order.slug === slug
-        );
+        const existingProduct = this.orders.find(order => order.slug === slug);
 
         if (existingProduct) {
           // Если продукт уже существует, увеличиваем его count
@@ -66,6 +73,18 @@ export default {
 </script>
 
 <style scoped lang="scss">
+.shop-bag {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  height: calc(100% - 50px);
+}
+.shop-bag-main {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+}
 .order-list {
   border: 1px solid $border-color;
   min-height: 100px;

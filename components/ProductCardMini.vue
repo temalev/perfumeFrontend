@@ -5,15 +5,15 @@
     </div>
 
     <div class="main-info d-flex-row j-sb align-flex-start">
-      <div class="info d-flex-column j-sb">
+      <div class="info d-flex-column j-sb h100">
         <div class="info-name d-flex-column align-flex-start">
           <span class="name">{{ product?.name }}</span>
           <span class="category">{{ product?.type }}</span>
         </div>
         <div class="pay d-flex-row j-sb">
           <div class="info-price d-flex align-flex-end">
-            <span class="new-price">{{ product?.capacity }} мл.</span>
-            <span class="new-price">{{ product.count }} шт.</span>
+            <span class="params">{{ product?.capacity }} мл.</span>
+            <span class="params">{{ product.count }} шт.</span>
           </div>
         </div>
       </div>
@@ -77,9 +77,8 @@ img {
 }
 .new-price {
   font-family: Anselm Sans;
-  font-size: 12px;
+  font-size: 18px;
   font-weight: 400;
-  line-height: 15.43px;
   text-align: center;
 }
 .info-name {
@@ -95,10 +94,18 @@ img {
 }
 .name {
   font-family: Anselm Sans;
-  font-size: 14px;
+  font-size: 18px;
   font-weight: 400;
   line-height: 18px;
   text-align: center;
+}
+
+.params {
+  font-family: Anselm Sans;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 14.15px;
+  text-align: left;
 }
 .info {
   padding: 0.8rem;

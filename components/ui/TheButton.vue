@@ -24,6 +24,7 @@ export default {
 button {
   width: fit-content;
   display: flex;
+  justify-content: center;
   &:disabled {
     background-color: #a9a9a9 !important;
     cursor: default;
