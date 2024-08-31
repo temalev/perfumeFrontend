@@ -5,7 +5,7 @@
         <div class="user-ico"></div>
         <div>{{ user?.name }}Артем</div>
       </div>
-      <div>{{ user.phoneNumber }}</div>
+      <div>{{ user?.phoneNumber }}</div>
     </div>
 
     <pre>{{ user }}</pre>
