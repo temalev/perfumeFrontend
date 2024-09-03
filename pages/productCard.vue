@@ -225,7 +225,6 @@ export default {
   display: flex;
   gap: 6px;
   margin-top: 4px;
-  flex-shrink: 0;
 }
 
 .options-item {
@@ -240,6 +239,7 @@ export default {
   font-size: 14px;
   cursor: pointer;
   transition: 0.2s;
+  flex-shrink: 0;
 
   &:hover {
     background-color: #000;
