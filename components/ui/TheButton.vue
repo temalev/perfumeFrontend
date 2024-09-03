@@ -31,7 +31,8 @@ button {
   }
 }
 
-.default {
+.default,
+.submit {
   padding: 12px;
   background-color: #000;
   color: #fff;

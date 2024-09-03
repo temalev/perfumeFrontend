@@ -30,18 +30,16 @@
             @drop="dropItem"
           />
         </div>
-        <div>
+        <form @submit="createOrder">
           <div class="form-data">
-            <UiTheInput label="ФИО" />
-            <UiTheInput label="Email" />
-            <UiTheInputPhone label="Телефон" />
-            <UiTheInput label="Email" />
+            <UiTheInput label="ФИО" v-model="form.name" />
+            <UiTheInput label="Email" type="email" v-model="form.email" />
+            <UiTheInputPhone label="Телефон" v-model="form.phone" />
+            <!-- <UiTheInput label="Email" /> -->
           </div>
 
-          <UiTheButton class="w100" @click="createOrder">
-            Оформить заказ
-          </UiTheButton>
-        </div>
+          <UiTheButton class="w100" type="submit"> Оформить заказ </UiTheButton>
+        </form>
       </div>
     </div>
   </drawer>
@@ -61,6 +59,7 @@ export default {
       orders: [],
       getProductProcess: false,
       step: 'orderFormation',
+      form: this.getForm(),
     };
   },
   mounted() {
@@ -69,6 +68,13 @@ export default {
     });
   },
   methods: {
+    getForm() {
+      return {
+        email: '',
+        name: '',
+        phone: '',
+      };
+    },
     dropItem(id) {
       this.orders = this.orders.filter(item => item.id !== id);
       this.ordersSlugs = this.orders.map(el => el.slug);
@@ -90,16 +96,16 @@ export default {
       }
       this.getProductProcess = false;
     },
-    async createOrder() {
-      console.log(true);
+    async createOrder(event) {
+      event.preventDefault();
 
       const data = {
         origin: 'https://dev.parfburo.com',
         comment: 'Hello world',
         recepient: {
-          name: 'Петр Петров',
-          email: 'julu13@yandex.ru',
-          phone: '89009728125',
+          name: this.form.name,
+          email: this.form.email,
+          phone: this.form.phone,
           deliveryTypeId: 1,
           deliveryMessage: 'Принесите мне в кровать',
           address: 'улица Пушкина, дом Колотушкина',
