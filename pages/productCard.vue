@@ -225,6 +225,7 @@ export default {
   display: flex;
   gap: 6px;
   margin-top: 4px;
+  flex-shrink: 0;
 }
 
 .options-item {
