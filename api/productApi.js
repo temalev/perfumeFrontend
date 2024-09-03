@@ -122,7 +122,7 @@ export async function getCodeFromSms(requestData) {
       headers: {
         'Content-Type': 'application/json', // Указываем, что данные в формате JSON
       },
-      body: JSON.stringify(requestData), // Преобразуем объект data в строку JSON
+      body: JSON.stringify(requestData),
     });
 
     if (!response.ok) {
@@ -212,6 +212,34 @@ export async function getMe() {
 
     if (!response.ok) {
       throw new Error('Ошибка при получении данных');
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Ошибка:', error.message);
+    throw error;
+  }
+}
+
+export async function createOrder(requestData) {
+  const config = useRuntimeConfig();
+  const apiUrl = config.public.URL;
+
+  const cookie = useCookie('accessToken');
+  const token = cookie.value;
+  try {
+    const response = await fetch(`${apiUrl}/orders`, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(requestData),
+    });
+
+    if (!response.ok) {
+      throw new Error('Ошибка при создании заказа');
     }
 
     const data = await response.json();

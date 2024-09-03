@@ -1,6 +1,7 @@
 <template>
   <div v-loading="getProductsProcess" class="products">
-    <h1>{{ $route.query.brand }}</h1>
+    <h1 v-if="$route.query.brand">{{ $route.query.brand }}</h1>
+    <h1 v-if="$route.query.isSale">Специальное предложение</h1>
     <div class="products-list">
       <product-card
         v-for="product in products"

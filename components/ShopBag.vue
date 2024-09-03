@@ -1,9 +1,9 @@
 <template>
   <drawer
     @close="$emit('close')"
-    :positioning="step === 'placeAnOrder' ? 'center' : 'left'"
+    :positioning="step === 'makingAnOrder' ? 'center' : 'left'"
   >
-    <div class="shop-bag">
+    <div v-if="step === 'orderFormation'" class="shop-bag">
       <h1>Корзина</h1>
       <div class="shop-bag-main">
         <div v-loading="getProductProcess" class="order-list">
@@ -14,9 +14,34 @@
             @drop="dropItem"
           />
         </div>
-        <UiTheButton class="w100" @click="step = 'placeAnOrder'">
+        <UiTheButton class="w100" @click="step = 'makingAnOrder'">
           Оформить заказ
         </UiTheButton>
+      </div>
+    </div>
+    <div v-if="step === 'makingAnOrder'" class="shop-bag">
+      <h1>Оформление заказа</h1>
+      <div class="shop-bag-main">
+        <div v-loading="getProductProcess" class="order-list">
+          <product-card-mini
+            v-for="order in orders"
+            :key="order.id"
+            :product="order"
+            @drop="dropItem"
+          />
+        </div>
+        <div>
+          <div class="form-data">
+            <UiTheInput label="ФИО" />
+            <UiTheInput label="Email" />
+            <UiTheInputPhone label="Телефон" />
+            <UiTheInput label="Email" />
+          </div>
+
+          <UiTheButton class="w100" @click="createOrder">
+            Оформить заказ
+          </UiTheButton>
+        </div>
       </div>
     </div>
   </drawer>
@@ -26,7 +51,7 @@
 import ProductCardMini from './ProductCardMini.vue';
 import Drawer from './ui/Drawer.vue';
 
-import { getProduct } from '@/api/productApi.js';
+import { getProduct, createOrder } from '@/api/productApi.js';
 
 export default {
   components: { Drawer, ProductCardMini },
@@ -53,20 +78,45 @@ export default {
       this.getProductProcess = true;
       try {
         const res = await getProduct(slug);
-        // Проверяем, есть ли продукт с таким же slug в массиве orders
         const existingProduct = this.orders.find(order => order.slug === slug);
 
         if (existingProduct) {
-          // Если продукт уже существует, увеличиваем его count
           existingProduct.count = (existingProduct.count || 1) + 1;
         } else {
-          // Если продукт не существует, добавляем его с count = 1
           this.orders.push({ ...res, count: 1 });
         }
       } catch (e) {
         console.error(e);
       }
       this.getProductProcess = false;
+    },
+    async createOrder() {
+      console.log(true);
+
+      const data = {
+        origin: 'https://dev.parfburo.com',
+        comment: 'Hello world',
+        recepient: {
+          name: 'Петр Петров',
+          email: 'julu13@yandex.ru',
+          phone: '89009728125',
+          deliveryTypeId: 1,
+          deliveryMessage: 'Принесите мне в кровать',
+          address: 'улица Пушкина, дом Колотушкина',
+          deliveryPoint: 'SDK1',
+        },
+        items: [
+          {
+            productId: 9,
+            count: 1,
+          },
+        ],
+      };
+      try {
+        const res = await createOrder(data);
+      } catch (e) {
+        console.error(e);
+      }
     },
   },
 };
@@ -92,5 +142,13 @@ export default {
   flex-direction: column;
   gap: 8px;
   padding: 12px;
+}
+
+form {
+  height: 100%;
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 </style>

@@ -17,7 +17,14 @@
         <li>
           <button class="text" @click="$emit('openBrands')">БРЕНДЫ</button>
         </li>
-        <li><NuxtLink class="text-gray" to="/">СКИДКИ</NuxtLink></li>
+        <li>
+          <button
+            class="text"
+            @click="$router.push({ name: 'products', query: { isSale: true } })"
+          >
+            СКИДКИ
+          </button>
+        </li>
       </ul>
     </nav>
     <ul class="icons d-flex gap-6">
