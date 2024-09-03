@@ -35,6 +35,11 @@
             <UiTheInput label="ФИО" v-model="form.name" />
             <UiTheInput label="Email" type="email" v-model="form.email" />
             <UiTheInputPhone label="Телефон" v-model="form.phone" />
+            <UiTheSelect
+              label="Регион"
+              :options="regions"
+              @change="onChangeRegion"
+            />
             <!-- <UiTheInput label="Email" /> -->
           </div>
 
@@ -49,7 +54,12 @@
 import ProductCardMini from './ProductCardMini.vue';
 import Drawer from './ui/Drawer.vue';
 
-import { getProduct, createOrder } from '@/api/productApi.js';
+import {
+  getProduct,
+  createOrder,
+  getRegions,
+  getSdekPoints,
+} from '@/api/productApi.js';
 
 export default {
   components: { Drawer, ProductCardMini },
@@ -60,12 +70,20 @@ export default {
       getProductProcess: false,
       step: 'orderFormation',
       form: this.getForm(),
+      regions: [],
     };
   },
   mounted() {
     this.ordersSlugs?.forEach(slug => {
       this.getProduct(slug);
     });
+  },
+  watch: {
+    step(val) {
+      if (val === 'makingAnOrder') {
+        this.getRegions();
+      }
+    },
   },
   methods: {
     getForm() {
@@ -79,6 +97,9 @@ export default {
       this.orders = this.orders.filter(item => item.id !== id);
       this.ordersSlugs = this.orders.map(el => el.slug);
       window.localStorage.setItem('ordersSlugs', this.ordersSlugs);
+    },
+    onChangeRegion(val) {
+      this.getSdekPoints(val.id);
     },
     async getProduct(slug) {
       this.getProductProcess = true;
@@ -120,6 +141,29 @@ export default {
       };
       try {
         const res = await createOrder(data);
+        window.open(res.paymentUrl);
+        paymentUrl;
+      } catch (e) {
+        console.error(e);
+      }
+    },
+    async getRegions() {
+      try {
+        const res = await getRegions();
+        this.regions = res.map(el => {
+          return {
+            id: el.id,
+            name: el.region,
+          };
+        });
+      } catch (e) {
+        console.error(e);
+      }
+    },
+    async getSdekPoints(regionId) {
+      try {
+        const res = await getSdekPoints({ regionId: regionId });
+        console.log(res);
       } catch (e) {
         console.error(e);
       }
@@ -143,7 +187,7 @@ export default {
 }
 .order-list {
   border: 1px solid $border-color;
-  min-height: 100px;
+  min-height: 125px;
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -156,5 +200,11 @@ form {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+}
+
+.form-data {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
 </style>

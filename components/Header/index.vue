@@ -101,7 +101,7 @@ export default {
     groupBrandsByFirstLetter(brands) {
       const grouped = {};
 
-      brands.forEach((brand) => {
+      brands.forEach(brand => {
         const firstLetter = brand.trim()[0].toUpperCase();
 
         if (!grouped[firstLetter]) {
@@ -118,7 +118,7 @@ export default {
       const result = Object.values(grouped);
 
       // Сортируем бренды внутри каждой группы по алфавиту
-      result.forEach((group) => {
+      result.forEach(group => {
         group.brands.sort((a, b) => a.localeCompare(b));
       });
 
@@ -173,8 +173,6 @@ header {
   /* From https://css.glass */
   background: rgba(255, 255, 255, 0.76);
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-  backdrop-filter: blur(5px);
-  -webkit-backdrop-filter: blur(5px);
   height: 50px;
   justify-content: space-around;
   z-index: 2;

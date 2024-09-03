@@ -24,7 +24,17 @@
           <li>
             <button class="text" @click="$emit('openBrands')">БРЕНДЫ</button>
           </li>
-          <li><NuxtLink class="text-gray" to="/posts/2">СКИДКИ</NuxtLink></li>
+          <li>
+            <button
+              class="text"
+              @click="
+                $router.push({ name: 'products', query: { isSale: true } });
+                isLeftMenu = false;
+              "
+            >
+              СКИДКИ
+            </button>
+          </li>
         </ul>
       </nav>
     </div>
@@ -46,11 +56,8 @@ header {
   width: 100%;
   display: flex;
   align-items: center;
-  /* From https://css.glass */
-  background: rgba(255, 255, 255, 0.43);
+  background: #fff;
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-  backdrop-filter: blur(5px);
-  -webkit-backdrop-filter: blur(5px);
   height: 50px;
   justify-content: space-around;
   z-index: 2;

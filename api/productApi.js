@@ -249,3 +249,58 @@ export async function createOrder(requestData) {
     throw error;
   }
 }
+
+export async function getRegions() {
+  const config = useRuntimeConfig();
+  const apiUrl = config.public.URL;
+
+  const cookie = useCookie('accessToken');
+  const token = cookie.value;
+  try {
+    const response = await fetch(`${apiUrl}/cdek/regions`, {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error('Ошибка при регионов');
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Ошибка:', error.message);
+    throw error;
+  }
+}
+
+export async function getSdekPoints(params) {
+  const config = useRuntimeConfig();
+  const apiUrl = config.public.URL;
+
+  const cookie = useCookie('accessToken');
+  const token = cookie.value;
+  const queryString = new URLSearchParams(params).toString();
+  try {
+    const response = await fetch(`${apiUrl}/cdek/points/?${queryString}`, {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error('Ошибка при регионов');
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Ошибка:', error.message);
+    throw error;
+  }
+}

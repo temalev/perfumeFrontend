@@ -1,15 +1,29 @@
 <template>
-  <div class="input-wrapper">
+  <div class="the-input">
     <label v-if="label" :for="id">{{ label }}</label>
-    <input
-      :id="id"
-      :type="type"
-      @input="$emit('update:modelValue', $event.target.value)"
-      :value="modelValue"
-      :placeholder="placeholder"
-      :class="inputClass"
-      :disabled="disabled"
-    />
+
+    <div class="input-wrapper">
+      <input
+        :id="id"
+        :type="type"
+        @input="$emit('update:modelValue', $event.target.value)"
+        @focus="$emit('focus', $event)"
+        @blur="$emit('blur', $event)"
+        :value="modelValue"
+        :placeholder="placeholder"
+        :class="inputClass"
+        :disabled="disabled"
+      />
+      <div class="input-suffix">
+        <slot name="input-suffix">
+          <Icon
+            name="material-symbols:keyboard-arrow-down-rounded"
+            style="font-size: 20px"
+            @click="$emit('focus', $event)"
+          />
+        </slot>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -57,23 +71,29 @@ export default {
 };
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .input-wrapper {
-  margin-bottom: 1em;
+  border: 1px solid #ccc;
+  display: flex;
+  align-items: center;
+  border-radius: 4px;
+  transition: border-color 0.3s;
+  padding: 2px;
 }
 
 input {
   padding: 0.5em;
   font-size: 1em;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+  border: none;
   width: 100%;
-  transition: border-color 0.3s;
+  outline: none;
 }
 
 input:focus {
-  border-color: black;
-  outline: none;
+  .input-wrapper {
+    border-color: black;
+    outline: none;
+  }
 }
 
 input:disabled {
@@ -85,5 +105,12 @@ label {
   display: block;
   margin-bottom: 0.5em;
   font-weight: bold;
+}
+
+.input-suffix {
+  height: 20px;
+  margin: 0 12px;
+  cursor: pointer;
+  color: #ccc;
 }
 </style>
