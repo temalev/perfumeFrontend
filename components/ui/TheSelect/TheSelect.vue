@@ -3,7 +3,7 @@
     <UiTheInput
       type="text"
       v-model="searchQuery"
-      placeholder="Поиск..."
+      :placeholder="placeholder"
       :label="label"
       @focus="toggleDropdown"
       @blur="closeDropdown"
@@ -18,7 +18,9 @@
             @click.stop="selectOption(option)"
             :class="{ selected: option.id === selectedOption?.id }"
           >
-            {{ option.name }}
+            <slot :option="option">
+              {{ option.name }}
+            </slot>
           </li>
           <li v-if="filteredOptions.length === 0" class="no-options">
             Нет совпадений
@@ -36,6 +38,11 @@ export default {
       type: String,
       default: '',
     },
+    placeholder: {
+      type: String,
+      default: '',
+    },
+
     options: {
       type: Array,
       default: () => [],

@@ -40,6 +40,12 @@
               :options="regions"
               @change="onChangeRegion"
             />
+            <UiTheSelect
+              label="Пункт выдачи"
+              :options="points"
+              @change="onChangeRegion"
+            >
+            </UiTheSelect>
             <!-- <UiTheInput label="Email" /> -->
           </div>
 
@@ -71,6 +77,7 @@ export default {
       step: 'orderFormation',
       form: this.getForm(),
       regions: [],
+      points: [],
     };
   },
   mounted() {
@@ -163,7 +170,7 @@ export default {
     async getSdekPoints(regionId) {
       try {
         const res = await getSdekPoints({ regionId: regionId });
-        console.log(res);
+        this.points = res;
       } catch (e) {
         console.error(e);
       }
