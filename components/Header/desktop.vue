@@ -42,7 +42,7 @@
         <Icon name="fa6-regular:heart" style="font-size: 20px" />
       </li>
       <li class="pointer" @click="$emit('openShopBag')">
-        <div class="counter">
+        <div v-if="ordersSlugs?.length" class="counter">
           <span>{{ ordersSlugs?.length }}</span>
         </div>
         <Icon name="ph:shopping-cart-simple-bold" style="font-size: 20px" />
