@@ -35,26 +35,66 @@
             <UiTheInput label="ФИО" v-model="form.name" />
             <UiTheInput label="Email" type="email" v-model="form.email" />
             <UiTheInputPhone label="Телефон" v-model="form.phone" />
-            <UiTheSelect
-              label="Регион"
-              :options="regions"
-              @change="onChangeRegion"
-            />
-            <UiTheSelect
-              label="Пункт выдачи"
-              :options="points"
-              @change="onChangeRegion"
-            />
             <div class="d-flex-column">
               <label style="font-weight: bold">Способ доставки</label>
-              <div
-                v-for="deliveryType in deliveryTypes"
-                :key="deliveryType.id"
-                class="delivery-card"
-              >
-                {{ deliveryType.label }}
-              </div>
+              <el-collapse v-model="activeName" accordion>
+                <el-collapse-item
+                  title="Доставка по России транспортной компанией CDEK"
+                  name="1"
+                >
+                  <UiTheSelect
+                    label="Регион"
+                    :options="regions"
+                    @change="onChangeRegion"
+                  />
+                  <UiTheSelect
+                    label="Пункт выдачи"
+                    :options="points"
+                    @change="onChangeRegion"
+                  />
+                </el-collapse-item>
+                <el-collapse-item
+                  title="Доставка по Москве в пределах МКАД курьером"
+                  name="2"
+                >
+                  <label>Адрес</label>
+                  <el-input
+                    v-model="form.address"
+                    style="100%"
+                    :autosize="{ minRows: 2, maxRows: 4 }"
+                    type="textarea"
+                    placeholder=""
+                  />
+                </el-collapse-item>
+                <el-collapse-item
+                  title="Доставка по Москве за пределы МКАД курьером"
+                  name="3"
+                >
+                  <label>Адрес</label>
+                  <el-input
+                    v-model="form.address"
+                    style="100%"
+                    :autosize="{ minRows: 2, maxRows: 4 }"
+                    type="textarea"
+                    placeholder=""
+                  />
+                </el-collapse-item>
+                <el-collapse-item
+                  title="Доставка по Рязани в пределах города, Яндекс.Go"
+                  name="4"
+                >
+                  <label>Адрес</label>
+                  <el-input
+                    v-model="form.address"
+                    style="100%"
+                    :autosize="{ minRows: 2, maxRows: 4 }"
+                    type="textarea"
+                    placeholder=""
+                  />
+                </el-collapse-item>
+              </el-collapse>
             </div>
+
             <!-- <UiTheInput label="Email" /> -->
           </div>
 
@@ -105,6 +145,7 @@ export default {
           label: 'Доставка по Рязани в пределах города, Яндекс.Go',
         },
       ],
+      activeName: '',
     };
   },
   mounted() {
@@ -125,6 +166,7 @@ export default {
         email: '',
         name: '',
         phone: '',
+        address: '',
       };
     },
     dropItem(id) {
@@ -163,7 +205,7 @@ export default {
           phone: this.form.phone,
           deliveryTypeId: 1,
           deliveryMessage: 'Принесите мне в кровать',
-          address: 'улица Пушкина, дом Колотушкина',
+          address: this.form.address,
           deliveryPoint: 'SDK1',
         },
         items: [
@@ -218,6 +260,7 @@ export default {
   flex-direction: column;
   justify-content: space-between;
   height: 100%;
+  overflow: scroll;
 }
 .order-list {
   border: 1px solid $border-color;
@@ -240,5 +283,11 @@ form {
   display: flex;
   flex-direction: column;
   gap: 12px;
+}
+
+::v-deep {
+  .el-collapse-item__wrap {
+    overflow: visible;
+  }
 }
 </style>
