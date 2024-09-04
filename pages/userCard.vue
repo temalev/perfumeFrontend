@@ -24,7 +24,7 @@
         />
       </div> -->
       <el-tabs v-model="activeTab" class="demo-tabs">
-        <el-tab-pane label="Избранное" name="first">
+        <el-tab-pane label="Избранное" :name="1">
           <div v-if="favorites.length" class="d-flex flex-wrap gap-6 mt-8">
             <product-card
               v-for="favorite in favorites"
@@ -35,10 +35,10 @@
           </div>
           <el-empty v-else description="Здесь пока пусто..." />
         </el-tab-pane>
-        <el-tab-pane label="Текущий заказ" name="second"
+        <el-tab-pane label="Текущий заказ" :name="2"
           ><el-empty description="Текущие заказы отсутствуют"
         /></el-tab-pane>
-        <el-tab-pane label="История заказов" name="third"
+        <el-tab-pane label="История заказов" :name="3"
           ><el-empty description="Вы еще ничего не заказывали"
         /></el-tab-pane>
       </el-tabs>
