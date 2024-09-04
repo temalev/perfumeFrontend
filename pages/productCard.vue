@@ -96,6 +96,7 @@ export default {
       options: [],
       ordersSlugs: useState('ordersSlugs'),
       user: useState('user'),
+      favorites: useState('favoritesSlugs'),
       isLoginModal: false,
     };
   },
@@ -111,6 +112,7 @@ export default {
   methods: {
     addToFavorites() {
       if (this.user) {
+        this.favorites = this.product.slug;
       } else {
         this.isLoginModal = true;
       }

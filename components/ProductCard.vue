@@ -3,6 +3,7 @@
     <div class="img-container d-flex j-c">
       <img :src="image(data.images[0])" :alt="data.name" />
       <button
+        v-if="isFavorites"
         class="ico-btn d-flex align-center j-c"
         @click.stop="addToFavorites(data.slug)"
       >
@@ -50,6 +51,10 @@ export default {
     data: {
       type: Object,
       default: null,
+    },
+    isFavorites: {
+      type: Boolean,
+      default: true,
     },
   },
   data() {

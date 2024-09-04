@@ -304,3 +304,57 @@ export async function getSdekPoints(params) {
     throw error;
   }
 }
+
+export async function addToFavorites(params) {
+  const config = useRuntimeConfig();
+  const apiUrl = config.public.URL;
+  const cookie = useCookie('accessToken');
+  const token = cookie.value;
+
+  try {
+    const response = await fetch(`${apiUrl}/favorite-products/${params}`, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error('Ошибка при получении товаров');
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
+export async function getFavorites(params) {
+  const config = useRuntimeConfig();
+  const apiUrl = config.public.URL;
+  const cookie = useCookie('accessToken');
+  const token = cookie.value;
+
+  try {
+    const response = await fetch(`${apiUrl}/favorite-products`, {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error('Ошибка при получении избранных товаров');
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}

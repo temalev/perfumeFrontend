@@ -8,19 +8,31 @@
 
       <!-- <div class="text-secondary">{{ user?.phoneNumber }}</div> -->
     </div>
-    <UiTheTabs
-      style="margin-top: 25px"
-      :data="tabs"
-      @activeTab="onSelectTab"
-      :activeTab="activeTab"
-    />
+    <div class="d-flex-column w80">
+      <UiTheTabs
+        style="margin-top: 25px"
+        :data="tabs"
+        @activeTab="onSelectTab"
+        :activeTab="activeTab"
+      />
+      <div v-if="activeTab === 1" class="d-flex flex-wrap gap-6 mt-8">
+        <product-card
+          v-for="favorite in favorites"
+          :key="favorite.product.id"
+          :data="favorite.product"
+          :isFavorites="false"
+        />
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
-import { getMe } from '@/api/productApi.js';
+import { getMe, getFavorites } from '@/api/productApi.js';
+import ProductCard from '~/components/ProductCard.vue';
 
 export default {
+  components: { ProductCard },
   data() {
     return {
       user: useState('user'),
@@ -39,12 +51,15 @@ export default {
         },
       ],
       activeTab: 1,
+      favorites: [],
     };
   },
   mounted() {
     if (!this.user) {
       this.getMe();
     }
+
+    this.getFavorites();
   },
   methods: {
     onSelectTab(tabId) {
@@ -56,6 +71,14 @@ export default {
       try {
         const res = await getMe();
         this.user = res;
+      } catch (e) {
+        console.error(e);
+      }
+    },
+    async getFavorites() {
+      try {
+        const res = await getFavorites();
+        this.favorites = res;
       } catch (e) {
         console.error(e);
       }

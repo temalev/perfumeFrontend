@@ -44,8 +44,17 @@
               label="Пункт выдачи"
               :options="points"
               @change="onChangeRegion"
-            >
-            </UiTheSelect>
+            />
+            <div class="d-flex-column">
+              <label style="font-weight: bold">Способ доставки</label>
+              <div
+                v-for="deliveryType in deliveryTypes"
+                :key="deliveryType.id"
+                class="delivery-card"
+              >
+                {{ deliveryType.label }}
+              </div>
+            </div>
             <!-- <UiTheInput label="Email" /> -->
           </div>
 
@@ -78,6 +87,24 @@ export default {
       form: this.getForm(),
       regions: [],
       points: [],
+      deliveryTypes: [
+        {
+          id: 1,
+          label: 'Доставка по России транспортной компанией CDEK',
+        },
+        {
+          id: 2,
+          label: 'Доставка по Москве в пределах МКАД курьером',
+        },
+        {
+          id: 3,
+          label: 'Доставка по Москве за пределы МКАД курьером',
+        },
+        {
+          id: 4,
+          label: 'Доставка по Рязани в пределах города, Яндекс.Go',
+        },
+      ],
     };
   },
   mounted() {

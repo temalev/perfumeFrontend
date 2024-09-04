@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import { getMe } from '@/api/productApi.js';
+import { getMe, addToFavorites } from '@/api/productApi.js';
 
 export default {
   data() {
@@ -20,6 +20,7 @@ export default {
       isModal: false,
       token: null, // Хранит значение токена, если он есть
       user: null,
+      favorites: [],
     };
   },
   mounted() {
@@ -29,12 +30,25 @@ export default {
       const slugs = window.localStorage.getItem('ordersSlugs');
       return slugs ? slugs.split(',') : [];
     });
+    this.favorites = useState('favoritesSlugs', () => []);
+  },
+  watch: {
+    favorites(val) {
+      this.addToFavorites(val);
+    },
   },
   methods: {
     async getMe() {
       try {
         const res = await getMe();
         this.user = res;
+      } catch (e) {
+        console.error(e);
+      }
+    },
+    async addToFavorites(slug) {
+      try {
+        const res = await addToFavorites(slug);
       } catch (e) {
         console.error(e);
       }
