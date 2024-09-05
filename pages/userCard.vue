@@ -109,8 +109,10 @@ export default {
 <style scoped lang="scss">
 .user-card {
   display: flex;
+  flex-wrap: wrap;
   margin: 20px;
   gap: 22px;
+  width: 100%;
 }
 
 .user-info {
