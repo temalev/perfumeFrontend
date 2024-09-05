@@ -8,8 +8,7 @@
 
       <!-- <div class="text-secondary">{{ user?.phoneNumber }}</div> -->
     </div>
-    <div class="d-flex-column w80" style="margin-top: 14px">
-      <!-- <UiTheTabs
+    <!-- <UiTheTabs
         style="margin-top: 25px"
         :data="tabs"
         @activeTab="onSelectTab"
@@ -23,26 +22,25 @@
           :isFavorites="false"
         />
       </div> -->
-      <el-tabs v-model="activeTab" class="demo-tabs">
-        <el-tab-pane label="Избранное" :name="1">
-          <div v-if="favorites.length" class="d-flex flex-wrap gap-6 mt-8">
-            <product-card
-              v-for="favorite in favorites"
-              :key="favorite.product.id"
-              :data="favorite.product"
-              :isFavorites="false"
-            />
-          </div>
-          <el-empty v-else description="Здесь пока пусто..." />
-        </el-tab-pane>
-        <el-tab-pane label="Текущий заказ" :name="2"
-          ><el-empty description="Текущие заказы отсутствуют"
-        /></el-tab-pane>
-        <el-tab-pane label="История заказов" :name="3"
-          ><el-empty description="Вы еще ничего не заказывали"
-        /></el-tab-pane>
-      </el-tabs>
-    </div>
+    <el-tabs v-model="activeTab" class="w80" style="margin-top: 14px">
+      <el-tab-pane label="Избранное" :name="1">
+        <div v-if="favorites.length" class="d-flex flex-wrap gap-6 mt-8 j-c">
+          <product-card
+            v-for="favorite in favorites"
+            :key="favorite.product.id"
+            :data="favorite.product"
+            :isFavorites="false"
+          />
+        </div>
+        <el-empty v-else description="Здесь пока пусто..." />
+      </el-tab-pane>
+      <el-tab-pane label="Текущий заказ" :name="2"
+        ><el-empty description="Текущие заказы отсутствуют"
+      /></el-tab-pane>
+      <el-tab-pane label="История заказов" :name="3"
+        ><el-empty description="Вы еще ничего не заказывали"
+      /></el-tab-pane>
+    </el-tabs>
   </div>
 </template>
 
