@@ -7,7 +7,7 @@
         class="ico-btn d-flex align-center j-c"
         @click.stop="addToFavorites(data.slug)"
       >
-        <Icon name="fa6-regular:heart" style="font-size: 20px" />
+        <Icon name="ph:tag-bold" style="font-size: 20px" />
       </button>
     </div>
 

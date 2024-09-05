@@ -39,7 +39,7 @@
         />
       </li>
       <li class="pointer">
-        <Icon name="fa6-regular:heart" style="font-size: 20px" />
+        <Icon name="ph:tag-bold" style="font-size: 20px" />
       </li>
       <li class="pointer" @click="$emit('openShopBag')">
         <div v-if="ordersSlugs?.length" class="counter">
