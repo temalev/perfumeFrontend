@@ -5,7 +5,7 @@
   >
     <div v-if="step === 'orderFormation'" class="shop-bag">
       <h1>Корзина</h1>
-      <div class="shop-bag-main">
+      <div v-if="orders.length" class="shop-bag-main">
         <div v-loading="getProductProcess" class="order-list">
           <product-card-mini
             v-for="order in orders"
@@ -18,6 +18,7 @@
           Оформить заказ
         </UiTheButton>
       </div>
+      <el-empty v-else description="Здесь пока пусто..." />
     </div>
     <div v-if="step === 'makingAnOrder'" class="shop-bag">
       <h1>Оформление заказа</h1>
