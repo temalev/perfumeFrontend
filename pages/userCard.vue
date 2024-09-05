@@ -3,7 +3,7 @@
     <div class="d-flex-column align-flex-end">
       <div class="user-info">
         <div class="user-ico"></div>
-        <div>{{ user?.name }}Артем</div>
+        <div style="height: 14px">{{ user?.name || user?.phoneNumber }}</div>
       </div>
 
       <!-- <div class="text-secondary">{{ user?.phoneNumber }}</div> -->
@@ -115,11 +115,12 @@ export default {
 
 .user-info {
   display: flex;
-  align-items: flex-end;
+  align-items: center;
   border-bottom: 2px solid #00000027;
   width: fit-content;
   padding: 6px 20px;
   gap: 12px;
+  font-size: 14px;
 }
 
 .user-ico {
