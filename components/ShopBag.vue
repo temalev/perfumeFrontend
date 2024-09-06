@@ -38,7 +38,7 @@
             <UiTheInputPhone label="Телефон" v-model="form.phone" />
             <div class="d-flex-column">
               <label style="font-weight: bold">Способ доставки</label>
-              <el-collapse v-model="activeName" accordion>
+              <el-collapse v-model="form.deliveryTypeId" accordion>
                 <el-collapse-item
                   title="Доставка по России транспортной компанией CDEK"
                   name="1"
@@ -168,6 +168,7 @@ export default {
         name: '',
         phone: '',
         address: '',
+        deliveryTypeId: null,
       };
     },
     dropItem(id) {
@@ -204,7 +205,7 @@ export default {
           name: this.form.name,
           email: this.form.email,
           phone: this.form.phone,
-          deliveryTypeId: 1,
+          deliveryTypeId: this.form.deliveryTypeId,
           deliveryMessage: 'Принесите мне в кровать',
           address: this.form.address,
           deliveryPoint: 'SDK1',

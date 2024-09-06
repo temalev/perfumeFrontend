@@ -22,7 +22,7 @@
           :isFavorites="false"
         />
       </div> -->
-    <el-tabs v-model="activeTab" class="w80" style="margin-top: 14px">
+    <el-tabs v-model="activeTab" class="tabs" style="margin-top: 14px">
       <el-tab-pane label="Избранное" :name="1">
         <div v-if="favorites.length" class="d-flex flex-wrap gap-6 mt-8 j-c">
           <product-card
@@ -128,5 +128,10 @@ export default {
   height: 40px;
   border-radius: 50%;
   background-color: #4c7cf7;
+}
+
+.tabs {
+  width: 80%;
+  min-width: 40%;
 }
 </style>
