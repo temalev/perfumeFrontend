@@ -289,7 +289,6 @@ export default {
 }
 .order-list {
   border: 1px solid $border-color;
-  min-height: 125px;
   display: flex;
   flex-direction: column;
   gap: 8px;
