@@ -69,7 +69,7 @@ jobs:
           to: ${{ secrets.TELEGRAM_TO }}
           token: ${{ secrets.TELEGRAM_TOKEN }}
           message: |
-            ❌ @mytemalev ошибка деплоя на дев:
+            ❌ @mytemalev @pavel_prod ошибка деплоя на дев:
 
             Репозиторий: ${{ github.repository }}
 
