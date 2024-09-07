@@ -224,7 +224,7 @@ export default {
       const data = {
         origin: 'https://dev.parfburo.com',
         comment: 'Hello world',
-        recipient: {
+        recepient: {
           name: this.form.name,
           email: this.form.email,
           phone: this.form.phone,

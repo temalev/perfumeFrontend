@@ -43,7 +43,9 @@
       </li>
       <li class="pointer" @click="$emit('openShopBag')">
         <div v-if="ordersSlugs?.length" class="counter">
-          <span>{{ ordersSlugs?.length }}</span>
+          <Transition>
+            <span>{{ ordersSlugs?.length }}</span>
+          </Transition>
         </div>
         <Icon name="ph:shopping-cart-simple-bold" style="font-size: 20px" />
       </li>
