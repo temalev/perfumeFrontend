@@ -14,9 +14,17 @@
             @drop="dropItem"
           />
         </div>
-        <UiTheButton class="w100" @click="step = 'makingAnOrder'">
-          Оформить заказ
-        </UiTheButton>
+        <div class="d-flex-column">
+          <div class="d-flex-column gap-4 mb-6">
+            <h2>Сумма заказа</h2>
+            <UiInfoBlock label="Стоимость продуктов" :value="fullPrice" />
+            <UiInfoBlock label="Скидка" :value="-`${discount}`" />
+            <UiInfoBlock :isFilled="false" label="Итого" :value="totalPrice" />
+          </div>
+          <UiTheButton class="w100" @click="step = 'makingAnOrder'">
+            Оформить заказ
+          </UiTheButton>
+        </div>
       </div>
       <el-empty v-else description="Здесь пока пусто..." />
     </div>
@@ -147,6 +155,9 @@ export default {
         },
       ],
       activeName: '',
+      fullPrice: 0,
+      discount: 0,
+      totalPrice: 0,
     };
   },
   mounted() {
@@ -190,6 +201,11 @@ export default {
         } else {
           this.orders.push({ ...res, count: 1 });
         }
+        this.orders.forEach(el => {
+          this.fullPrice += el.price;
+          this.discount += el.discount;
+        });
+        this.totalPrice = this.fullPrice - this.discount;
       } catch (e) {
         console.error(e);
       }

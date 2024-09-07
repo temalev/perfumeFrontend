@@ -1,6 +1,6 @@
 <template>
   <div class="user-card">
-    <div class="d-flex-column align-flex-end">
+    <div class="d-flex-column align-flex-end" style="margin-top: 10px">
       <div class="user-info">
         <div class="user-ico"></div>
         <div style="height: 14px">{{ user?.name || user?.phoneNumber }}</div>
@@ -124,8 +124,8 @@ export default {
 }
 
 .user-ico {
-  width: 40px;
-  height: 40px;
+  width: 30px;
+  height: 30px;
   border-radius: 50%;
   background-color: #4c7cf7;
 }
