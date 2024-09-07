@@ -17,9 +17,16 @@
         <div class="d-flex-column">
           <div class="d-flex-column gap-4 mb-6">
             <h2>Сумма заказа</h2>
-            <UiInfoBlock label="Стоимость продуктов" :value="fullPrice" />
+            <UiInfoBlock
+              label="Стоимость продуктов"
+              :value="`${fullPrice} ₽`"
+            />
             <UiInfoBlock label="Скидка" :value="-`${discount}`" />
-            <UiInfoBlock :isFilled="false" label="Итого" :value="totalPrice" />
+            <UiInfoBlock
+              :isFilled="false"
+              label="Итого"
+              :value="`${totalPrice} ₽`"
+            />
           </div>
           <UiTheButton class="w100" @click="step = 'makingAnOrder'">
             Оформить заказ
