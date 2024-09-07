@@ -2,7 +2,7 @@
   <div class="info-block">
     <div class="info-block-item-label-text">{{ label }}</div>
     <div v-if="isFilled" class="filled-container" />
-    <span>{{ value }}</span>
+    <span class="info-block-item-value">{{ value }}</span>
   </div>
 </template>
 
@@ -45,5 +45,9 @@ export default {
   width: 100%;
   border-bottom: 1px dotted #c8c8c8;
   margin: 0 8px;
+}
+
+.info-block-item-value {
+  flex-shrink: 0;
 }
 </style>
