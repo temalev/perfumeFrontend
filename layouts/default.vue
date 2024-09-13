@@ -1,7 +1,7 @@
 <template>
   <div class="layout">
     <Head>
-      <Title>parfBuro</Title>
+      <Title>ПарфБюро - оригиналы мировых брендов</Title>
     </Head>
 
     <Header />
