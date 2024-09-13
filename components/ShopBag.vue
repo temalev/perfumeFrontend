@@ -233,12 +233,12 @@ export default {
           address: this.form.address,
           deliveryPoint: 'SDK1',
         },
-        items: [
-          {
-            productId: 9,
-            count: 1,
-          },
-        ],
+        items: this.orders.map(el => {
+          return {
+            productId: el.id,
+            count: el.count,
+          };
+        }),
       };
       try {
         const res = await createOrder(data);
