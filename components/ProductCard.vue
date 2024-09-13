@@ -1,12 +1,13 @@
 <template>
-  <div
-    class="card d-flex-column"
-    @click="$router.push({ name: 'productCard', query: { slug: data.slug } })"
-  >
+  <div class="card d-flex-column" @click="handleCardClick">
     <div class="img-container d-flex j-c">
       <img :src="image(data.images[0])" :alt="data.name" />
-      <button class="ico-btn d-flex align-center j-c">
-        <Icon name="fa6-regular:heart" style="font-size: 20px" />
+      <button
+        v-if="isFavorites"
+        class="ico-btn d-flex align-center j-c"
+        @click.stop="addToFavorites(data.slug)"
+      >
+        <Icon name="ph:tag-bold" style="font-size: 20px" />
       </button>
     </div>
 
@@ -24,30 +25,83 @@
 
         <button
           class="ico-btn d-flex align-center j-c"
-          @click.stop="addToShopBag(data.id)"
+          @click.stop="addToShopBag(data.slug)"
         >
           <Icon name="heroicons-solid:plus-sm" style="font-size: 20px" />
           <Icon name="ph:shopping-cart-simple-bold" style="font-size: 20px" />
         </button>
       </div>
     </div>
+    <log-in
+      v-if="isLoginModal"
+      @close="handleLoginClose"
+      @success="
+        addToFavorites();
+        preventCardClick = true;
+      "
+    />
   </div>
 </template>
 
 <script>
+import LogIn from '~/components/LogIn.vue';
 export default {
+  components: { LogIn },
   props: {
     data: {
       type: Object,
       default: null,
     },
+    isFavorites: {
+      type: Boolean,
+      default: true,
+    },
+  },
+  data() {
+    return {
+      ordersSlugs: useState('ordersSlugs'),
+      user: useState('user'),
+      isLoginModal: false,
+      preventCardClick: false,
+    };
   },
   methods: {
+    handleCardClick() {
+      if (!this.preventCardClick) {
+        this.$router.push({
+          name: 'productCard',
+          query: { slug: this.data.slug },
+        });
+      }
+      this.preventCardClick = false;
+    },
+    handleLoginClose() {
+      this.isLoginModal = false;
+      this.preventCardClick = true;
+    },
     image(url) {
       return url ? url : '/img/no_image.png';
     },
-    addToShopBag(id) {
-      localStorage.setItem('orders', JSON.stringify(id));
+    addToFavorites() {
+      if (this.user) {
+      } else {
+        this.isLoginModal = true;
+      }
+    },
+    addToShopBag(slug) {
+      console.log(slug);
+
+      if (window.localStorage.getItem('ordersSlugs')) {
+        this.ordersSlugs.push(slug);
+        if (this.ordersSlug?.length) {
+          window.localStorage.setItem('ordersSlugs', this.ordersSlugs);
+        } else {
+          window.localStorage.removeItem('ordersSlugs');
+        }
+      } else {
+        this.ordersSlugs.push(slug);
+        window.localStorage.setItem('ordersSlugs', slug);
+      }
     },
   },
 };
@@ -71,12 +125,13 @@ img {
   height: 250px;
   top: 200px;
   left: 76px;
-  background-color: #999;
-  object-fit: cover;
+  object-fit: contain;
+  background: #fff;
 }
 
 .img-container {
   position: relative;
+  background: #fff;
   & .ico-btn {
     position: absolute;
     top: 20px;

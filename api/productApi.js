@@ -91,6 +91,27 @@ export async function getProduct(params) {
   }
 }
 
+export async function getGroupProduct(params) {
+  const config = useRuntimeConfig();
+  const apiUrl = config.public.URL;
+
+  try {
+    const response = await fetch(`${apiUrl}/products/group/${params}`, {
+      method: 'GET',
+    });
+
+    if (!response.ok) {
+      throw new Error('Ошибка при получении группы');
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
 export async function getCodeFromSms(requestData) {
   const config = useRuntimeConfig();
   const apiUrl = config.public.URL;
@@ -101,7 +122,7 @@ export async function getCodeFromSms(requestData) {
       headers: {
         'Content-Type': 'application/json', // Указываем, что данные в формате JSON
       },
-      body: JSON.stringify(requestData), // Преобразуем объект data в строку JSON
+      body: JSON.stringify(requestData),
     });
 
     if (!response.ok) {
@@ -197,6 +218,143 @@ export async function getMe() {
     return data;
   } catch (error) {
     console.error('Ошибка:', error.message);
+    throw error;
+  }
+}
+
+export async function createOrder(requestData) {
+  const config = useRuntimeConfig();
+  const apiUrl = config.public.URL;
+
+  const cookie = useCookie('accessToken');
+  const token = cookie.value;
+  try {
+    const response = await fetch(`${apiUrl}/orders`, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(requestData),
+    });
+
+    if (!response.ok) {
+      throw new Error('Ошибка при создании заказа');
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Ошибка:', error.message);
+    throw error;
+  }
+}
+
+export async function getRegions() {
+  const config = useRuntimeConfig();
+  const apiUrl = config.public.URL;
+
+  const cookie = useCookie('accessToken');
+  const token = cookie.value;
+  try {
+    const response = await fetch(`${apiUrl}/cdek/regions`, {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error('Ошибка при регионов');
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Ошибка:', error.message);
+    throw error;
+  }
+}
+
+export async function getSdekPoints(params) {
+  const config = useRuntimeConfig();
+  const apiUrl = config.public.URL;
+
+  const cookie = useCookie('accessToken');
+  const token = cookie.value;
+  const queryString = new URLSearchParams(params).toString();
+  try {
+    const response = await fetch(`${apiUrl}/cdek/points/?${queryString}`, {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error('Ошибка при регионов');
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Ошибка:', error.message);
+    throw error;
+  }
+}
+
+export async function addToFavorites(params) {
+  const config = useRuntimeConfig();
+  const apiUrl = config.public.URL;
+  const cookie = useCookie('accessToken');
+  const token = cookie.value;
+
+  try {
+    const response = await fetch(`${apiUrl}/favorite-products/${params}`, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error('Ошибка при получении товаров');
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
+export async function getFavorites(params) {
+  const config = useRuntimeConfig();
+  const apiUrl = config.public.URL;
+  const cookie = useCookie('accessToken');
+  const token = cookie.value;
+
+  try {
+    const response = await fetch(`${apiUrl}/favorite-products`, {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error('Ошибка при получении избранных товаров');
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error(error);
     throw error;
   }
 }

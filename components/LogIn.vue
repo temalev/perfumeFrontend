@@ -1,5 +1,5 @@
 <template>
-  <modal>
+  <modal @close="handleClose">
     <div class="login-modal">
       <template v-if="step === 'call'">
         <h1>войти или зарегистрироваться</h1>
@@ -49,6 +49,9 @@ export default {
   },
   mounted() {},
   methods: {
+    handleClose() {
+      this.$emit('close');
+    },
     async getCode() {
       const data = {
         phoneNumber: this.value,
@@ -69,6 +72,8 @@ export default {
       };
       try {
         const res = await login(data);
+        this.$emit('success');
+        this.$emit('close');
       } catch (e) {
         console.error(e);
       }

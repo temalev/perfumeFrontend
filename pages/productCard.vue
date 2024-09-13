@@ -1,27 +1,88 @@
 <template>
   <div v-loading="getProductProcess" class="product-card">
     <bread-crumb :data="breadcrumb" />
-    <div class="d-flex gap-4">
-      <img :src="image(data?.images[0])" :alt="data?.name" />
+    <div class="product-card-content gap-4">
+      <img :src="image(product?.images[0])" :alt="product?.name" />
       <div class="d-flex-column">
         <h1>{{ product?.name }}</h1>
-        <span>Артикул: {{ product?.article }}</span>
-        <div class="price">{{ product?.price }} ₽</div>
-        <UiButton loading>button</UiButton>
+        <span class="text-secondary">Артикул: {{ product?.article }}</span>
+
+        <div class="options mt-4">
+          <div class="options-label">Объем/мл</div>
+          <div class="options-item-list">
+            <div
+              v-for="option in options"
+              :key="option.id"
+              class="options-item"
+              :class="{ active: option.id === product.id }"
+              @click="
+                $router.push({
+                  name: productCard,
+                  query: { slug: option.slug },
+                })
+              "
+            >
+              {{ option.capacity }}
+            </div>
+          </div>
+        </div>
+        <div class="price mb-4">{{ product?.price }} ₽</div>
+        <div class="d-flex gap-2">
+          <UiTheButton @click="addToShopBag(product.slug)">
+            Добавить в корзину
+          </UiTheButton>
+          <UiTheButton @click="addToFavorites(product.slug)">
+            Добавить в избранное
+          </UiTheButton>
+        </div>
+        <div class="product-card-info">
+          <div class="product-card-info-header">Подробные характеристики</div>
+          <ul>
+            <li class="product-card-info-item">
+              <div class="product-card-info-item-label">
+                <div class="product-card-info-item-label-text">
+                  Тип продукта
+                </div>
+                <div class="filled-container" />
+              </div>
+              <span>{{ product?.type }}</span>
+            </li>
+            <li class="product-card-info-item">
+              <div class="product-card-info-item-label">
+                <div class="product-card-info-item-label-text">Для кого</div>
+                <div class="filled-container" />
+              </div>
+
+              <span>{{ product?.data.gender }}</span>
+            </li>
+            <li class="product-card-info-item">
+              <div class="product-card-info-item-label">
+                <div class="product-card-info-item-label-text">Страна</div>
+                <div class="filled-container" />
+              </div>
+
+              <span>{{ product?.data.country }}</span>
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
     <p>{{ product?.description }}</p>
-
-    <pre>{{ product }}</pre>
+    <log-in
+      v-if="isLoginModal"
+      @close="isLoginModal = false"
+      @success="addToFavorites()"
+    />
   </div>
 </template>
 
 <script>
-import { getProduct } from '@/api/productApi.js';
+import { getProduct, getGroupProduct } from '@/api/productApi.js';
 import BreadCrumb from '~/components/ui/BreadCrumb.vue';
+import LogIn from '~/components/LogIn.vue';
 
 export default {
-  components: { BreadCrumb },
+  components: { BreadCrumb, LogIn },
   data() {
     return {
       product: null,
@@ -32,11 +93,16 @@ export default {
           route: 'index',
         },
       ],
+      options: [],
+      ordersSlugs: useState('ordersSlugs'),
+      user: useState('user'),
+      favorites: useState('favoritesSlugs'),
+      isLoginModal: false,
     };
   },
   watch: {
     '$route.query'() {
-      this.getProducts();
+      this.getProduct();
     },
   },
   mounted() {
@@ -44,14 +110,37 @@ export default {
   },
 
   methods: {
+    addToFavorites() {
+      if (this.user) {
+        this.favorites = this.product.slug;
+      } else {
+        this.isLoginModal = true;
+      }
+    },
+    addToShopBag(slug) {
+      if (window.localStorage.getItem('ordersSlugs')) {
+        this.ordersSlugs.push(slug);
+        if (this.ordersSlug?.length) {
+          window.localStorage.setItem('ordersSlugs', this.ordersSlugs);
+        } else {
+          window.localStorage.removeItem('ordersSlugs');
+        }
+      } else {
+        this.ordersSlugs.push(slug);
+        window.localStorage.setItem('ordersSlugs', slug);
+      }
+    },
     image(url) {
-      console.log(url);
-
-      return url ? `src/assets/${url}` : '/img/no_image.png';
+      return url ? url : '/img/no_image.png';
     },
     async getProduct() {
+      this.breadcrumb = [
+        {
+          name: 'Главная',
+          route: 'index',
+        },
+      ];
       this.getProductProcess = true;
-
       try {
         const res = await getProduct(this.$route.query.slug);
         this.product = res;
@@ -59,10 +148,19 @@ export default {
           name: this.product.brand,
           route: 'products',
         });
+        this.getGroupProduct();
       } catch (e) {
         console.error(e);
       }
       this.getProductProcess = false;
+    },
+    async getGroupProduct() {
+      try {
+        const res = await getGroupProduct(this.product.groupId);
+        this.options = res;
+      } catch (e) {
+        console.error(e);
+      }
     },
   },
 };
@@ -75,9 +173,84 @@ export default {
   display: flex;
   flex-direction: column;
   gap: 12px;
+
+  img {
+    width: 50%;
+    max-height: 500px;
+    object-fit: contain;
+  }
+
+  &-content {
+    display: flex;
+  }
+}
+
+@media (max-width: 800px) {
+  .product-card-content {
+    display: flex;
+    flex-direction: column;
+  }
 }
 
 .price {
   font-size: 22px;
+}
+
+.product-card-info-header {
+  font-weight: 600;
+  margin-bottom: 12px;
+  margin-top: 20px;
+}
+.product-card-info-item {
+  display: flex;
+}
+.product-card-info-item-label {
+  display: flex;
+  width: 200px;
+  flex-shrink: 0;
+  &-text {
+    flex-shrink: 0;
+  }
+}
+
+.filled-container {
+  width: 100%;
+  border-bottom: 1px dotted #c8c8c8;
+}
+
+.options {
+  margin-top: 8px;
+  margin-bottom: 20px;
+}
+
+.options-item-list {
+  display: flex;
+  gap: 6px;
+  margin-top: 4px;
+}
+
+.options-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 35px;
+  height: 35px;
+  color: #000;
+  border-radius: 50%;
+  border: 1px solid #000;
+  font-size: 14px;
+  cursor: pointer;
+  transition: 0.2s;
+  flex-shrink: 0;
+
+  &:hover {
+    background-color: #000;
+    color: #fff;
+  }
+
+  &.active {
+    background-color: #000;
+    color: #fff;
+  }
 }
 </style>

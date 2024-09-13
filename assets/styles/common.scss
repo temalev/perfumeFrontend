@@ -48,6 +48,9 @@
   .w#{$i} {
     width: $i * 1% !important;
   }
+  .h#{$i} {
+    height: $i * 1% !important;
+  }
 }
 
 .d-flex {
@@ -62,6 +65,10 @@
 .d-flex-row {
   display: flex;
   flex-direction: row;
+}
+
+.flex-wrap {
+  flex-wrap: wrap;
 }
 
 .align-center {

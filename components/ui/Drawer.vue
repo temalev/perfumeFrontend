@@ -2,18 +2,19 @@
   <div v-if="!isHidden" class="drawer-wrapper">
     <div
       class="drawer-background"
-      :class="{ 'drawer-background-hidden': isClosed }"
-    ></div>
-    <div
-      class="drawer"
-      :class="{ 'drawer-close': isClosed }"
-      @animationend="onAnimationEnd"
+      :class="[{ 'drawer-background-hidden': isClosed }, positioning]"
     >
-      <button class="ico-btn d-flex align-center j-c" @click="onClose">
-        <Icon name="material-symbols-light:close" style="font-size: 40px" />
-      </button>
-      <div class="drawer-content">
-        <slot></slot>
+      <div
+        class="drawer"
+        :class="{ 'drawer-close': isClosed }"
+        @animationend="onAnimationEnd"
+      >
+        <button class="ico-btn d-flex align-center j-c" @click="onClose">
+          <Icon name="material-symbols-light:close" style="font-size: 40px" />
+        </button>
+        <div class="drawer-content">
+          <slot></slot>
+        </div>
       </div>
     </div>
   </div>
@@ -21,6 +22,12 @@
 
 <script>
 export default {
+  props: {
+    positioning: {
+      type: String,
+      default: 'left',
+    },
+  },
   data() {
     return {
       isClosed: false,
@@ -64,6 +71,14 @@ export default {
   animation: show 0.2s ease-in;
 }
 
+.center {
+  justify-content: center;
+
+  & .drawer {
+    width: 60%;
+  }
+}
+
 .drawer {
   width: 40%;
   height: 100%;
@@ -73,6 +88,7 @@ export default {
 
 .drawer-content {
   padding: 20px;
+  height: 100%;
 }
 
 .drawer-close {

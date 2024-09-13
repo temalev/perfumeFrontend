@@ -3,9 +3,16 @@
     <desktop
       class="desktop"
       :user="user"
-      @openCatalog="isCatalog = true"
+      :ordersSlugs="ordersSlugs"
+      @openCatalog="
+        isCatalog = true;
+        isBrandsModal = false;
+      "
       @open-shop-bag="isDrawer = true"
-      @openBrands="isBrandsModal = true"
+      @openBrands="
+        isBrandsModal = true;
+        isCatalog = false;
+      "
       @login="isLoginModal = true"
     />
     <mobile class="mobile" />
@@ -17,7 +24,11 @@
       @close="isBrandsModal = false"
     />
     <cascader :data="category" v-if="isCatalog" @close="isCatalog = false" />
-    <log-in v-if="isLoginModal" @close="isLoginModal = false" />
+    <log-in
+      v-if="isLoginModal"
+      @close="isLoginModal = false"
+      @success="$router.push('userCard')"
+    />
   </div>
 </template>
 
@@ -53,12 +64,22 @@ export default {
       brands: [],
       category: [],
       user: useState('user'),
+      ordersSlugs: useState('ordersSlugs'),
     };
   },
 
   mounted() {
     this.getCategory();
     this.getBrands();
+    setTimeout(() => {
+      console.log(this.ordersSlugs);
+    }, 10);
+  },
+  watch: {
+    '$route.name'(val) {
+      this.isBrandsModal = false;
+      this.isCatalog = false;
+    },
   },
   methods: {
     async getCategory() {
@@ -80,7 +101,7 @@ export default {
     groupBrandsByFirstLetter(brands) {
       const grouped = {};
 
-      brands.forEach((brand) => {
+      brands.forEach(brand => {
         const firstLetter = brand.trim()[0].toUpperCase();
 
         if (!grouped[firstLetter]) {
@@ -97,7 +118,7 @@ export default {
       const result = Object.values(grouped);
 
       // Сортируем бренды внутри каждой группы по алфавиту
-      result.forEach((group) => {
+      result.forEach(group => {
         group.brands.sort((a, b) => a.localeCompare(b));
       });
 
@@ -152,8 +173,6 @@ header {
   /* From https://css.glass */
   background: rgba(255, 255, 255, 0.76);
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-  backdrop-filter: blur(5px);
-  -webkit-backdrop-filter: blur(5px);
   height: 50px;
   justify-content: space-around;
   z-index: 2;

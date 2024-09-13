@@ -17,7 +17,14 @@
         <li>
           <button class="text" @click="$emit('openBrands')">БРЕНДЫ</button>
         </li>
-        <li><NuxtLink class="text-gray" to="/">СКИДКИ</NuxtLink></li>
+        <li>
+          <button
+            class="text"
+            @click="$router.push({ name: 'products', query: { isSale: true } })"
+          >
+            СКИДКИ
+          </button>
+        </li>
       </ul>
     </nav>
     <ul class="icons d-flex gap-6">
@@ -32,10 +39,14 @@
         />
       </li>
       <li class="pointer">
-        <Icon name="fa6-regular:heart" style="font-size: 20px" />
+        <Icon name="ph:tag-bold" style="font-size: 20px" />
       </li>
       <li class="pointer" @click="$emit('openShopBag')">
-        <div class="counter"><span>13</span></div>
+        <div v-if="ordersSlugs?.length" class="counter">
+          <Transition>
+            <span>{{ ordersSlugs?.length }}</span>
+          </Transition>
+        </div>
         <Icon name="ph:shopping-cart-simple-bold" style="font-size: 20px" />
       </li>
     </ul>
@@ -48,6 +59,10 @@ export default {
     user: {
       type: Object,
       default: null,
+    },
+    ordersSlugs: {
+      type: Array,
+      default: () => [],
     },
   },
 };

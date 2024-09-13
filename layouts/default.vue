@@ -1,39 +1,54 @@
 <template>
   <div class="layout">
     <Head>
-      <Title>parfBuro</Title>
+      <Title>ПарфБюро - оригиналы мировых брендов</Title>
     </Head>
 
     <Header />
     <div class="main">
       <slot />
-      <modal v-if="isModal" @close="isModal = false" />
     </div>
   </div>
 </template>
 
 <script>
-import Modal from '~/components/ui/Modal.vue';
-import { getMe } from '@/api/productApi.js';
+import { getMe, addToFavorites } from '@/api/productApi.js';
 
 export default {
-  components: { Modal },
   data() {
     return {
       isModal: false,
       token: null, // Хранит значение токена, если он есть
       user: null,
+      favorites: [],
     };
   },
   mounted() {
     this.user = useState('user', () => null);
     this.getMe();
+    useState('ordersSlugs', () => {
+      const slugs = window.localStorage.getItem('ordersSlugs');
+      return slugs ? slugs.split(',') : [];
+    });
+    this.favorites = useState('favoritesSlugs', () => []);
+  },
+  watch: {
+    favorites(val) {
+      this.addToFavorites(val);
+    },
   },
   methods: {
     async getMe() {
       try {
         const res = await getMe();
         this.user = res;
+      } catch (e) {
+        console.error(e);
+      }
+    },
+    async addToFavorites(slug) {
+      try {
+        const res = await addToFavorites(slug);
       } catch (e) {
         console.error(e);
       }

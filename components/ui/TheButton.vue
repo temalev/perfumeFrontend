@@ -24,17 +24,19 @@ export default {
 button {
   width: fit-content;
   display: flex;
+  justify-content: center;
   &:disabled {
     background-color: #a9a9a9 !important;
     cursor: default;
   }
 }
 
-.default {
+.default,
+.submit {
   padding: 12px;
   background-color: #000;
   color: #fff;
-  border-radius: 4px;
+  border-radius: 12px;
   transition: all 0.2s;
   &:hover {
     background-color: #252525;
