@@ -7,6 +7,7 @@
     <Header />
     <div class="main">
       <slot />
+      <Footer />
     </div>
   </div>
 </template>
@@ -34,7 +35,9 @@ export default {
   },
   watch: {
     favorites(val) {
-      this.addToFavorites(val);
+      if (val.length) {
+        this.addToFavorites(val);
+      }
     },
   },
   methods: {
@@ -61,7 +64,7 @@ export default {
 .layout {
   display: flex;
   flex-direction: column;
-  overflow: hidden;
+  overflow: auto;
 }
 
 .main {
