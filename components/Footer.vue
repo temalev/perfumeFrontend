@@ -42,6 +42,7 @@ export default {};
 <style scoped lang="scss">
 .footer {
   display: flex;
+  flex-wrap: wrap;
   height: 300px;
   background-color: #000;
   color: #fff;
