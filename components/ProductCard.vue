@@ -1,7 +1,7 @@
 <template>
   <div class="card d-flex-column" @click="handleCardClick">
     <div class="img-container d-flex j-c">
-      <img :src="image(data.images[0])" :alt="data.name" />
+      <img :src="image(data?.images[0])" :alt="data.name" />
       <button
         v-if="isFavorites"
         class="ico-btn d-flex align-center j-c"
@@ -13,7 +13,7 @@
 
     <div class="info d-flex-column align-flex-start gap-3">
       <span class="category">{{ data.type }}</span>
-      <span class="name">{{ data.name }}</span>
+      <span class="name">{{ data?.name }}</span>
 
       <div class="pay d-flex-row j-sb w100">
         <div class="info-price d-flex align-flex-end">

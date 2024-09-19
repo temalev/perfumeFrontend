@@ -105,6 +105,7 @@ export default {
   margin: 20px;
   gap: 22px;
   width: 100%;
+  min-height: 100vh;
 }
 
 .user-info {
