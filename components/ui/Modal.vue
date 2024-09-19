@@ -6,9 +6,13 @@
       @animationend="onAnimationEnd"
     >
       <div class="modal">
-        <button class="ico-btn m-4" @click="onClose">
-          <Icon name="material-symbols-light:close" style="font-size: 40px" />
-        </button>
+        <div class="modal-header">
+          <h1 class="modal-header-text">{{ header }}</h1>
+
+          <button class="ico-btn" @click="onClose">
+            <Icon name="material-symbols-light:close" style="font-size: 40px" />
+          </button>
+        </div>
         <div class="modal-content">
           <slot></slot>
         </div>
@@ -19,6 +23,12 @@
 
 <script>
 export default {
+  props: {
+    header: {
+      type: String,
+      default: '',
+    },
+  },
   data() {
     return {
       isClosed: false,
@@ -69,6 +79,14 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
+
+  &-header {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+  }
 }
 
 .modal-content {

@@ -115,8 +115,8 @@ export default {
 .body-home-page {
   display: flex;
   flex-direction: column;
-  height: 100vh;
-  overflow: scroll;
+  // height: 100%;
+  // overflow: hidden;
 }
 .text-container {
   position: absolute;

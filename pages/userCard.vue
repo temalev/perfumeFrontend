@@ -8,26 +8,17 @@
 
       <!-- <div class="text-secondary">{{ user?.phoneNumber }}</div> -->
     </div>
-    <!-- <UiTheTabs
-        style="margin-top: 25px"
-        :data="tabs"
-        @activeTab="onSelectTab"
-        :activeTab="activeTab"
-      />
-      <div v-if="activeTab === 1" class="d-flex flex-wrap gap-6 mt-8">
-        <product-card
-          v-for="favorite in favorites"
-          :key="favorite.product.id"
-          :data="favorite.product"
-          :isFavorites="false"
-        />
-      </div> -->
-    <el-tabs v-model="activeTab" class="tabs" style="margin-top: 14px">
+    <el-tabs
+      v-model="activeTab"
+      class="tabs"
+      style="margin-top: 14px"
+      @tab-change="test"
+    >
       <el-tab-pane label="Избранное" :name="1">
-        <div v-if="favorites.length" class="d-flex flex-wrap gap-6 mt-8 j-c">
+        <div v-if="favorites?.length" class="d-flex flex-wrap gap-6 mt-8 j-c">
           <product-card
             v-for="favorite in favorites"
-            :key="favorite.product.id"
+            :key="favorite.product?.id"
             :data="favorite.product"
             :isFavorites="false"
           />
@@ -79,6 +70,9 @@ export default {
     this.getFavorites();
   },
   methods: {
+    test(val) {
+      console.log(val);
+    },
     onSelectTab(tabId) {
       console.log(tabId);
 
