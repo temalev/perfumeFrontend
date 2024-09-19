@@ -9,6 +9,15 @@
       </ul>
     </div>
     <div class="d-flex-column">
+      <div class="d-flex gap-4 mb-4">
+        <el-link>+7(993)269-01-88</el-link>
+        <el-link :underline="false" href="https://t.me/parfburoo">
+          <Icon name="logos:telegram" style="font-size: 20px" />
+        </el-link>
+        <el-link :underline="false" href="https://wa.me/79932690188">
+          <Icon name="logos:whatsapp-icon" style="font-size: 20px" />
+        </el-link>
+      </div>
       <div>
         <el-link>info@parfburo.com</el-link>
         - По вопросам сотрудничества, идеям по улучшению и жалобам.
