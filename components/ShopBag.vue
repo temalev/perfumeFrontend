@@ -66,7 +66,7 @@
                   <UiTheSelect
                     label="Пункт выдачи"
                     :options="points"
-                    @change="onChangeRegion"
+                    @change="val => (form.deliveryPoint = val)"
                   />
                 </el-collapse-item>
                 <el-collapse-item
@@ -187,6 +187,7 @@ export default {
         phone: '',
         address: '',
         deliveryTypeId: null,
+        deliveryPoint: null,
       };
     },
     dropItem(id) {
@@ -235,7 +236,7 @@ export default {
           deliveryTypeId: this.form.deliveryTypeId,
           deliveryMessage: 'Принесите мне в кровать',
           address: this.form.address,
-          deliveryPoint: 'SDK1',
+          deliveryPoint: this.form.deliveryPoint.code,
         },
         items: this.orders.map(el => {
           return {
