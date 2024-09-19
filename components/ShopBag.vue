@@ -201,6 +201,9 @@ export default {
       this.getProductProcess = true;
       try {
         const res = await getProduct(slug);
+
+        if (!res) {
+        }
         const existingProduct = this.orders.find(order => order.slug === slug);
 
         if (existingProduct) {
@@ -215,6 +218,7 @@ export default {
         this.totalPrice = this.fullPrice - this.discount;
       } catch (e) {
         console.error(e);
+        console.log('res');
       }
       this.getProductProcess = false;
     },

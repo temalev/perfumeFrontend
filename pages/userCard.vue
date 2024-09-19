@@ -25,9 +25,12 @@
         </div>
         <el-empty v-else description="Здесь пока пусто..." />
       </el-tab-pane>
-      <el-tab-pane label="Текущий заказ" :name="2"
-        ><el-empty description="Текущие заказы отсутствуют"
-      /></el-tab-pane>
+      <el-tab-pane label="Текущий заказ" :name="2">
+        <div v-if="orders?.length">
+          {{ orders }}
+        </div>
+        <el-empty v-else description="Текущие заказы отсутствуют" />
+      </el-tab-pane>
       <el-tab-pane label="История заказов" :name="3"
         ><el-empty description="Вы еще ничего не заказывали"
       /></el-tab-pane>
@@ -36,7 +39,7 @@
 </template>
 
 <script>
-import { getMe, getFavorites } from '@/api/productApi.js';
+import { getMe, getFavorites, getOrders } from '@/api/productApi.js';
 import ProductCard from '~/components/ProductCard.vue';
 
 export default {
@@ -60,6 +63,7 @@ export default {
       ],
       activeTab: 1,
       favorites: [],
+      orders: [],
     };
   },
   mounted() {
@@ -68,14 +72,15 @@ export default {
     }
 
     this.getFavorites();
+    this.getOrders();
   },
   methods: {
     test(val) {
-      console.log(val);
+      if (val === 2) {
+        this.getOrders();
+      }
     },
     onSelectTab(tabId) {
-      console.log(tabId);
-
       this.activeTab = tabId;
     },
     async getMe() {
@@ -90,6 +95,14 @@ export default {
       try {
         const res = await getFavorites();
         this.favorites = res;
+      } catch (e) {
+        console.error(e);
+      }
+    },
+    async getOrders() {
+      try {
+        const res = await getOrders();
+        this.orders = res;
       } catch (e) {
         console.error(e);
       }
