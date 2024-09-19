@@ -50,10 +50,10 @@ export default {
 
 <style scoped lang="scss">
 .products {
-  height: calc(100vh - 50px);
   display: flex;
   flex-direction: column;
   margin: 20px 40px;
+  // overflow: auto;
   &-list {
     margin: 20px;
     display: flex;
