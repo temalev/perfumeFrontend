@@ -16,9 +16,9 @@
               class="options-item"
               :class="{ active: option.id === product.id }"
               @click="
-                $router.push({
-                  name: productCard,
-                  query: { slug: option.slug },
+                this.$router.push({
+                  name: 'products-slug',
+                  params: { slug: option.slug },
                 })
               "
             >

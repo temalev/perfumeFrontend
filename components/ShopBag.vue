@@ -165,6 +165,7 @@ export default {
       fullPrice: 0,
       discount: 0,
       totalPrice: 0,
+      regionsLoading: false,
     };
   },
   mounted() {
@@ -254,6 +255,7 @@ export default {
       }
     },
     async getRegions() {
+      this.regionsLoading = true;
       try {
         const res = await getRegions();
         this.regions = res.map(el => {
@@ -262,9 +264,13 @@ export default {
             name: el.region,
           };
         });
+        this.regions = this.regions?.sort((a, b) =>
+          a.name.localeCompare(b.name)
+        );
       } catch (e) {
         console.error(e);
       }
+      this.regionsLoading = false;
     },
     async getSdekPoints(regionId) {
       try {
