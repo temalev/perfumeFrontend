@@ -1,7 +1,7 @@
 <template>
   <div class="card d-flex-column" @click="handleCardClick">
     <div class="img-container d-flex j-c">
-      <img :src="image(data.images[0])" :alt="data.name" />
+      <img :src="image(data?.images[0])" :alt="data.name" />
       <button
         v-if="isFavorites"
         class="ico-btn d-flex align-center j-c"
@@ -13,13 +13,13 @@
 
     <div class="info d-flex-column align-flex-start gap-3">
       <span class="category">{{ data.type }}</span>
-      <span class="name">{{ data.name }}</span>
+      <span class="name">{{ data?.name }}</span>
 
       <div class="pay d-flex-row j-sb w100">
         <div class="info-price d-flex align-flex-end">
           <span class="new-price">{{ data.price }}&nbsp;₽</span>
-          <span v-if="data.basePrice" class="old-price">
-            {{ data.basePrice }}&nbsp;₽
+          <span v-if="data.discount" class="old-price">
+            {{ data.price * (1 + data.discount / 100) }}&nbsp;₽
           </span>
         </div>
 
@@ -69,8 +69,8 @@ export default {
     handleCardClick() {
       if (!this.preventCardClick) {
         this.$router.push({
-          name: 'productCard',
-          query: { slug: this.data.slug },
+          name: 'products-slug',
+          params: { slug: this.data.slug },
         });
       }
       this.preventCardClick = false;

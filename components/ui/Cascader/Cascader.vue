@@ -35,12 +35,12 @@ export default {
   },
   computed: {
     rootCategories() {
-      return this.data.filter((category) => category.parentId === null);
+      return this.data.filter(category => category.parentId === null);
     },
   },
   methods: {
     navigateToCategory(id) {
-      this.$router.push({ path: '/products', query: { categoryId: id } });
+      this.$router.push({ name: 'products-list', query: { categoryId: id } });
       this.$emit('close');
     },
   },

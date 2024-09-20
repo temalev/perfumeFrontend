@@ -142,7 +142,7 @@ export default {
       ];
       this.getProductProcess = true;
       try {
-        const res = await getProduct(this.$route.query.slug);
+        const res = await getProduct(this.$route.params.slug);
         this.product = res;
         this.breadcrumb.push({
           name: this.product.brand,

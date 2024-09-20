@@ -250,6 +250,33 @@ export async function createOrder(requestData) {
   }
 }
 
+export async function getOrders() {
+  const config = useRuntimeConfig();
+  const apiUrl = config.public.URL;
+
+  const cookie = useCookie('accessToken');
+  const token = cookie.value;
+  try {
+    const response = await fetch(`${apiUrl}/orders`, {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error('Ошибка получения заказов');
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Ошибка:', error.message);
+    throw error;
+  }
+}
+
 export async function getRegions() {
   const config = useRuntimeConfig();
   const apiUrl = config.public.URL;

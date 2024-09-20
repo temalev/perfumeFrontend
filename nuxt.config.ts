@@ -12,6 +12,9 @@ export default defineNuxtConfig({
       },
     },
   },
+  plugins: [
+    '~/plugins/yandex-metrika.client.js'
+  ],
   modules: ['@nuxt/eslint', 'nuxt-icon', '@nuxt/fonts'],
   ssr: true,
   runtimeConfig: {
