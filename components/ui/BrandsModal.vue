@@ -13,7 +13,7 @@
             :key="brand"
             class="brand pointer"
             @click="
-              $router.push({ name: 'products', query: { brand: brand } });
+              $router.push({ name: 'products-list', query: { brand: brand } });
               $emit('close');
             "
           >

@@ -69,8 +69,8 @@ export default {
     handleCardClick() {
       if (!this.preventCardClick) {
         this.$router.push({
-          name: 'productCard',
-          query: { slug: this.data.slug },
+          name: 'products-slug',
+          params: { slug: this.data.slug },
         });
       }
       this.preventCardClick = false;
