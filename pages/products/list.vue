@@ -53,6 +53,7 @@ export default {
   display: flex;
   flex-direction: column;
   margin: 20px 40px;
+  min-height: 100vh;
   // overflow: auto;
   &-list {
     margin: 20px;

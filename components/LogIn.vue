@@ -8,7 +8,7 @@
           телефона или код из SMS-сообщения.
         </p>
         <the-input-phone v-model="value" />
-        <TheButton @click="getCode">Получить код</TheButton>
+        <TheButton class="mt-4" @click="getCode">Получить код</TheButton>
       </template>
       <template v-if="step === 'code'">
         <h1>Подтвердите номер</h1>
