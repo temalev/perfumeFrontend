@@ -1,5 +1,8 @@
 <template>
   <div v-loading="getProductProcess" class="product-card">
+    <Head>
+      <Title>Купить {{ product.name }}</Title>
+    </Head>
     <bread-crumb :data="breadcrumb" />
     <div class="product-card-content gap-4">
       <img :src="image(product?.images[0])" :alt="product?.name" />

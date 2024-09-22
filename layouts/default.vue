@@ -3,7 +3,6 @@
     <Head>
       <Title>ПарфБюро - оригиналы мировых брендов</Title>
     </Head>
-
     <Header />
     <div class="main">
       <slot />
