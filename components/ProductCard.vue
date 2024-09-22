@@ -174,7 +174,6 @@ img {
   font-size: 16px;
   font-weight: 400;
   line-height: 18px;
-  text-align: center;
 }
 .info {
   padding: 20px;
