@@ -15,7 +15,17 @@
       "
       @login="isLoginModal = true"
     />
-    <mobile class="mobile" />
+    <mobile
+      @openCatalog="
+        isCatalog = true;
+        isBrandsModal = false;
+      "
+      @openBrands="
+        isBrandsModal = true;
+        isCatalog = false;
+      "
+      class="mobile"
+    />
 
     <shop-bag v-if="isDrawer" @close="isDrawer = false" />
     <brands-modal
