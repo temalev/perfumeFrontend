@@ -3,11 +3,12 @@
     <Head>
       <Title>ПарфБюро - оригиналы мировых брендов</Title>
     </Head>
-    <Header />
+    <Header @openShopBag="isDrawer = true" />
     <div class="main">
       <slot />
       <Footer @onInfoModal="onInfoModal" />
     </div>
+    <mobile-panel @openShopBag="isDrawer = true" />
     <UiModal
       v-if="isDeliveryModal"
       @close="isDeliveryModal = false"
@@ -36,13 +37,17 @@
         </p>
       </div>
     </UiModal>
+    <shop-bag v-if="isDrawer" @close="isDrawer = false" />
   </div>
 </template>
 
 <script>
 import { getMe, addToFavorites } from '@/api/productApi.js';
+import MobilePanel from '~/components/MobilePanel.vue';
+import ShopBag from '~/components/ShopBag.vue';
 
 export default {
+  components: { MobilePanel, ShopBag },
   data() {
     return {
       isModal: false,
@@ -50,6 +55,7 @@ export default {
       user: null,
       favorites: [],
       isDeliveryModal: false,
+      isDrawer: false,
     };
   },
   mounted() {
@@ -98,6 +104,7 @@ export default {
   display: flex;
   flex-direction: column;
   overflow: auto;
+  height: 100vh;
 }
 
 .main {

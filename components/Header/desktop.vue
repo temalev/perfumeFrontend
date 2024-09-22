@@ -40,7 +40,10 @@
           @click="user ? $router.push({ name: 'userCard' }) : $emit('login')"
         />
       </li>
-      <li class="pointer">
+      <li
+        class="pointer"
+        @click="user ? $router.push({ name: 'userCard' }) : $emit('login')"
+      >
         <Icon name="ph:tag-bold" style="font-size: 20px" />
       </li>
       <li class="pointer" @click="$emit('openShopBag')">

@@ -8,7 +8,7 @@
         isCatalog = true;
         isBrandsModal = false;
       "
-      @open-shop-bag="isDrawer = true"
+      @open-shop-bag="$emit('openShopBag')"
       @openBrands="
         isBrandsModal = true;
         isCatalog = false;
@@ -27,7 +27,6 @@
       class="mobile"
     />
 
-    <shop-bag v-if="isDrawer" @close="isDrawer = false" />
     <brands-modal
       v-if="isBrandsModal"
       :data="brands"
@@ -51,7 +50,6 @@ import desktop from './desktop.vue';
 import mobile from './mobile.vue';
 import { getCategory, getBrands } from '@/api/productApi.js';
 import LogIn from '../LogIn.vue';
-import ShopBag from '../ShopBag.vue';
 
 export default {
   components: {
@@ -61,12 +59,10 @@ export default {
     BrandsModal,
     Cascader,
     LogIn,
-    ShopBag,
   },
   data() {
     return {
       isLeftMenu: false,
-      isDrawer: false,
       isBrandsModal: false,
       isCatalog: false,
       isLoginModal: false,
