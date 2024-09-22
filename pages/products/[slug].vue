@@ -1,7 +1,7 @@
 <template>
   <div v-loading="getProductProcess" class="product-card">
     <Head>
-      <Title>Купить {{ product.name }}</Title>
+      <Title>Купить {{ product?.name }}</Title>
     </Head>
     <bread-crumb :data="breadcrumb" />
     <div class="product-card-content gap-4">
@@ -76,16 +76,28 @@
       @close="isLoginModal = false"
       @success="addToFavorites()"
     />
+
+    <div v-if="products.length" class="d-flex-column">
+      <h1>Продукты этого бренда</h1>
+      <div class="scroll mt-2 mb-4">
+        <product-card
+          v-for="product in products"
+          :key="product.id"
+          :data="product"
+        />
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
-import { getProduct, getGroupProduct } from '@/api/productApi.js';
+import { getProduct, getGroupProduct, getProducts } from '@/api/productApi.js';
 import BreadCrumb from '~/components/ui/BreadCrumb.vue';
 import LogIn from '~/components/LogIn.vue';
+import ProductCard from '~/components/ProductCard.vue';
 
 export default {
-  components: { BreadCrumb, LogIn },
+  components: { BreadCrumb, LogIn, ProductCard },
   data() {
     return {
       product: null,
@@ -101,6 +113,7 @@ export default {
       user: useState('user'),
       favorites: useState('favoritesSlugs'),
       isLoginModal: false,
+      products: [],
     };
   },
   watch: {
@@ -152,6 +165,7 @@ export default {
           route: 'products',
         });
         this.getGroupProduct();
+        this.getProducts();
       } catch (e) {
         console.error(e);
       }
@@ -165,6 +179,17 @@ export default {
         console.error(e);
       }
     },
+    async getProducts() {
+      this.getProductsProcess = true;
+      const params = { brands: this.product.brand };
+      try {
+        const res = await getProducts(params);
+        this.products = res;
+      } catch (e) {
+        console.error(e);
+      }
+      this.getProductsProcess = false;
+    },
   },
 };
 </script>
@@ -172,7 +197,7 @@ export default {
 <style scoped lang="scss">
 .product-card {
   margin: 20px;
-  height: 100vh;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
   gap: 12px;
@@ -185,13 +210,6 @@ export default {
 
   &-content {
     display: flex;
-  }
-}
-
-@media (max-width: 800px) {
-  .product-card-content {
-    display: flex;
-    flex-direction: column;
   }
 }
 
@@ -254,6 +272,23 @@ export default {
   &.active {
     background-color: #000;
     color: #fff;
+  }
+}
+
+.scroll {
+  display: flex;
+  overflow: auto;
+  gap: 12px;
+  padding: 20px;
+}
+
+@media (max-width: 800px) {
+  .product-card-content {
+    display: flex;
+    flex-direction: column;
+  }
+  .scroll {
+    flex-direction: column;
   }
 }
 </style>

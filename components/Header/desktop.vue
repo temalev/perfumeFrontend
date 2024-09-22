@@ -20,7 +20,9 @@
         <li>
           <button
             class="text"
-            @click="$router.push({ name: 'products', query: { isSale: true } })"
+            @click="
+              $router.push({ name: 'products-list', query: { isSale: true } })
+            "
           >
             СКИДКИ
           </button>
