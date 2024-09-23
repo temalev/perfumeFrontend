@@ -250,6 +250,34 @@ export async function createOrder(requestData) {
   }
 }
 
+export async function createOrderPublic(requestData) {
+  const config = useRuntimeConfig();
+  const apiUrl = config.public.URL;
+
+  const cookie = useCookie('accessToken');
+  const token = cookie.value;
+  try {
+    const response = await fetch(`${apiUrl}/orders/public`, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(requestData),
+    });
+
+    if (!response.ok) {
+      throw new Error('Ошибка при создании заказа');
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Ошибка:', error.message);
+    throw error;
+  }
+}
+
 export async function getOrders() {
   const config = useRuntimeConfig();
   const apiUrl = config.public.URL;

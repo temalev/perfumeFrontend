@@ -42,7 +42,7 @@
         </p>
       </div>
     </UiModal>
-    <shop-bag v-if="isDrawer" @close="isDrawer = false" />
+    <shop-bag v-if="isDrawer" :user="user" @close="isDrawer = false" />
     <log-in
       v-if="isLoginModal"
       @close="isLoginModal = false"

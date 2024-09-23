@@ -128,12 +128,19 @@ import Drawer from './ui/Drawer.vue';
 import {
   getProduct,
   createOrder,
+  createOrderPublic,
   getRegions,
   getSdekPoints,
 } from '@/api/productApi.js';
 
 export default {
   components: { Drawer, ProductCardMini },
+  props: {
+    user: {
+      type: Object,
+      default: null,
+    },
+  },
   data() {
     return {
       ordersSlugs: useState('ordersSlugs'),
@@ -246,8 +253,9 @@ export default {
           };
         }),
       };
+      const req = this.user ? createOrder : createOrderPublic;
       try {
-        const res = await createOrder(data);
+        const res = await req(data);
         window.open(res.paymentUrl);
         paymentUrl;
       } catch (e) {
