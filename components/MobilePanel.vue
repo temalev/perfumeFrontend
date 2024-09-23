@@ -43,6 +43,9 @@ export default {
   display: flex;
   justify-content: space-around;
   align-items: center;
+  position: fixed;
+  bottom: 0;
+  left: 0;
 }
 
 @media (min-width: 500px) {

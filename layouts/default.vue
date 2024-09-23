@@ -121,4 +121,10 @@ export default {
   flex-direction: column;
   gap: 12px;
 }
+
+@media (max-width: 500px) {
+  .main {
+    margin-bottom: 60px;
+  }
+}
 </style>
