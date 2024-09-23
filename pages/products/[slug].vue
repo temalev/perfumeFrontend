@@ -195,7 +195,7 @@ export default {
     },
     async getProducts() {
       this.getProductsProcess = true;
-      const params = { brands: this.product.brand };
+      const params = { brand: this.product.brand };
       try {
         const res = await getProducts(params);
         this.products = res;
