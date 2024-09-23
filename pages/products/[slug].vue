@@ -4,7 +4,7 @@
       <Title>Купить {{ product?.name }}</Title>
     </Head>
     <bread-crumb :data="breadcrumb" />
-    <div class="product-card-content gap-4">
+    <div class="product-card-content gap-4 mt-4">
       <img :src="image(product?.images[0])" :alt="product?.name" />
       <div class="d-flex-column">
         <h1>{{ product?.name }}</h1>
@@ -29,14 +29,22 @@
             </div>
           </div>
         </div>
-        <div class="price mb-4">{{ product?.price }} ₽</div>
+        <div class="price mb-4">
+          {{ new Intl.NumberFormat('ru').format(product?.price) }} ₽
+        </div>
         <div class="d-flex gap-2">
-          <UiTheButton @click="addToShopBag(product.slug)">
-            Добавить в корзину
-          </UiTheButton>
-          <UiTheButton @click="addToFavorites(product.slug)">
-            Добавить в избранное
-          </UiTheButton>
+          <el-button
+            @click="addToShopBag(product.slug)"
+            size="large"
+            type="primary"
+            >Добавить в корзину</el-button
+          >
+          <el-button
+            size="large"
+            type="primary"
+            @click="addToFavorites(product.slug)"
+            >Добавить в избранное</el-button
+          >
         </div>
         <div class="product-card-info">
           <div class="product-card-info-header">Подробные характеристики</div>

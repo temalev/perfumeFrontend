@@ -1,7 +1,7 @@
 <template>
   <div class="footer">
     <div class="d-flex-column">
-      <div class="column-label">Информация</div>
+      <el-text class="mx-1" size="large">Информация</el-text>
       <ul>
         <li class="pointer" @click="$emit('onInfoModal', 'delivery')">
           Доставка
@@ -57,6 +57,10 @@ export default {};
   color: #fff;
   padding: 20px;
   justify-content: space-around;
+
+  @media (max-width: 500px) {
+    justify-content: flex-start;
+  }
 
   & .pointer:hover {
     opacity: 0.8;
