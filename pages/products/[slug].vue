@@ -29,7 +29,9 @@
             </div>
           </div>
         </div>
-        <div class="price mb-4">{{ product?.price }} ₽</div>
+        <div class="price mb-4">
+          {{ new Intl.NumberFormat('ru').format(product?.price) }} ₽
+        </div>
         <div class="d-flex gap-2">
           <el-button
             @click="addToShopBag(product.slug)"

@@ -17,7 +17,9 @@
       </div>
 
       <div class="btn-pay d-flex">
-        <span class="new-price">{{ product?.price }} ₽ </span>
+        <span class="new-price"
+          >{{ new Intl.NumberFormat('ru').format(product?.price) }} ₽
+        </span>
         <button class="ico-btn d-flex j-c">
           <Icon
             name="material-symbols-light:close"

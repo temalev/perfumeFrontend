@@ -19,13 +19,13 @@
             <h2>Сумма заказа</h2>
             <UiInfoBlock
               label="Стоимость продуктов"
-              :value="`${fullPrice} ₽`"
+              :value="`${new Intl.NumberFormat('ru').format(fullPrice)} ₽`"
             />
             <UiInfoBlock label="Скидка" :value="-`${discount}`" />
             <UiInfoBlock
               :isFilled="false"
               label="Итого"
-              :value="`${totalPrice} ₽`"
+              :value="`${new Intl.NumberFormat('ru').format(totalPrice)} ₽`"
             />
           </div>
           <UiTheButton class="w100" @click="step = 'makingAnOrder'">

@@ -17,9 +17,15 @@
 
       <div class="pay d-flex-row j-sb w100">
         <div class="info-price d-flex align-flex-end">
-          <span class="new-price">{{ data.price }}&nbsp;₽</span>
+          <span class="new-price"
+            >{{ new Intl.NumberFormat('ru').format(data.price) }}&nbsp;₽</span
+          >
           <span v-if="data.discount" class="old-price">
-            {{ data.price * (1 + data.discount / 100) }}&nbsp;₽
+            {{
+              new Intl.NumberFormat('ru').format(
+                data.price * (1 + data.discount / 100)
+              )
+            }}&nbsp;₽
           </span>
         </div>
 
