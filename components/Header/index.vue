@@ -13,7 +13,7 @@
         isBrandsModal = true;
         isCatalog = false;
       "
-      @login="isLoginModal = true"
+      @login="$emit('login')"
     />
     <mobile
       @openCatalog="
@@ -33,11 +33,6 @@
       @close="isBrandsModal = false"
     />
     <cascader :data="category" v-if="isCatalog" @close="isCatalog = false" />
-    <log-in
-      v-if="isLoginModal"
-      @close="isLoginModal = false"
-      @success="$router.push('userCard')"
-    />
   </div>
 </template>
 
@@ -49,7 +44,6 @@ import Cascader from '../ui/Cascader/Cascader.vue';
 import desktop from './desktop.vue';
 import mobile from './mobile.vue';
 import { getCategory, getBrands } from '@/api/productApi.js';
-import LogIn from '../LogIn.vue';
 
 export default {
   components: {
@@ -58,14 +52,12 @@ export default {
     Drawer,
     BrandsModal,
     Cascader,
-    LogIn,
   },
   data() {
     return {
       isLeftMenu: false,
       isBrandsModal: false,
       isCatalog: false,
-      isLoginModal: false,
 
       brands: [],
       category: [],
