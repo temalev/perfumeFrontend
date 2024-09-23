@@ -73,7 +73,7 @@
             >
               <div class="product-card-info-item-label">
                 <div class="product-card-info-item-label-text">
-                  {{ note.name.toUpperCase() }}
+                  {{ note.name }}
                 </div>
                 <div class="filled-container" />
               </div>
