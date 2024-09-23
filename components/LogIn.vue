@@ -1,8 +1,8 @@
 <template>
-  <modal @close="handleClose">
+  <modal header="войти или зарегистрироваться" @close="handleClose">
     <div class="login-modal">
       <template v-if="step === 'call'">
-        <h1>войти или зарегистрироваться</h1>
+        <!-- <h1>войти или зарегистрироваться</h1> -->
         <p class="mt-2 mb-3">
           Позвоним или пришлём SMS. Введите последние четыре цифры номера
           телефона или код из SMS-сообщения.
