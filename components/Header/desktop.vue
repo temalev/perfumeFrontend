@@ -46,14 +46,20 @@
       >
         <Icon name="ph:tag-bold" style="font-size: 20px" />
       </li>
-      <li class="pointer" @click="$emit('openShopBag')">
-        <div v-if="ordersSlugs?.length" class="counter">
+      <el-badge
+        :value="ordersSlugs?.length"
+        class="item"
+        :hidden="!ordersSlugs?.length"
+      >
+        <li class="pointer" @click="$emit('openShopBag')">
+          <!-- <div v-if="ordersSlugs?.length" class="counter">
           <Transition>
             <span>{{ ordersSlugs?.length }}</span>
           </Transition>
-        </div>
-        <Icon name="ph:shopping-cart-simple-bold" style="font-size: 20px" />
-      </li>
+        </div> -->
+          <Icon name="ph:shopping-cart-simple-bold" style="font-size: 20px" />
+        </li>
+      </el-badge>
     </ul>
   </header>
 </template>
