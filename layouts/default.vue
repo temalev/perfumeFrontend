@@ -2,6 +2,7 @@
   <div class="layout">
     <Head>
       <Title>ПарфБюро - оригиналы мировых брендов</Title>
+      <Link rel="icon" href="https://parfburo.com/favicon.ico" type="image/x-icon">
     </Head>
     <Header @login="isLoginModal = true" @openShopBag="isDrawer = true" />
     <div class="main">
