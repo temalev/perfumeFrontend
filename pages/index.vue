@@ -76,7 +76,10 @@ export default {
     };
   },
   mounted() {
-    const info = this.$refs.info;
+    const video = this.$refs.video;
+    video.play();
+    console.log(video);
+
     this.getProductsHit();
     this.getProductsSale();
   },

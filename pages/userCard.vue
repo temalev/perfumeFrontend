@@ -31,9 +31,16 @@
         </div>
         <el-empty v-else description="Текущие заказы отсутствуют" />
       </el-tab-pane>
-      <el-tab-pane label="История заказов" :name="3"
-        ><el-empty description="Вы еще ничего не заказывали"
-      /></el-tab-pane>
+      <el-tab-pane label="История заказов" :name="3">
+        <div v-if="ordersHistory?.length" class="d-flex-column gap-4">
+          <order-card
+            v-for="order in ordersHistory"
+            :key="order.id"
+            :order="order"
+          />
+        </div>
+        <el-empty v-else description="Вы еще ничего не заказывали" />
+      </el-tab-pane>
     </el-tabs>
   </div>
 </template>
@@ -65,6 +72,7 @@ export default {
       activeTab: 1,
       favorites: [],
       orders: [],
+      ordersHistory: [],
     };
   },
   mounted() {
@@ -103,7 +111,9 @@ export default {
     async getOrders() {
       try {
         const res = await getOrders();
-        this.orders = res;
+        this.ordersHistory = res;
+        this.orders = res.filter(el => el.statusId < 6);
+        console.log(this.orders);
       } catch (e) {
         console.error(e);
       }
@@ -118,7 +128,6 @@ export default {
   flex-wrap: wrap;
   margin: 20px;
   gap: 22px;
-  width: 100%;
   min-height: 100vh;
 }
 
@@ -142,5 +151,12 @@ export default {
 .tabs {
   width: 80%;
   min-width: 40%;
+  min-height: 100vh;
+}
+
+@media (max-width: 800px) {
+  .tabs {
+    width: 100%;
+  }
 }
 </style>
