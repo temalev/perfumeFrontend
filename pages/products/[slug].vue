@@ -66,6 +66,20 @@
 
               <span>{{ product?.data.country }}</span>
             </li>
+            <li
+              v-for="note in product?.data?.notes"
+              :key="note.name"
+              class="product-card-info-item"
+            >
+              <div class="product-card-info-item-label">
+                <div class="product-card-info-item-label-text">
+                  {{ note.name }}
+                </div>
+                <div class="filled-container" />
+              </div>
+
+              <span>{{ note.value }}</span>
+            </li>
           </ul>
         </div>
       </div>
@@ -224,6 +238,7 @@ export default {
 }
 .product-card-info-item {
   display: flex;
+  font-size: 14px;
 }
 .product-card-info-item-label {
   display: flex;
