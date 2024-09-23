@@ -80,7 +80,11 @@ export default {
 }
 
 .drawer {
-  width: 40%;
+  --drawer-width: 40%;
+  @media (max-width: 500px) {
+    --drawer-width: 100%;
+  }
+  width: var(--drawer-width);
   height: 100%;
   background-color: #fff;
   animation: open 0.2s ease-out;
@@ -104,13 +108,13 @@ export default {
     width: 0;
   }
   to {
-    width: 40%;
+    width: var(--drawer-width);
   }
 }
 
 @keyframes close {
   from {
-    width: 40%;
+    width: var(--drawer-width);
   }
   to {
     width: 0;

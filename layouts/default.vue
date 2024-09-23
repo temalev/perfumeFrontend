@@ -3,12 +3,12 @@
     <Head>
       <Title>ПарфБюро - оригиналы мировых брендов</Title>
     </Head>
-
-    <Header />
+    <Header @login="isLoginModal = true" @openShopBag="isDrawer = true" />
     <div class="main">
       <slot />
       <Footer @onInfoModal="onInfoModal" />
     </div>
+    <mobile-panel @login="isLoginModal = true" @openShopBag="isDrawer = true" />
     <UiModal
       v-if="isDeliveryModal"
       @close="isDeliveryModal = false"
@@ -37,13 +37,23 @@
         </p>
       </div>
     </UiModal>
+    <shop-bag v-if="isDrawer" @close="isDrawer = false" />
+    <log-in
+      v-if="isLoginModal"
+      @close="isLoginModal = false"
+      @success="$router.push('userCard')"
+    />
   </div>
 </template>
 
 <script>
 import { getMe, addToFavorites } from '@/api/productApi.js';
+import MobilePanel from '~/components/MobilePanel.vue';
+import ShopBag from '~/components/ShopBag.vue';
+import LogIn from '~/components/LogIn.vue';
 
 export default {
+  components: { MobilePanel, ShopBag, LogIn },
   data() {
     return {
       isModal: false,
@@ -51,6 +61,8 @@ export default {
       user: null,
       favorites: [],
       isDeliveryModal: false,
+      isDrawer: false,
+      isLoginModal: false,
     };
   },
   mounted() {
@@ -99,6 +111,7 @@ export default {
   display: flex;
   flex-direction: column;
   overflow: auto;
+  height: 100vh;
 }
 
 .main {
@@ -114,5 +127,11 @@ export default {
   display: flex;
   flex-direction: column;
   gap: 12px;
+}
+
+@media (max-width: 500px) {
+  .main {
+    margin-bottom: 60px;
+  }
 }
 </style>

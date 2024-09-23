@@ -20,15 +20,36 @@
     <div v-if="isLeftMenu" class="left-menu">
       <nav>
         <ul class="d-flex-column gap-4 m-4">
-          <li><NuxtLink class="text-gray" to="/about">КАТАЛОГ</NuxtLink></li>
           <li>
-            <button class="text" @click="$emit('openBrands')">БРЕНДЫ</button>
+            <button
+              class="text"
+              @click="
+                $emit('openCatalog');
+                isLeftMenu = false;
+              "
+            >
+              КАТАЛОГ
+            </button>
           </li>
           <li>
             <button
               class="text"
               @click="
-                $router.push({ name: 'products', query: { isSale: true } });
+                $emit('openBrands');
+                isLeftMenu = false;
+              "
+            >
+              БРЕНДЫ
+            </button>
+          </li>
+          <li>
+            <button
+              class="text"
+              @click="
+                $router.push({
+                  name: 'products-list',
+                  query: { isSale: true },
+                });
                 isLeftMenu = false;
               "
             >

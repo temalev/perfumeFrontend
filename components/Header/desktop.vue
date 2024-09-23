@@ -20,7 +20,9 @@
         <li>
           <button
             class="text"
-            @click="$router.push({ name: 'products', query: { isSale: true } })"
+            @click="
+              $router.push({ name: 'products-list', query: { isSale: true } })
+            "
           >
             СКИДКИ
           </button>
@@ -38,17 +40,26 @@
           @click="user ? $router.push({ name: 'userCard' }) : $emit('login')"
         />
       </li>
-      <li class="pointer">
+      <li
+        class="pointer"
+        @click="user ? $router.push({ name: 'userCard' }) : $emit('login')"
+      >
         <Icon name="ph:tag-bold" style="font-size: 20px" />
       </li>
-      <li class="pointer" @click="$emit('openShopBag')">
-        <div v-if="ordersSlugs?.length" class="counter">
+      <el-badge
+        :value="ordersSlugs?.length"
+        class="item"
+        :hidden="!ordersSlugs?.length"
+      >
+        <li class="pointer" @click="$emit('openShopBag')">
+          <!-- <div v-if="ordersSlugs?.length" class="counter">
           <Transition>
             <span>{{ ordersSlugs?.length }}</span>
           </Transition>
-        </div>
-        <Icon name="ph:shopping-cart-simple-bold" style="font-size: 20px" />
-      </li>
+        </div> -->
+          <Icon name="ph:shopping-cart-simple-bold" style="font-size: 20px" />
+        </li>
+      </el-badge>
     </ul>
   </header>
 </template>
