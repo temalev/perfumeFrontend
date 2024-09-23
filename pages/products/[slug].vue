@@ -40,7 +40,7 @@
         </div>
         <div class="product-card-info">
           <div class="product-card-info-header">Подробные характеристики</div>
-          <ul>
+          <ul class="product-card-info-list">
             <li class="product-card-info-item">
               <div class="product-card-info-item-label">
                 <div class="product-card-info-item-label-text">
@@ -236,6 +236,11 @@ export default {
   margin-bottom: 12px;
   margin-top: 20px;
 }
+.product-card-info-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
 .product-card-info-item {
   display: flex;
   font-size: 14px;
@@ -243,6 +248,7 @@ export default {
 .product-card-info-item-label {
   display: flex;
   width: 200px;
+  align-items: flex-end;
   flex-shrink: 0;
   &-text {
     flex-shrink: 0;
@@ -278,6 +284,7 @@ export default {
   cursor: pointer;
   transition: 0.2s;
   flex-shrink: 0;
+  font-size: 11px;
 
   &:hover {
     background-color: #000;
