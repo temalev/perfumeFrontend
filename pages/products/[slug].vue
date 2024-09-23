@@ -4,7 +4,7 @@
       <Title>Купить {{ product?.name }}</Title>
     </Head>
     <bread-crumb :data="breadcrumb" />
-    <div class="product-card-content gap-4">
+    <div class="product-card-content gap-4 mt-4">
       <img :src="image(product?.images[0])" :alt="product?.name" />
       <div class="d-flex-column">
         <h1>{{ product?.name }}</h1>
