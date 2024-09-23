@@ -10,11 +10,9 @@
           <span class="name">{{ product?.name }}</span>
           <span class="category">{{ product?.type }}</span>
         </div>
-        <div class="pay d-flex-row j-sb">
-          <div class="info-price d-flex align-flex-end">
-            <span class="params">{{ product?.capacity }} мл.</span>
-            <span class="params">{{ product.count }} шт.</span>
-          </div>
+        <div class="info-price d-flex align-flex-end">
+          <span class="params">{{ product?.capacity }} мл.</span>
+          <span class="params">{{ product.count }} шт.</span>
         </div>
       </div>
 
@@ -79,7 +77,7 @@ img {
   font-family: Anselm Sans;
   font-size: 18px;
   font-weight: 400;
-  text-align: center;
+  text-wrap: nowrap;
 }
 .info-name {
   gap: 4px;
@@ -97,7 +95,7 @@ img {
   font-size: 18px;
   font-weight: 400;
   line-height: 18px;
-  text-align: center;
+  text-align: left;
 }
 
 .params {

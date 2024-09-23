@@ -31,12 +31,18 @@
         </div>
         <div class="price mb-4">{{ product?.price }} ₽</div>
         <div class="d-flex gap-2">
-          <UiTheButton @click="addToShopBag(product.slug)">
-            Добавить в корзину
-          </UiTheButton>
-          <UiTheButton @click="addToFavorites(product.slug)">
-            Добавить в избранное
-          </UiTheButton>
+          <el-button
+            @click="addToShopBag(product.slug)"
+            size="large"
+            type="primary"
+            >Добавить в корзину</el-button
+          >
+          <el-button
+            size="large"
+            type="primary"
+            @click="addToFavorites(product.slug)"
+            >Добавить в избранное</el-button
+          >
         </div>
         <div class="product-card-info">
           <div class="product-card-info-header">Подробные характеристики</div>
