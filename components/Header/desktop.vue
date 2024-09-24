@@ -6,7 +6,10 @@
       width="140"
       height="50px"
       class="pointer"
-      @click="$router.push('/')"
+      @click="
+        $router.push('/');
+        $emit('closeModal');
+      "
     />
 
     <nav>
