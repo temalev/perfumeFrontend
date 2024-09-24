@@ -15,8 +15,10 @@
     "@nuxt/eslint": "^0.3.13",
     "@nuxt/fonts": "^0.7.1",
     "element-plus": "^2.8.1",
+    "maska": "^3.0.2",
     "nuxt": "^3.12.3",
-    "vue": "latest"
+    "vue": "latest",
+    "vue-the-mask": "^0.11.1"
   },
   "devDependencies": {
     "nuxt-icon": "^1.0.0-beta.7",

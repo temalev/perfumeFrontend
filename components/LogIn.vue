@@ -1,13 +1,15 @@
 <template>
-  <modal header="войти или зарегистрироваться" @close="handleClose">
+  <modal header="Вход / Регистрация" @close="handleClose">
     <div class="login-modal">
       <template v-if="step === 'call'">
-        <!-- <h1>войти или зарегистрироваться</h1> -->
         <p class="mt-2 mb-3">
           Позвоним или пришлём SMS. Введите последние четыре цифры номера
           телефона или код из SMS-сообщения.
         </p>
-        <the-input-phone v-model="value" />
+        <!-- <the-input-phone v-model="value" /> -->
+        <el-input v-mask="'(###) ###-##-##'" v-model="value">
+          <template #prefix> <div class="mr-1">+7</div> </template>
+        </el-input>
         <TheButton class="mt-4" @click="getCode">Получить код</TheButton>
       </template>
       <template v-if="step === 'code'">
@@ -54,7 +56,7 @@ export default {
     },
     async getCode() {
       const data = {
-        phoneNumber: this.value,
+        phoneNumber: `7${this.value.replace(/\D/g, '')}`,
       };
       try {
         const res = await getCodeFromCall(data);
