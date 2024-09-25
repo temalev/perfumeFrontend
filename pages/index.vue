@@ -3,7 +3,6 @@
     <div class="d-flex" style="position: relative">
       <!-- <img src="/img/bg.png" alt="" width="100%" /> -->
       <video
-        ref="video"
         playsinline
         autoplay
         loop
@@ -21,6 +20,20 @@
     </div>
     <div ref="info" class="info">
       <media-card v-for="item in media" :key="item.id" :data="item" />
+    </div>
+    <div class="info-mobile">
+      <video
+        v-for="item in media"
+        :key="item.id"
+        :data="item"
+        ref="video"
+        playsinline
+        loop
+        muted
+        style="height: 600px; width: 100%; object-fit: cover"
+      >
+        <source :src="item.url" type="video/mp4" />
+      </video>
     </div>
     <div class="offers m-8">
       <h1>Специальные предложения</h1>
@@ -77,7 +90,11 @@ export default {
   },
   mounted() {
     const video = this.$refs.video;
-    video.play();
+
+    if (video[0].offsetLeft === 0) {
+      video[0].play();
+    }
+    // video.play();
     console.log(video);
 
     this.getProductsHit();
@@ -154,10 +171,25 @@ export default {
   scroll-behavior: smooth;
 }
 
+@media (min-width: 600px) {
+  .info-mobile {
+    display: none;
+  }
+}
+
 @media (max-width: 600px) {
   .info {
-    height: 600px;
-    scroll-snap-type: y mandatory;
+    display: none;
+  }
+  .info-mobile {
+    display: flex;
+    overflow: scroll;
+    scroll-behavior: smooth;
+    scroll-snap-type: x mandatory;
+
+    & video {
+      scroll-snap-align: start;
+    }
   }
 }
 
