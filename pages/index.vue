@@ -4,7 +4,6 @@
       <!-- <img src="/img/bg.png" alt="" width="100%" /> -->
       <video
         playsinline
-        autoplay
         loop
         muted
         style="height: 600px; width: 100%; object-fit: cover"
