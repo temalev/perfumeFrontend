@@ -5,6 +5,7 @@
       <video
         playsinline
         loop
+        autoplay
         muted
         style="height: 600px; width: 100%; object-fit: cover"
       >
