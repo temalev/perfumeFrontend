@@ -101,7 +101,7 @@ export default {
 
 <style scoped lang="scss">
 .login-modal {
-  margin: 0 20px;
+  padding: 0 20px;
   width: 400px;
   h1 {
     // margin: 0 12px;
