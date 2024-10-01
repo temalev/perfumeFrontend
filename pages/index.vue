@@ -13,8 +13,8 @@
       </video>
       <div class="text-container">
         <div class="text">
-          <h1>TORRICELUMN –50%</h1>
-          <p>тут может быть любой текст, также как и картинка / видео</p>
+          <!-- <h1>TORRICELUMN –50%</h1>
+          <p>тут может быть любой текст, также как и картинка / видео</p> -->
         </div>
       </div>
     </div>
