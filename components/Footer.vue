@@ -2,9 +2,9 @@
   <div class="footer">
     <div class="d-flex-column">
       <el-text class="mx-1" size="large">Информация</el-text>
-      <ul>
+      <ul class="mt-4">
         <li class="pointer" @click="$emit('onInfoModal', 'about')">О нас</li>
-        <li class="pointer" @click="$emit('onInfoModal', 'delivery')">
+        <li class="pointer mt-1" @click="$emit('onInfoModal', 'delivery')">
           Доставка
         </li>
       </ul>
