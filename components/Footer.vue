@@ -59,7 +59,7 @@ export default {};
   padding: 20px;
   justify-content: space-around;
 
-  @media (max-width: 500px) {
+  @media (max-width: 800px) {
     justify-content: flex-start;
   }
 
