@@ -3,6 +3,7 @@
     <div class="d-flex-column">
       <el-text class="mx-1" size="large">Информация</el-text>
       <ul>
+        <li class="pointer" @click="$emit('onInfoModal', 'about')">О нас</li>
         <li class="pointer" @click="$emit('onInfoModal', 'delivery')">
           Доставка
         </li>
