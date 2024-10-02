@@ -2,8 +2,9 @@
   <div class="footer">
     <div class="d-flex-column">
       <el-text class="mx-1" size="large">Информация</el-text>
-      <ul>
-        <li class="pointer" @click="$emit('onInfoModal', 'delivery')">
+      <ul class="mt-4">
+        <li class="pointer" @click="$emit('onInfoModal', 'about')">О нас</li>
+        <li class="pointer mt-1" @click="$emit('onInfoModal', 'delivery')">
           Доставка
         </li>
       </ul>
@@ -58,7 +59,7 @@ export default {};
   padding: 20px;
   justify-content: space-around;
 
-  @media (max-width: 500px) {
+  @media (max-width: 800px) {
     justify-content: flex-start;
   }
 
