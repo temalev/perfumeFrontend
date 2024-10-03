@@ -51,7 +51,7 @@
           @blur="isSearch = false"
           :fetch-suggestions="querySearch"
           popper-class="my-autocomplete"
-          placeholder="Please input"
+          placeholder="Поиск..."
           @select="handleSelect"
         >
           <template #default="{ item }">
@@ -181,12 +181,14 @@ header {
 
 .search {
   position: relative;
-  .search-input {
-    position: absolute;
-    top: -5px;
-    left: -240px;
-    width: 230px;
-    font-size: 16px !important;
+  ::v-deep {
+    .search-input {
+      position: absolute;
+      top: -5px;
+      left: -240px;
+      width: 230px;
+      font-size: 16px !important;
+    }
   }
 }
 
@@ -221,7 +223,7 @@ header {
   }
 }
 
-.el-autocomplete-suggestion li {
-  padding: 12px 0 !important;
+.my-autocomplete {
+  background-color: red;
 }
 </style>
