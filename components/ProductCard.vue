@@ -4,7 +4,7 @@
       <img :src="image(data?.images[0])" :alt="data.name" />
       <button
         v-if="isFavorites"
-        class="ico-btn d-flex align-center j-c"
+        class="ico-btn d-flex align-center j-c favorite-ico"
         @click.stop="addToFavorites(data.slug)"
       >
         <Icon name="ph:tag-bold" style="font-size: 20px" />
@@ -30,10 +30,14 @@
         </div>
 
         <button
-          class="ico-btn d-flex align-center j-c"
+          class="ico-btn d-flex align-center j-c shop-bag-ico"
           @click.stop="addToShopBag(data.slug)"
         >
-          <Icon name="heroicons-solid:plus-sm" style="font-size: 20px" />
+          <Icon
+            name="heroicons-solid:plus-sm"
+            class="plus-ico"
+            style="font-size: 20px"
+          />
           <Icon name="ph:shopping-cart-simple-bold" style="font-size: 20px" />
         </button>
       </div>
@@ -187,5 +191,26 @@ img {
 
 .info-price {
   gap: 10px;
+}
+
+.favorite-ico:hover {
+  transform-origin: 0 0;
+  animation: swaying 0.2s;
+}
+
+@keyframes swaying {
+  0% {
+    transform: rotate(-8deg); /* Начальное положение - наклон влево */
+  }
+  50% {
+    transform: rotate(8deg); /* Среднее положение - наклон вправо */
+  }
+  100% {
+    transform: rotate(-8deg); /* Возвращаемся к исходному наклону */
+  }
+}
+
+.shop-bag-ico:hover .plus-ico {
+  margin-right: -5px;
 }
 </style>

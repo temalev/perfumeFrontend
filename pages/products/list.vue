@@ -52,11 +52,11 @@ export default {
 .products {
   display: flex;
   flex-direction: column;
-  margin: 20px 40px;
+  margin: 40px;
   min-height: 100vh;
   // overflow: auto;
   &-list {
-    margin: 20px;
+    margin: 80px 20px;
     display: flex;
     justify-content: center;
     flex-wrap: wrap;

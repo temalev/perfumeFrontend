@@ -99,9 +99,9 @@
       @success="addToFavorites()"
     />
 
-    <div v-if="products.length" class="d-flex-column">
+    <div v-if="products.length" class="d-flex-column m-10">
       <h1>Продукты этого бренда</h1>
-      <div class="scroll mt-2 mb-4">
+      <div class="scroll mt-5 mb-4">
         <product-card
           v-for="product in products"
           :key="product.id"

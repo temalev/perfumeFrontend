@@ -106,6 +106,12 @@ export default {
       try {
         const res = await getCategory();
         this.category = res;
+        this.category.unshift({
+          id: 0,
+          name: 'Все товары',
+          slug: '',
+          parentId: null,
+        });
       } catch (e) {
         console.error(e);
       }
