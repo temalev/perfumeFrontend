@@ -75,7 +75,7 @@ export default {
 .modal {
   background-color: #fff;
   min-width: 300px;
-  min-height: 400px;
+  padding-bottom: 20px;
   display: flex;
   flex-direction: column;
   align-items: flex-end;
