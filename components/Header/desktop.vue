@@ -33,8 +33,46 @@
       </ul>
     </nav>
     <ul class="icons d-flex gap-6">
-      <li class="pointer">
-        <Icon name="ph:magnifying-glass-bold" style="font-size: 20px" />
+      <li class="pointer search">
+        <!-- <el-input
+          ref="input"
+          class="search-input"
+          v-if="isSearch"
+          v-model="search"
+          @blur="isSearch = false"
+          autofocus
+        /> -->
+        <el-autocomplete
+          ref="input"
+          class="search-input"
+          v-if="isSearch"
+          v-model="search"
+          autofocus
+          @blur="isSearch = false"
+          :fetch-suggestions="querySearch"
+          popper-class="my-autocomplete"
+          placeholder="Please input"
+          @select="handleSelect"
+        >
+          <template #default="{ item }">
+            <div class="d-flex j-b align-center mt-2 mb-2">
+              <img
+                width="40"
+                height="40"
+                :src="imgUrl(item?.images[0])"
+                :alt="item?.name"
+              />
+              <div class="ml-2">{{ item.name }}</div>
+              <div class="ml-2">{{ item.price }} ₽</div>
+            </div>
+          </template>
+        </el-autocomplete>
+        <Icon
+          @click.prevent="onInput"
+          name="ph:magnifying-glass-bold"
+          style="font-size: 20px"
+          class="ml-2"
+        />
       </li>
       <li class="pointer">
         <Icon
@@ -78,6 +116,39 @@ export default {
       type: Array,
       default: () => [],
     },
+    querySearch: {
+      type: Array,
+      default: () => [],
+    },
+  },
+  data() {
+    return {
+      search: '',
+      isSearch: false,
+    };
+  },
+  watch: {
+    search(val) {
+      this.$emit('onSearch', val);
+    },
+  },
+  methods: {
+    onInput() {
+      this.isSearch = true;
+      setTimeout(() => {
+        this.$refs.input.focus();
+      }, 100);
+    },
+    imgUrl(url) {
+      return url ? url : '/img/no_image.png';
+    },
+    handleSelect(val) {
+      this.$router.push({
+        name: 'products-slug',
+        params: { slug: val.slug },
+      });
+      this.isSearch = false;
+    },
   },
 };
 </script>
@@ -105,6 +176,17 @@ header {
     & a {
       font-size: 14px;
     }
+  }
+}
+
+.search {
+  position: relative;
+  .search-input {
+    position: absolute;
+    top: -5px;
+    left: -240px;
+    width: 230px;
+    font-size: 16px !important;
   }
 }
 
@@ -137,5 +219,9 @@ header {
       }
     }
   }
+}
+
+.el-autocomplete-suggestion li {
+  padding: 12px 0 !important;
 }
 </style>

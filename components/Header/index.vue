@@ -4,6 +4,7 @@
       class="desktop"
       :user="user"
       :ordersSlugs="ordersSlugs"
+      :querySearch="querySearch"
       @openCatalog="
         isCatalog = true;
         isBrandsModal = false;
@@ -18,6 +19,7 @@
         isCatalog = false;
       "
       @login="$emit('login')"
+      @onSearch="val => getProducts(val)"
     />
     <mobile
       @openCatalog="
@@ -37,6 +39,7 @@
       @close="isBrandsModal = false"
     />
     <cascader :data="category" v-if="isCatalog" @close="isCatalog = false" />
+    <search-modal v-if="isSearchModal" />
   </div>
 </template>
 
@@ -47,7 +50,8 @@ import Cascader from '../ui/Cascader/Cascader.vue';
 
 import desktop from './desktop.vue';
 import mobile from './mobile.vue';
-import { getCategory, getBrands } from '@/api/productApi.js';
+import { getCategory, getBrands, getProducts } from '@/api/productApi.js';
+import SearchModal from '../ui/SearchModal.vue';
 
 export default {
   components: {
@@ -56,17 +60,20 @@ export default {
     Drawer,
     BrandsModal,
     Cascader,
+    SearchModal,
   },
   data() {
     return {
       isLeftMenu: false,
       isBrandsModal: false,
       isCatalog: false,
+      isSearchModal: false,
 
       brands: [],
       category: [],
       user: useState('user'),
       ordersSlugs: useState('ordersSlugs'),
+      querySearch: [],
     };
   },
 
@@ -84,6 +91,17 @@ export default {
     },
   },
   methods: {
+    async getProducts(val) {
+      const params = {
+        q: val,
+      };
+      try {
+        const res = await getProducts(params);
+        this.querySearch = res;
+      } catch (e) {
+        console.error(e);
+      }
+    },
     async getCategory() {
       try {
         const res = await getCategory();
