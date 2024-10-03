@@ -40,7 +40,10 @@ export default {
   },
   methods: {
     navigateToCategory(id) {
-      this.$router.push({ name: 'products-list', query: { categoryId: id } });
+      this.$router.push({
+        name: 'products-list',
+        query: { categoryId: id || undefined },
+      });
       this.$emit('close');
     },
   },
