@@ -1,14 +1,20 @@
 <template>
   <div v-loading="getProductsProcess" class="products">
     <h1 v-if="$route.query.isSale">Специальное предложение</h1>
-    <div class="d-flex gap-4 filters">
-      <div class="d-flex-column gap-2">
+    <div class="filters">
+      <!-- <el-dropdown split-button type="primary">
+        Фильтры
+        <template #dropdown>
+          <el-dropdown-menu> тут содержимое </el-dropdown-menu>
+        </template>
+      </el-dropdown> -->
+      <div class="d-flex-column gap-2 filter-item">
         <p>Бренды</p>
         <el-select
           v-model="queryParams.brand"
           multiple
           placeholder="Выберите бренд"
-          style="width: 240px"
+          style="min-width: 240px"
           @blur="setQuery()"
           @remove-tag="setQuery()"
         >
@@ -20,13 +26,13 @@
           />
         </el-select>
       </div>
-      <div class="d-flex-column gap-2">
+      <div class="d-flex-column gap-2 filter-item">
         <p>Категории</p>
         <el-select
           v-model="queryParams.categoryId"
           multiple
           placeholder="Выберите категорию"
-          style="width: 240px"
+          style="min-width: 240px"
           @blur="setQuery()"
           @remove-tag="setQuery()"
         >
@@ -38,7 +44,7 @@
           />
         </el-select>
       </div>
-      <div class="d-flex-column gap-2">
+      <div class="d-flex-column gap-2 filter-item">
         <p>Сортировать</p>
         <div class="d-flex gap-2">
           <el-segmented
@@ -59,8 +65,8 @@
           </el-segmented>
         </div>
       </div>
-      <div class="d-flex-column" style="gap: 6px">
-        <p>
+      <div class="d-flex-column filter-item" style="gap: 6px">
+        <p style="text-wrap: nowrap">
           Диапазон стоимости от
           <!-- <el-input-number
             v-model="price[0]"
@@ -251,5 +257,20 @@ export default {
 .filters {
   border-bottom: 1px solid #eee;
   padding-bottom: 20px;
+  display: flex;
+  gap: 12px;
+  overflow: scroll;
+  scroll-behavior: smooth;
+  scroll-snap-type: x mandatory;
+}
+
+@media (max-width: 500px) {
+  .filter-item {
+    scroll-snap-align: start; /* Элементы будут прилипать к началу */
+    min-width: 100%;
+  }
+  .el-select {
+    width: 100%;
+  }
 }
 </style>
