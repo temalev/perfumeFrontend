@@ -1,7 +1,7 @@
 <template>
   <div v-loading="getProductsProcess" class="products">
     <h1 v-if="$route.query.isSale">Специальное предложение</h1>
-    <div class="d-flex gap-4">
+    <div class="d-flex gap-4 filters">
       <div class="d-flex-column gap-2">
         <p>Бренды</p>
         <el-select
@@ -36,6 +36,36 @@
           />
         </el-select>
       </div>
+      <div class="d-flex-column gap-2">
+        <p>Сортировать</p>
+        <!-- <el-select
+          v-model="sort"
+          placeholder="Выберите сортировку"
+          style="width: 240px"
+          @blur="getProducts"
+        >
+          <el-option
+            v-for="item in sortList"
+            :key="item.name"
+            :label="item.name"
+            :value="item.id"
+          />
+        </el-select> -->
+        <div class="d-flex gap-2">
+          <el-segmented
+            @change="getProducts"
+            v-model="sort"
+            :options="sortList"
+          />
+          <el-segmented @change="getProducts" v-model="order" :options="orders">
+            <template #default="{ item }">
+              <div class="flex flex-col items-center gap-2">
+                <Icon :name="item.icon" style="font-size: 20px" />
+              </div>
+            </template>
+          </el-segmented>
+        </div>
+      </div>
     </div>
     <div class="products-list">
       <product-card
@@ -59,6 +89,28 @@ export default {
       category: [],
       selectedBrands: null,
       selectedCategory: null,
+      sortList: [
+        {
+          value: 'name',
+          label: 'По названию',
+        },
+        {
+          value: 'price',
+          label: 'По стоимости',
+        },
+      ],
+      sort: 'name',
+      order: 'DESC',
+      orders: [
+        {
+          value: 'DESC',
+          icon: 'solar:sort-from-bottom-to-top-bold-duotone',
+        },
+        {
+          value: 'ASC',
+          icon: 'solar:sort-from-top-to-bottom-bold-duotone',
+        },
+      ],
     };
   },
   watch: {
@@ -75,6 +127,8 @@ export default {
     this.selectedCategory = this.$route.query.categoryId
       ? this.$route.query.categoryId
       : undefined;
+    this.order = this.$route.query.order;
+    this.sort = this.$route.query.orderBy;
 
     this.getProducts();
   },
@@ -90,6 +144,8 @@ export default {
       const params = {
         ...(this.selectedBrands && { brand: this.selectedBrands }),
         ...(this.selectedCategory && { categoryId: this.selectedCategory }),
+        orderBy: this.sort,
+        order: this.order,
       };
       this.$router.replace({
         query: params,
@@ -138,5 +194,10 @@ export default {
     flex-wrap: wrap;
     gap: 22px;
   }
+}
+
+.filters {
+  border-bottom: 1px solid #eee;
+  padding-bottom: 20px;
 }
 </style>
