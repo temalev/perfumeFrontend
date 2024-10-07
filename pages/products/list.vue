@@ -177,6 +177,14 @@ export default {
           this.removeEmptyFields(this.$route.query)
         );
         this.products = res;
+        this.price[0] = this.products.reduce(
+          (min, item) => (item.price < min ? item.price : min),
+          this.products[0].price
+        );
+        this.price[1] = this.products.reduce(
+          (max, item) => (item.price > max ? item.price : max),
+          this.products[0].price
+        );
       } catch (e) {
         console.error(e);
       }
