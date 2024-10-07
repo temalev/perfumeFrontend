@@ -9,7 +9,8 @@
           multiple
           placeholder="Выберите бренд"
           style="width: 240px"
-          @blur="getProducts"
+          @blur="setQuery()"
+          @remove-tag="setQuery()"
         >
           <el-option
             v-for="item in brands"
@@ -26,7 +27,8 @@
           multiple
           placeholder="Выберите категорию"
           style="width: 240px"
-          @blur="getProducts"
+          @blur="setQuery()"
+          @remove-tag="setQuery()"
         >
           <el-option
             v-for="item in category"
@@ -40,12 +42,12 @@
         <p>Сортировать</p>
         <div class="d-flex gap-2">
           <el-segmented
-            @change="getProducts"
+            @change="setQuery()"
             v-model="queryParams.orderBy"
             :options="sortList"
           />
           <el-segmented
-            @change="getProducts"
+            @change="setQuery()"
             v-model="queryParams.order"
             :options="orders"
           >
@@ -80,7 +82,7 @@
           step="100"
           max="100000"
           style="padding: 0 20px; width: 260px"
-          @change="getProducts()"
+          @change="setQuery()"
         />
       </div>
     </div>
@@ -137,13 +139,10 @@ export default {
   },
   mounted() {
     console.log(this.price[1]);
-
     this.getBrands();
     this.getCategory();
+    this.setQuery();
     this.getProducts();
-    this.$router.replace({
-      query: this.queryParams,
-    });
   },
 
   methods: {
@@ -160,18 +159,23 @@ export default {
     getItemById(id, arr) {
       return arr.find(el => el.id === id);
     },
+    setQuery() {
+      this.$router.replace({
+        query: this.queryParams,
+      });
+    },
     async getProducts() {
       this.getProductsProcess = true;
       this.products = [];
 
       this.queryParams.fromPrice = this.price?.[0];
       this.queryParams.toPrice = this.price?.[1];
+      console.log(this.removeEmptyFields(this.$route.query));
 
-      this.$router.replace({
-        query: this.queryParams,
-      });
       try {
-        const res = await getProducts(this.$route.query);
+        const res = await getProducts(
+          this.removeEmptyFields(this.$route.query)
+        );
         this.products = res;
       } catch (e) {
         console.error(e);
@@ -195,6 +199,26 @@ export default {
       } catch (e) {
         console.error(e);
       }
+    },
+    removeEmptyFields(obj) {
+      const result = {};
+
+      for (const key in obj) {
+        if (obj.hasOwnProperty(key)) {
+          const value = obj[key];
+
+          if (
+            value !== null &&
+            value !== undefined &&
+            value !== '' &&
+            !(Array.isArray(value) && value.length === 0)
+          ) {
+            result[key] = value;
+          }
+        }
+      }
+
+      return result;
     },
   },
 };
