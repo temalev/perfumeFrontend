@@ -1,8 +1,14 @@
 <template>
   <div class="body-home-page">
     <div class="d-flex" style="position: relative">
-      <!-- <img src="/img/bg.png" alt="" width="100%" /> -->
-      <video
+      <img
+        src="/img/bg.webp"
+        alt=""
+        width="100%"
+        height="600px"
+        style="object-fit: cover"
+      />
+      <!-- <video
         playsinline
         loop
         autoplay
@@ -10,7 +16,7 @@
         style="height: 600px; width: 100%; object-fit: cover"
       >
         <source src="/video/bg.mp4" type="video/mp4" />
-      </video>
+      </video> -->
       <div class="text-container">
         <div class="text">
           <!-- <h1>TORRICELUMN –50%</h1>
