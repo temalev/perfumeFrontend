@@ -36,6 +36,7 @@
         preload="metadata"
         loop
         muted
+        @loadedmetadata="captureFirstFrame($event, item)"
         @click="openedVideo = item"
       >
         <source :src="item.url" type="video/mp4" />
@@ -102,6 +103,30 @@ export default {
     this.getMedia();
   },
   methods: {
+    captureFirstFrame(event, item) {
+      const videoElement = event.target;
+
+      // Остановить видео после загрузки метаданных
+      videoElement.currentTime = 0;
+      videoElement.pause();
+
+      // Создать canvas для захвата кадра
+      const canvas = document.createElement('canvas');
+      const context = canvas.getContext('2d');
+
+      // Установить размер canvas как у видео
+      canvas.width = videoElement.videoWidth;
+      canvas.height = videoElement.videoHeight;
+
+      // Нарисовать первый кадр на canvas
+      context.drawImage(videoElement, 0, 0, canvas.width, canvas.height);
+
+      // Получить изображение из canvas
+      const dataURL = canvas.toDataURL('image/jpeg');
+
+      // Установить изображение как постер
+      item.poster = dataURL;
+    },
     async getMedia() {
       this.mediaLoading = true;
       try {
