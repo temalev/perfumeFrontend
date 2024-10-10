@@ -28,7 +28,10 @@
               :value="`${new Intl.NumberFormat('ru').format(totalPrice)} ₽`"
             />
           </div>
-          <UiTheButton class="w100" @click="step = 'makingAnOrder'">
+          <UiTheButton
+            class="w100"
+            @click="user ? (step = 'makingAnOrder') : $emit('login')"
+          >
             Оформить заказ
           </UiTheButton>
         </div>
