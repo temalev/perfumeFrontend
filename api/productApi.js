@@ -204,8 +204,8 @@ export async function login(requestData) {
     const data = await response.json();
 
     if (data.accessToken) {
-      // const cookie = useCookie('accessToken');
-      // cookie.value = data.accessToken;
+      const cookie = useCookie('accessToken');
+      cookie.value = data.accessToken;
 
       return data;
     } else {
