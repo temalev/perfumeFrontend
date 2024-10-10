@@ -176,7 +176,7 @@ export default {
 
   @media (max-width: 600px) {
     img {
-      height: 460px !important;
+      height: 360px !important;
     }
   }
 }
