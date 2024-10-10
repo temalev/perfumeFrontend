@@ -24,13 +24,13 @@
         </div>
       </div>
     </div>
-    <div ref="info" class="info">
+    <div v-loading="mediaLoading" ref="info" class="info">
       <media-card v-for="item in media" :key="item.id" :data="item" />
     </div>
-    <div class="info-mobile">
+    <div v-loading="mediaLoading" class="info-mobile">
       <video
         v-for="item in media"
-        :key="item.id"
+        :key="item.url"
         :data="item"
         playsinline
         preload="metadata"
@@ -81,7 +81,7 @@ import products from 'assets/mock/products.json';
 import ProductCard from '~/components/ProductCard.vue';
 import MediaCard from '~/components/MediaCard.vue';
 
-import { getProducts } from '@/api/productApi.js';
+import { getProducts, getMedia } from '@/api/productApi.js';
 import Modal from '~/components/ui/Modal.vue';
 
 export default {
@@ -91,28 +91,27 @@ export default {
       products: products,
       productsHit: [],
       productsSale: [],
-      media: [
-        {
-          id: 1,
-          url: 'https://841301.selcdn.ru/rkTech/perfume/files/312323398_An_47hahcYBrMaQDk_QnHWM5Le0uNRUDdckjQRj2ag3H6ZcziaOdt.mp4#t=0.1',
-        },
-        {
-          id: 2,
-          url: 'https://841301.selcdn.ru/rkTech/perfume/files/312323398_An8vOkxQj_Vo05XENunbqMDLcBSyuu43pxJS0E9148qYBK4HKgL_QaeVnP3x.mp4#t=0.1',
-        },
-        {
-          id: 3,
-          url: 'https://841301.selcdn.ru/rkTech/perfume/files/312323398_An_hvv49_8TEFfGLgPlj2VgFEdmixlO0wnacygRW1BFZSlL_0XdxDNpwe2.mp4#t=0.1',
-        },
-      ],
+      media: [],
       openedVideo: null,
+      mediaLoading: false,
     };
   },
   mounted() {
     this.getProductsHit();
     this.getProductsSale();
+    this.getMedia();
   },
   methods: {
+    async getMedia() {
+      this.mediaLoading = true;
+      try {
+        const res = await getMedia();
+        this.media = res.data.stories;
+      } catch (e) {
+        console.error(e);
+      }
+      this.mediaLoading = false;
+    },
     async getProductsHit() {
       this.getProductsProcess = true;
       const params = {
@@ -149,6 +148,12 @@ export default {
   flex-direction: column;
   // height: 100%;
   // overflow: hidden;
+
+  @media (max-width: 600px) {
+    img {
+      height: 460px !important;
+    }
+  }
 }
 .text-container {
   position: absolute;
@@ -181,6 +186,7 @@ export default {
   flex-shrink: 0;
   margin-top: 32px;
   scroll-behavior: smooth;
+  min-height: 200px;
 }
 
 @media (min-width: 600px) {

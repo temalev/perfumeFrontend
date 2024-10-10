@@ -21,6 +21,27 @@ export async function getCategory() {
   }
 }
 
+export async function getMedia() {
+  const config = useRuntimeConfig();
+  const apiUrl = config.public.URL;
+
+  try {
+    const response = await fetch(`${apiUrl}/param/public_media`, {
+      method: 'GET',
+    });
+
+    if (!response.ok) {
+      throw new Error('Ошибка при получении медиа');
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
 export async function getBrands() {
   const config = useRuntimeConfig();
   const apiUrl = config.public.URL;
