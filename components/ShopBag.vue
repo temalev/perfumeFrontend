@@ -51,16 +51,41 @@
         </div>
         <form @submit="createOrder">
           <div class="form-data">
-            <UiTheInput label="ФИО" v-model="form.name" />
-            <UiTheInput label="Email" type="email" v-model="form.email" />
-            <UiTheInputPhone label="Телефон" v-model="form.phone" />
             <div class="d-flex-column">
-              <label style="font-weight: bold">Способ доставки</label>
+              <label style="font-weight: bold" class="mb-2">ФИО</label>
+              <el-input
+                v-model="form.name"
+                placeholder="Иванов Иван Иванович"
+              />
+            </div>
+            <!-- <UiTheInput label="Email" type="email" v-model="form.email" /> -->
+            <div class="d-flex-column">
+              <label style="font-weight: bold" class="mb-2">Email</label>
+              <el-input v-model="form.email" placeholder="ivanov@email.ru" />
+            </div>
+            <div class="d-flex-column">
+              <label style="font-weight: bold" class="mb-2">Телефон</label>
+              <el-input v-mask="'(###) ###-##-##'" v-model="form.phone">
+                <template #prefix> <div class="mr-1">+7</div> </template>
+              </el-input>
+            </div>
+            <div class="d-flex-column">
+              <label style="font-weight: bold" class="mb-2"
+                >Способ доставки</label
+              >
               <el-collapse v-model="form.deliveryTypeId" accordion>
-                <el-collapse-item
-                  title="Доставка по России транспортной компанией CDEK"
-                  name="1"
-                >
+                <el-collapse-item title="" name="1">
+                  <template #title>
+                    <Transition name="icon-fade">
+                      <Icon
+                        v-if="form.deliveryTypeId === '1'"
+                        name="material-symbols:check-circle-rounded"
+                        style="font-size: 20px; color: green"
+                        class="mr-2"
+                      />
+                    </Transition>
+                    Доставка по России транспортной компанией CDEK
+                  </template>
                   <UiTheSelect
                     label="Регион"
                     :options="regions"
@@ -72,10 +97,18 @@
                     @change="val => (form.deliveryPoint = val)"
                   />
                 </el-collapse-item>
-                <el-collapse-item
-                  title="Доставка по Москве в пределах МКАД курьером"
-                  name="2"
-                >
+                <el-collapse-item title="" name="2">
+                  <template #title>
+                    <Transition name="icon-fade">
+                      <Icon
+                        v-if="form.deliveryTypeId === '2'"
+                        name="material-symbols:check-circle-rounded"
+                        style="font-size: 20px; color: green"
+                        class="mr-2"
+                      />
+                    </Transition>
+                    Доставка по Москве в пределах МКАД курьером
+                  </template>
                   <label>Адрес</label>
                   <el-input
                     v-model="form.address"
@@ -85,10 +118,18 @@
                     placeholder=""
                   />
                 </el-collapse-item>
-                <el-collapse-item
-                  title="Доставка по Москве за пределы МКАД курьером"
-                  name="3"
-                >
+                <el-collapse-item title="" name="3">
+                  <template #title>
+                    <Transition name="icon-fade">
+                      <Icon
+                        v-if="form.deliveryTypeId === '3'"
+                        name="material-symbols:check-circle-rounded"
+                        style="font-size: 20px; color: green"
+                        class="mr-2"
+                      />
+                    </Transition>
+                    Доставка по Москве за пределы МКАД курьером
+                  </template>
                   <label>Адрес</label>
                   <el-input
                     v-model="form.address"
@@ -98,10 +139,18 @@
                     placeholder=""
                   />
                 </el-collapse-item>
-                <el-collapse-item
-                  title="Доставка по Рязани в пределах города, Яндекс.Go"
-                  name="4"
-                >
+                <el-collapse-item title="" name="4">
+                  <template #title>
+                    <Transition name="icon-fade">
+                      <Icon
+                        v-if="form.deliveryTypeId === '4'"
+                        name="material-symbols:check-circle-rounded"
+                        style="font-size: 20px; color: green"
+                        class="mr-2"
+                      />
+                    </Transition>
+                    Доставка по Рязани в пределах города, Яндекс.Go
+                  </template>
                   <label>Адрес</label>
                   <el-input
                     v-model="form.address"
@@ -243,7 +292,7 @@ export default {
         recepient: {
           name: this.form.name,
           email: this.form.email,
-          phone: this.form.phone,
+          phone: `7${this.form.phone.replace(/\D/g, '')}`,
           deliveryTypeId: this.form.deliveryTypeId,
           deliveryMessage: 'Принесите мне в кровать',
           address: this.form.address,
@@ -328,12 +377,29 @@ form {
 .form-data {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 18px;
 }
 
 ::v-deep {
   .el-collapse-item__wrap {
     overflow: visible;
   }
+}
+
+.icon-fade-enter-active,
+.icon-fade-leave-active {
+  transition: all 0.3s ease;
+}
+
+.icon-fade-enter-from,
+.icon-fade-leave-to {
+  opacity: 0;
+  transform: scale(0.8);
+}
+
+.icon-fade-enter-to,
+.icon-fade-leave-from {
+  opacity: 1;
+  transform: scale(1);
 }
 </style>
