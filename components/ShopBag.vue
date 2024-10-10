@@ -86,15 +86,36 @@
                     </Transition>
                     Доставка по России транспортной компанией CDEK
                   </template>
+                  <div class="d-flex-column mt-2">
+                    <label style="font-weight: bold" class="mb-1"
+                      >Фамилия</label
+                    >
+                    <el-input v-model="form.lastName" placeholder="Иванов" />
+                  </div>
+                  <div class="d-flex-column mt-2">
+                    <label style="font-weight: bold" class="mb-1">Имя</label>
+                    <el-input v-model="form.firstName" placeholder="Иван" />
+                  </div>
+                  <div class="d-flex-column mt-2">
+                    <label style="font-weight: bold" class="mb-1"
+                      >Отчество</label
+                    >
+                    <el-input
+                      v-model="form.patronymic"
+                      placeholder="Иванович"
+                    />
+                  </div>
                   <UiTheSelect
                     label="Регион"
                     :options="regions"
                     @change="onChangeRegion"
+                    class="mt-2"
                   />
                   <UiTheSelect
                     label="Пункт выдачи"
                     :options="points"
                     @change="val => (form.deliveryPoint = val)"
+                    class="mt-2"
                   />
                 </el-collapse-item>
                 <el-collapse-item title="" name="2">
@@ -242,6 +263,9 @@ export default {
   methods: {
     getForm() {
       return {
+        firstName: '',
+        lastName: '',
+        patronymic: '',
         email: '',
         name: '',
         phone: '',
@@ -290,7 +314,12 @@ export default {
         origin: 'https://dev.parfburo.com',
         comment: 'Hello world',
         recepient: {
-          name: this.form.name,
+          name:
+            this.form.deliveryTypeId === '1'
+              ? [this.form.lastName, this.form.firstName, this.form.patronymic]
+                  .filter(Boolean)
+                  .join(' ')
+              : this.form.name,
           email: this.form.email,
           phone: `7${this.form.phone.replace(/\D/g, '')}`,
           deliveryTypeId: this.form.deliveryTypeId,
