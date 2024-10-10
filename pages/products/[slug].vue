@@ -19,7 +19,7 @@
               class="options-item"
               :class="{ active: option.id === product.id }"
               @click="
-                this.$router.push({
+                this.$router.replace({
                   name: 'products-slug',
                   params: { slug: option.slug },
                 })
