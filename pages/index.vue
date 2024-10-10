@@ -231,6 +231,7 @@ export default {
     scroll-snap-type: x mandatory;
     margin: 20px;
     gap: 12px;
+    min-height: 200px;
 
     & video {
       scroll-snap-align: start;
