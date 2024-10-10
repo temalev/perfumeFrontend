@@ -194,6 +194,7 @@ export async function login(requestData) {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(requestData),
+      credentials: 'include',
     });
 
     if (!response.ok) {
