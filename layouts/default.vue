@@ -137,6 +137,14 @@ export default {
         this.addToFavorites(val);
       }
     },
+    '$route.path'(val) {
+      const layoutElement = document.getElementsByClassName('main')[0];
+      console.log(layoutElement);
+
+      if (layoutElement) {
+        layoutElement.scrollTo(0, 0); // Сбросить прокрутку к началу
+      }
+    },
   },
   methods: {
     onInfoModal(modal) {

@@ -4,10 +4,10 @@
       <Title>Купить {{ product?.name }}</Title>
     </Head>
     <bread-crumb :data="breadcrumb" />
-    <div class="product-card-content gap-4 mt-4">
+    <div v-if="product" class="product-card-content gap-4 mt-4">
       <img :src="image(product?.images[0])" :alt="product?.name" />
       <div class="d-flex-column">
-        <h1>{{ product?.name }}</h1>
+        <h1 v-if="product?.name">{{ product?.name }}</h1>
         <span class="text-secondary">Артикул: {{ product?.article }}</span>
 
         <div class="options mt-4">
@@ -19,7 +19,7 @@
               class="options-item"
               :class="{ active: option.id === product.id }"
               @click="
-                this.$router.push({
+                this.$router.replace({
                   name: 'products-slug',
                   params: { slug: option.slug },
                 })
@@ -236,7 +236,7 @@ export default {
 }
 
 .price {
-  font-size: 22px;
+  font-size: 32px;
 }
 
 .product-card-info-header {
@@ -277,6 +277,7 @@ export default {
   display: flex;
   gap: 6px;
   margin-top: 4px;
+  height: 40px;
 }
 
 .options-item {
