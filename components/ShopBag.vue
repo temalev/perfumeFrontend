@@ -49,146 +49,399 @@
             @drop="dropItem"
           />
         </div>
-        <form @submit="createOrder">
-          <div class="form-data">
-            <div class="d-flex-column">
-              <label style="font-weight: bold" class="mb-2">ФИО</label>
-              <el-input
-                v-model="form.name"
-                placeholder="Иванов Иван Иванович"
-              />
-            </div>
-            <!-- <UiTheInput label="Email" type="email" v-model="form.email" /> -->
-            <div class="d-flex-column">
-              <label style="font-weight: bold" class="mb-2">Email</label>
-              <el-input v-model="form.email" placeholder="ivanov@email.ru" />
-            </div>
-            <div class="d-flex-column">
-              <label style="font-weight: bold" class="mb-2">Телефон</label>
-              <el-input v-mask="'(###) ###-##-##'" v-model="form.phone">
-                <template #prefix> <div class="mr-1">+7</div> </template>
-              </el-input>
-            </div>
-            <div class="d-flex-column">
-              <label style="font-weight: bold" class="mb-2"
-                >Способ доставки</label
-              >
-              <el-collapse v-model="form.deliveryTypeId" accordion>
-                <el-collapse-item title="" name="1">
-                  <template #title>
-                    <Transition name="icon-fade">
-                      <Icon
-                        v-if="form.deliveryTypeId === '1'"
-                        name="material-symbols:check-circle-rounded"
-                        style="font-size: 20px; color: green"
-                        class="mr-2"
-                      />
-                    </Transition>
-                    Доставка по России транспортной компанией CDEK
-                  </template>
-                  <div class="d-flex-column mt-2">
-                    <label style="font-weight: bold" class="mb-1"
-                      >Фамилия</label
-                    >
+        <el-form
+          ref="form"
+          :model="form"
+          label-position="top"
+          label-width="auto"
+          @submit.prevent
+        >
+          <el-form-item
+            label="ФИО"
+            :rules="[
+              {
+                required: true,
+                message: 'Поле обязательно для заполнения',
+                trigger: ['blur', 'change'],
+              },
+            ]"
+            prop="name"
+          >
+            <el-input v-model="form.name" />
+          </el-form-item>
+          <el-form-item
+            required
+            label="Email"
+            :rules="[
+              {
+                required: true,
+                message: 'Поле обязательно для заполнения',
+                trigger: ['blur', 'change'],
+              },
+            ]"
+            prop="email"
+          >
+            <el-input v-model="form.email" placeholder="ivanov@email.ru" />
+          </el-form-item>
+          <el-form-item
+            required
+            label="Телефон"
+            :rules="[
+              {
+                required: true,
+                message: 'Поле обязательно для заполнения',
+                trigger: ['blur', 'change'],
+              },
+            ]"
+            prop="phone"
+          >
+            <el-input v-mask="'(###) ###-##-##'" v-model="form.phone">
+              <template #prefix> <div class="mr-1">+7</div> </template>
+            </el-input>
+          </el-form-item>
+          <el-form-item required label="Способ доставки">
+            <el-collapse
+              v-model="form.deliveryTypeId"
+              accordion
+              style="width: 100%"
+            >
+              <el-collapse-item title="" name="1">
+                <template #title>
+                  <Transition name="icon-fade">
+                    <Icon
+                      v-if="form.deliveryTypeId === '1'"
+                      name="material-symbols:check-circle-rounded"
+                      style="font-size: 20px; color: green"
+                      class="mr-2"
+                    />
+                  </Transition>
+                  Доставка по России транспортной компанией CDEK
+                </template>
+                <el-form
+                  v-if="form.deliveryTypeId === '1'"
+                  :model="form"
+                  label-position="top"
+                  label-width="auto"
+                  ref="formSdek"
+                >
+                  <el-form-item
+                    required
+                    label="Фамилия"
+                    class="mb-5"
+                    :rules="[
+                      {
+                        required: true,
+                        message: 'Поле обязательно для заполнения',
+                        trigger: ['blur', 'change'],
+                      },
+                    ]"
+                    prop="lastName"
+                  >
                     <el-input v-model="form.lastName" placeholder="Иванов" />
-                  </div>
-                  <div class="d-flex-column mt-2">
-                    <label style="font-weight: bold" class="mb-1">Имя</label>
+                  </el-form-item>
+                  <el-form-item
+                    required
+                    label="Имя"
+                    class="mb-5"
+                    :rules="[
+                      {
+                        required: true,
+                        message: 'Поле обязательно для заполнения',
+                        trigger: ['blur', 'change'],
+                      },
+                    ]"
+                    prop="firstName"
+                  >
                     <el-input v-model="form.firstName" placeholder="Иван" />
-                  </div>
-                  <div class="d-flex-column mt-2">
-                    <label style="font-weight: bold" class="mb-1"
-                      >Отчество</label
-                    >
+                  </el-form-item>
+                  <el-form-item
+                    label="Отчество"
+                    class="mb-5"
+                    :rules="[
+                      {
+                        required: true,
+                        message: 'Поле обязательно для заполнения',
+                        trigger: ['blur', 'change'],
+                      },
+                    ]"
+                    prop="patronymic"
+                  >
                     <el-input
                       v-model="form.patronymic"
                       placeholder="Иванович"
                     />
-                  </div>
-                  <UiTheSelect
+                  </el-form-item>
+                  <el-form-item
+                    required
                     label="Регион"
-                    :options="regions"
-                    @change="onChangeRegion"
-                    class="mt-2"
-                  />
-                  <UiTheSelect
+                    class="mb-5"
+                    :rules="[
+                      {
+                        required: true,
+                        message: 'Поле обязательно для заполнения',
+                        trigger: ['blur', 'change'],
+                      },
+                    ]"
+                    prop="deliveryPoint"
+                  >
+                    <UiTheSelect :options="regions" @change="onChangeRegion" />
+                  </el-form-item>
+
+                  <el-form-item
+                    required
                     label="Пункт выдачи"
-                    :options="points"
-                    @change="val => (form.deliveryPoint = val)"
-                    class="mt-2"
-                  />
-                </el-collapse-item>
-                <el-collapse-item title="" name="2">
-                  <template #title>
-                    <Transition name="icon-fade">
-                      <Icon
-                        v-if="form.deliveryTypeId === '2'"
-                        name="material-symbols:check-circle-rounded"
-                        style="font-size: 20px; color: green"
-                        class="mr-2"
-                      />
-                    </Transition>
-                    Доставка по Москве в пределах МКАД курьером
-                  </template>
-                  <label>Адрес</label>
-                  <el-input
-                    v-model="form.address"
-                    style="100%"
-                    :autosize="{ minRows: 2, maxRows: 4 }"
-                    type="textarea"
-                    placeholder=""
-                  />
-                </el-collapse-item>
-                <el-collapse-item title="" name="3">
-                  <template #title>
-                    <Transition name="icon-fade">
-                      <Icon
-                        v-if="form.deliveryTypeId === '3'"
-                        name="material-symbols:check-circle-rounded"
-                        style="font-size: 20px; color: green"
-                        class="mr-2"
-                      />
-                    </Transition>
-                    Доставка по Москве за пределы МКАД курьером
-                  </template>
-                  <label>Адрес</label>
-                  <el-input
-                    v-model="form.address"
-                    style="100%"
-                    :autosize="{ minRows: 2, maxRows: 4 }"
-                    type="textarea"
-                    placeholder=""
-                  />
-                </el-collapse-item>
-                <el-collapse-item title="" name="4">
-                  <template #title>
-                    <Transition name="icon-fade">
-                      <Icon
-                        v-if="form.deliveryTypeId === '4'"
-                        name="material-symbols:check-circle-rounded"
-                        style="font-size: 20px; color: green"
-                        class="mr-2"
-                      />
-                    </Transition>
-                    Доставка по Рязани в пределах города, Яндекс.Go
-                  </template>
-                  <label>Адрес</label>
-                  <el-input
-                    v-model="form.address"
-                    style="100%"
-                    :autosize="{ minRows: 2, maxRows: 4 }"
-                    type="textarea"
-                    placeholder=""
-                  />
-                </el-collapse-item>
-              </el-collapse>
-            </div>
-
-            <!-- <UiTheInput label="Email" /> -->
-          </div>
-
-          <UiTheButton class="w100" type="submit"> Оформить заказ </UiTheButton>
-        </form>
+                    :rules="[
+                      {
+                        required: true,
+                        message: 'Поле обязательно для заполнения',
+                        trigger: ['blur', 'change'],
+                      },
+                    ]"
+                    prop="deliveryPoint"
+                  >
+                    <UiTheSelect
+                      :options="points"
+                      @change="val => (form.deliveryPoint = val)"
+                    />
+                  </el-form-item>
+                </el-form>
+              </el-collapse-item>
+              <el-collapse-item title="" name="2">
+                <template #title>
+                  <Transition name="icon-fade">
+                    <Icon
+                      v-if="form.deliveryTypeId === '2'"
+                      name="material-symbols:check-circle-rounded"
+                      style="font-size: 20px; color: green"
+                      class="mr-2"
+                    />
+                  </Transition>
+                  Доставка по Москве в пределах МКАД курьером
+                </template>
+                <el-form
+                  v-if="form.deliveryTypeId === '2'"
+                  :model="form"
+                  label-position="top"
+                  label-width="auto"
+                  ref="formMskMkad"
+                >
+                  <el-form-item
+                    label="Город"
+                    :rules="[
+                      {
+                        required: true,
+                        message: 'Поле обязательно для заполнения',
+                        trigger: ['blur', 'change'],
+                      },
+                    ]"
+                    prop="city"
+                  >
+                    <el-input v-model="form.city" placeholder="" />
+                  </el-form-item>
+                  <el-form-item
+                    label="Улица"
+                    :rules="[
+                      {
+                        required: true,
+                        message: 'Поле обязательно для заполнения',
+                        trigger: ['blur', 'change'],
+                      },
+                    ]"
+                    prop="street"
+                    class="mt-5"
+                  >
+                    <el-input v-model="form.street" placeholder="" />
+                  </el-form-item>
+                  <el-form-item
+                    label="Дом"
+                    :rules="[
+                      {
+                        required: true,
+                        message: 'Поле обязательно для заполнения',
+                        trigger: ['blur', 'change'],
+                      },
+                    ]"
+                    prop="houseNumber"
+                    class="mt-5"
+                  >
+                    <el-input v-model="form.houseNumber" placeholder="" />
+                  </el-form-item>
+                  <el-form-item
+                    label="Квартира"
+                    :rules="[
+                      {
+                        required: true,
+                        message: 'Поле обязательно для заполнения',
+                        trigger: ['blur', 'change'],
+                      },
+                    ]"
+                    prop="apartmentNumber"
+                    class="mt-5"
+                  >
+                    <el-input v-model="form.apartmentNumber" placeholder="" />
+                  </el-form-item>
+                </el-form>
+              </el-collapse-item>
+              <el-collapse-item title="" name="3">
+                <template #title>
+                  <Transition name="icon-fade">
+                    <Icon
+                      v-if="form.deliveryTypeId === '3'"
+                      name="material-symbols:check-circle-rounded"
+                      style="font-size: 20px; color: green"
+                      class="mr-2"
+                    />
+                  </Transition>
+                  Доставка по Москве за пределы МКАД курьером
+                </template>
+                <el-form
+                  v-if="form.deliveryTypeId === '3'"
+                  :model="form"
+                  label-position="top"
+                  label-width="auto"
+                  ref="formMskBehindMkad"
+                >
+                  <el-form-item
+                    label="Город"
+                    :rules="[
+                      {
+                        required: true,
+                        message: 'Поле обязательно для заполнения',
+                        trigger: ['blur', 'change'],
+                      },
+                    ]"
+                    prop="city"
+                  >
+                    <el-input v-model="form.city" placeholder="" />
+                  </el-form-item>
+                  <el-form-item
+                    label="Улица"
+                    :rules="[
+                      {
+                        required: true,
+                        message: 'Поле обязательно для заполнения',
+                        trigger: ['blur', 'change'],
+                      },
+                    ]"
+                    prop="street"
+                    class="mt-5"
+                  >
+                    <el-input v-model="form.street" placeholder="" />
+                  </el-form-item>
+                  <el-form-item
+                    label="Дом"
+                    :rules="[
+                      {
+                        required: true,
+                        message: 'Поле обязательно для заполнения',
+                        trigger: ['blur', 'change'],
+                      },
+                    ]"
+                    prop="houseNumber"
+                    class="mt-5"
+                  >
+                    <el-input v-model="form.houseNumber" placeholder="" />
+                  </el-form-item>
+                  <el-form-item
+                    label="Квартира"
+                    :rules="[
+                      {
+                        required: true,
+                        message: 'Поле обязательно для заполнения',
+                        trigger: ['blur', 'change'],
+                      },
+                    ]"
+                    prop="apartmentNumber"
+                    class="mt-5"
+                  >
+                    <el-input v-model="form.apartmentNumber" placeholder="" />
+                  </el-form-item>
+                </el-form>
+              </el-collapse-item>
+              <el-collapse-item title="" name="4">
+                <template #title>
+                  <Transition name="icon-fade">
+                    <Icon
+                      v-if="form.deliveryTypeId === '4'"
+                      name="material-symbols:check-circle-rounded"
+                      style="font-size: 20px; color: green"
+                      class="mr-2"
+                    />
+                  </Transition>
+                  Доставка по Рязани в пределах города, Яндекс.Go
+                </template>
+                <el-form
+                  v-if="form.deliveryTypeId === '4'"
+                  :model="form"
+                  label-position="top"
+                  label-width="auto"
+                  ref="formRyazan"
+                >
+                  <el-form-item
+                    label="Город"
+                    :rules="[
+                      {
+                        required: true,
+                        message: 'Поле обязательно для заполнения',
+                        trigger: ['blur', 'change'],
+                      },
+                    ]"
+                    prop="city"
+                  >
+                    <el-input v-model="form.city" placeholder="" />
+                  </el-form-item>
+                  <el-form-item
+                    label="Улица"
+                    :rules="[
+                      {
+                        required: true,
+                        message: 'Поле обязательно для заполнения',
+                        trigger: ['blur', 'change'],
+                      },
+                    ]"
+                    prop="street"
+                    class="mt-5"
+                  >
+                    <el-input v-model="form.street" placeholder="" />
+                  </el-form-item>
+                  <el-form-item
+                    label="Дом"
+                    :rules="[
+                      {
+                        required: true,
+                        message: 'Поле обязательно для заполнения',
+                        trigger: ['blur', 'change'],
+                      },
+                    ]"
+                    prop="houseNumber"
+                    class="mt-5"
+                  >
+                    <el-input v-model="form.houseNumber" placeholder="" />
+                  </el-form-item>
+                  <el-form-item
+                    label="Квартира"
+                    :rules="[
+                      {
+                        required: true,
+                        message: 'Поле обязательно для заполнения',
+                        trigger: ['blur', 'change'],
+                      },
+                    ]"
+                    prop="apartmentNumber"
+                    class="mt-5"
+                  >
+                    <el-input v-model="form.apartmentNumber" placeholder="" />
+                  </el-form-item>
+                </el-form>
+              </el-collapse-item>
+            </el-collapse>
+          </el-form-item>
+          <el-form-item>
+            <UiTheButton class="w100" @click.prevent="validateForm">
+              Оформить заказ
+            </UiTheButton>
+          </el-form-item>
+        </el-form>
       </div>
     </div>
   </drawer>
@@ -223,29 +476,12 @@ export default {
       form: this.getForm(),
       regions: [],
       points: [],
-      deliveryTypes: [
-        {
-          id: 1,
-          label: 'Доставка по России транспортной компанией CDEK',
-        },
-        {
-          id: 2,
-          label: 'Доставка по Москве в пределах МКАД курьером',
-        },
-        {
-          id: 3,
-          label: 'Доставка по Москве за пределы МКАД курьером',
-        },
-        {
-          id: 4,
-          label: 'Доставка по Рязани в пределах города, Яндекс.Go',
-        },
-      ],
       activeName: '',
       fullPrice: 0,
       discount: 0,
       totalPrice: 0,
       regionsLoading: false,
+      errors: {},
     };
   },
   mounted() {
@@ -272,6 +508,10 @@ export default {
         address: '',
         deliveryTypeId: null,
         deliveryPoint: null,
+        city: '',
+        street: '',
+        houseNumber: null,
+        apartmentNumber: null,
       };
     },
     dropItem(id) {
@@ -307,9 +547,58 @@ export default {
       }
       this.getProductProcess = false;
     },
-    async createOrder(event) {
-      event.preventDefault();
+    validateForm() {
+      this.$refs.form.validate(valid => {
+        if (valid) {
+          console.log(true);
+        } else {
+          // Валидация не прошла
+          console.log('Ошибка валидации');
+        }
+      });
 
+      if (this.form.deliveryTypeId === '1') {
+        this.$refs.formSdek.validate(valid => {
+          if (valid) {
+            this.createOrder();
+          } else {
+            // Валидация не прошла
+            console.log('Ошибка валидации');
+          }
+        });
+      }
+      if (this.form.deliveryTypeId === '2') {
+        this.$refs.formMskMkad.validate(valid => {
+          if (valid) {
+            this.createOrder();
+          } else {
+            // Валидация не прошла
+            console.log('Ошибка валидации');
+          }
+        });
+      }
+      if (this.form.deliveryTypeId === '3') {
+        this.$refs.formMskBehindMkad.validate(valid => {
+          if (valid) {
+            this.createOrder();
+          } else {
+            // Валидация не прошла
+            console.log('Ошибка валидации');
+          }
+        });
+      }
+      if (this.form.deliveryTypeId === '4') {
+        this.$refs.formRyazan.validate(valid => {
+          if (valid) {
+            this.createOrder();
+          } else {
+            // Валидация не прошла
+            console.log('Ошибка валидации');
+          }
+        });
+      }
+    },
+    async createOrder() {
       const data = {
         origin: 'https://dev.parfburo.com',
         comment: 'Hello world',
@@ -324,8 +613,18 @@ export default {
           phone: `7${this.form.phone.replace(/\D/g, '')}`,
           deliveryTypeId: this.form.deliveryTypeId,
           deliveryMessage: 'Принесите мне в кровать',
-          address: this.form.address,
-          deliveryPoint: this.form.deliveryPoint.code,
+          address:
+            this.form.deliveryTypeId !== '1'
+              ? [
+                  this.form.city,
+                  this.form.street,
+                  this.form.houseNumber,
+                  this.form.apartmentNumber,
+                ]
+                  .filter(Boolean)
+                  .join(' ')
+              : this.form.address,
+          deliveryPoint: this.form.deliveryPoint?.code,
         },
         items: this.orders.map(el => {
           return {
@@ -400,7 +699,6 @@ form {
   margin-top: 20px;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
 }
 
 .form-data {
