@@ -63,16 +63,18 @@
       </div>
     </div>
     <modal v-if="openedVideo" @close="openedVideo = null">
-      <video
-        :data="openedVideo"
-        playsinline
-        loop
-        autoplay
-        muted
-        style="width: 100%; height: 100%"
-      >
-        <source :src="openedVideo.url" type="video/mp4" />
-      </video>
+      <div class="d-flex align-center j-c">
+        <video
+          :data="openedVideo"
+          playsinline
+          loop
+          autoplay
+          muted
+          style="width: 80%; height: 80%"
+        >
+          <source :src="openedVideo.url" type="video/mp4" />
+        </video>
+      </div>
     </modal>
   </div>
 </template>
