@@ -436,6 +436,13 @@
               </el-collapse-item>
             </el-collapse>
           </el-form-item>
+          <el-form-item
+            label="Комментарий к заказу"
+            class="mb-5"
+            prop="deliveryMessage"
+          >
+            <el-input v-model="form.deliveryMessage" placeholder="" />
+          </el-form-item>
           <el-form-item>
             <UiTheButton class="w100" @click.prevent="validateForm">
               Оформить заказ
@@ -508,6 +515,7 @@ export default {
         address: '',
         deliveryTypeId: null,
         deliveryPoint: null,
+        deliveryMessage: '',
         city: '',
         street: '',
         houseNumber: null,
@@ -612,7 +620,7 @@ export default {
           email: this.form.email,
           phone: `7${this.form.phone.replace(/\D/g, '')}`,
           deliveryTypeId: this.form.deliveryTypeId,
-          deliveryMessage: 'Принесите мне в кровать',
+          deliveryMessage: this.form.deliveryMessage,
           address:
             this.form.deliveryTypeId !== '1'
               ? [
