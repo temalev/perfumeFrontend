@@ -280,6 +280,12 @@
                   >
                     <el-input v-model="form.apartmentNumber" placeholder="" />
                   </el-form-item>
+                  <el-form-item label="Этаж" prop="floor" class="mt-5">
+                    <el-input v-model="form.floor" placeholder="" />
+                  </el-form-item>
+                  <el-form-item label="Подъезд" prop="entrance" class="mt-5">
+                    <el-input v-model="form.entrance" placeholder="" />
+                  </el-form-item>
                 </el-form>
               </el-collapse-item>
               <el-collapse-item title="" name="3">
@@ -355,6 +361,12 @@
                     class="mt-5"
                   >
                     <el-input v-model="form.apartmentNumber" placeholder="" />
+                  </el-form-item>
+                  <el-form-item label="Этаж" prop="floor" class="mt-5">
+                    <el-input v-model="form.floor" placeholder="" />
+                  </el-form-item>
+                  <el-form-item label="Подъезд" prop="entrance" class="mt-5">
+                    <el-input v-model="form.entrance" placeholder="" />
                   </el-form-item>
                 </el-form>
               </el-collapse-item>
@@ -432,9 +444,22 @@
                   >
                     <el-input v-model="form.apartmentNumber" placeholder="" />
                   </el-form-item>
+                  <el-form-item label="Этаж" prop="floor" class="mt-5">
+                    <el-input v-model="form.floor" placeholder="" />
+                  </el-form-item>
+                  <el-form-item label="Подъезд" prop="entrance" class="mt-5">
+                    <el-input v-model="form.entrance" placeholder="" />
+                  </el-form-item>
                 </el-form>
               </el-collapse-item>
             </el-collapse>
+          </el-form-item>
+          <el-form-item
+            label="Комментарий к заказу"
+            class="mb-5"
+            prop="deliveryMessage"
+          >
+            <el-input v-model="form.deliveryMessage" placeholder="" />
           </el-form-item>
           <el-form-item>
             <UiTheButton class="w100" @click.prevent="validateForm">
@@ -508,10 +533,13 @@ export default {
         address: '',
         deliveryTypeId: null,
         deliveryPoint: null,
+        deliveryMessage: '',
         city: '',
         street: '',
         houseNumber: null,
         apartmentNumber: null,
+        floor: null,
+        entrance: null,
       };
     },
     dropItem(id) {
@@ -612,14 +640,16 @@ export default {
           email: this.form.email,
           phone: `7${this.form.phone.replace(/\D/g, '')}`,
           deliveryTypeId: this.form.deliveryTypeId,
-          deliveryMessage: 'Принесите мне в кровать',
+          deliveryMessage: this.form.deliveryMessage,
           address:
             this.form.deliveryTypeId !== '1'
               ? [
-                  this.form.city,
-                  this.form.street,
-                  this.form.houseNumber,
-                  this.form.apartmentNumber,
+                  `Город ${this.form.city}`,
+                  `Улица ${this.form.street}`,
+                  `Номер дома ${this.form.houseNumber}`,
+                  `Подъезд ${this.form.entrance}`,
+                  `Этаж ${this.form.floor}`,
+                  `Номер квартиры ${this.form.apartmentNumber}`,
                 ]
                   .filter(Boolean)
                   .join(' ')
