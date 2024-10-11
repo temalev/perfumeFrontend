@@ -280,6 +280,12 @@
                   >
                     <el-input v-model="form.apartmentNumber" placeholder="" />
                   </el-form-item>
+                  <el-form-item label="Этаж" prop="floor" class="mt-5">
+                    <el-input v-model="form.floor" placeholder="" />
+                  </el-form-item>
+                  <el-form-item label="Подъезд" prop="entrance" class="mt-5">
+                    <el-input v-model="form.entrance" placeholder="" />
+                  </el-form-item>
                 </el-form>
               </el-collapse-item>
               <el-collapse-item title="" name="3">
@@ -356,6 +362,12 @@
                   >
                     <el-input v-model="form.apartmentNumber" placeholder="" />
                   </el-form-item>
+                  <el-form-item label="Этаж" prop="floor" class="mt-5">
+                    <el-input v-model="form.floor" placeholder="" />
+                  </el-form-item>
+                  <el-form-item label="Подъезд" prop="entrance" class="mt-5">
+                    <el-input v-model="form.entrance" placeholder="" />
+                  </el-form-item>
                 </el-form>
               </el-collapse-item>
               <el-collapse-item title="" name="4">
@@ -431,6 +443,12 @@
                     class="mt-5"
                   >
                     <el-input v-model="form.apartmentNumber" placeholder="" />
+                  </el-form-item>
+                  <el-form-item label="Этаж" prop="floor" class="mt-5">
+                    <el-input v-model="form.floor" placeholder="" />
+                  </el-form-item>
+                  <el-form-item label="Подъезд" prop="entrance" class="mt-5">
+                    <el-input v-model="form.entrance" placeholder="" />
                   </el-form-item>
                 </el-form>
               </el-collapse-item>
@@ -520,6 +538,8 @@ export default {
         street: '',
         houseNumber: null,
         apartmentNumber: null,
+        floor: null,
+        entrance: null,
       };
     },
     dropItem(id) {
@@ -624,10 +644,12 @@ export default {
           address:
             this.form.deliveryTypeId !== '1'
               ? [
-                  this.form.city,
-                  this.form.street,
-                  this.form.houseNumber,
-                  this.form.apartmentNumber,
+                  `Город ${this.form.city}`,
+                  `Улица ${this.form.street}`,
+                  `Номер дома ${this.form.houseNumber}`,
+                  `Подъезд ${this.form.entrance}`,
+                  `Этаж ${this.form.floor}`,
+                  `Номер квартиры ${this.form.apartmentNumber}`,
                 ]
                   .filter(Boolean)
                   .join(' ')
