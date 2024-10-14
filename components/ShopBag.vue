@@ -32,7 +32,7 @@
             class="w100"
             @click="user ? (step = 'makingAnOrder') : $emit('login')"
           >
-            Оформить заказ
+            Перейти к оплате
           </UiTheButton>
         </div>
       </div>
@@ -461,13 +461,55 @@
           >
             <el-input v-model="form.deliveryMessage" placeholder="" />
           </el-form-item>
-          <el-form-item label="Промокод" class="mb-5" prop="promoCode">
-            <div class="d-flex gap-4">
+          <el-form-item
+            label="Промокод"
+            class="mb-5"
+            prop="promoCode"
+            :error="isPromoCodeError ? 'Промокод не действителен' : ''"
+          >
+            <div class="d-flex gap-2">
               <el-input v-model="promoCode" placeholder="" />
-              <el-button>Применить</el-button>
+              <el-button
+                :loading="checkPromoCodeLoading"
+                @click="checkPromoCode"
+                :type="promoCodeData ? 'success' : ''"
+              >
+                <Icon
+                  v-if="promoCodeData"
+                  name="material-symbols:check"
+                  style="font-size: 20px"
+                />
+                <div v-else>Применить</div>
+              </el-button>
             </div>
+            <!-- <el-alert
+              v-if="isPromoCodeApplied"
+              class="mt-2"
+              title="Промокод применен"
+              :closable="false"
+              type="success"
+              effect="dark"
+            /> -->
           </el-form-item>
-          <el-form-item>
+          <el-form-item class="mt-2">
+            <div class="d-flex-column gap-4 mb-6 w100">
+              <h2>Сумма заказа</h2>
+              <UiInfoBlock
+                label="Стоимость продуктов"
+                :value="`${new Intl.NumberFormat('ru').format(fullPrice)} ₽`"
+              />
+              <UiInfoBlock label="Скидка" :value="-`${discount}`" />
+              <UiInfoBlock
+                v-if="promoCodeData"
+                label="Скидка по промокоду"
+                :value="`-${promoCodeData.discount} ₽`"
+              />
+              <UiInfoBlock
+                :isFilled="false"
+                label="Итого"
+                :value="`${new Intl.NumberFormat('ru').format(totalPrice)} ₽`"
+              />
+            </div>
             <UiTheButton class="w100" @click.prevent="validateForm">
               Оформить заказ
             </UiTheButton>
@@ -488,6 +530,7 @@ import {
   createOrderPublic,
   getRegions,
   getSdekPoints,
+  checkPromoCode,
 } from '@/api/productApi.js';
 
 export default {
@@ -513,6 +556,9 @@ export default {
       regionsLoading: false,
       errors: {},
       promoCode: '',
+      checkPromoCodeLoading: false,
+      isPromoCodeError: false,
+      promoCodeData: null,
     };
   },
   mounted() {
@@ -555,6 +601,22 @@ export default {
     },
     onChangeRegion(val) {
       this.getSdekPoints(val.id);
+    },
+    async checkPromoCode() {
+      this.checkPromoCodeLoading = true;
+      const params = {
+        name: this.promoCode,
+      };
+      this.isPromoCodeError = false;
+      try {
+        const res = await checkPromoCode(params);
+        this.promoCodeData = res;
+        this.fullPrice -= this.promoCodeData.discount;
+      } catch (e) {
+        console.error(e);
+        this.isPromoCodeError = true;
+      }
+      this.checkPromoCodeLoading = false;
     },
     async getProduct(slug) {
       this.getProductProcess = true;
