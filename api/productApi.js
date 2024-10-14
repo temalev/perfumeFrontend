@@ -91,6 +91,28 @@ export async function getProducts(params) {
   }
 }
 
+export async function checkPromoCode(params) {
+  const config = useRuntimeConfig();
+  const apiUrl = config.public.URL;
+  const queryString = new URLSearchParams(params).toString();
+  try {
+    const response = await fetch(`${apiUrl}/promocodes?${queryString}`, {
+      method: 'GET',
+      params,
+    });
+
+    if (!response.ok) {
+      throw new Error('Ошибка при проверке промокода');
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
 export async function getProduct(params) {
   const config = useRuntimeConfig();
   const apiUrl = config.public.URL;
