@@ -461,6 +461,12 @@
           >
             <el-input v-model="form.deliveryMessage" placeholder="" />
           </el-form-item>
+          <el-form-item label="Промокод" class="mb-5" prop="promoCode">
+            <div class="d-flex gap-4">
+              <el-input v-model="promoCode" placeholder="" />
+              <el-button>Применить</el-button>
+            </div>
+          </el-form-item>
           <el-form-item>
             <UiTheButton class="w100" @click.prevent="validateForm">
               Оформить заказ
@@ -501,12 +507,12 @@ export default {
       form: this.getForm(),
       regions: [],
       points: [],
-      activeName: '',
       fullPrice: 0,
       discount: 0,
       totalPrice: 0,
       regionsLoading: false,
       errors: {},
+      promoCode: '',
     };
   },
   mounted() {
