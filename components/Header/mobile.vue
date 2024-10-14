@@ -10,7 +10,7 @@
       </div>
     </div>
     <img
-      src="~/assets/img/logo.webp"
+      src="~/public/img/logo.webp"
       alt=""
       width="140"
       height="50px"
@@ -86,7 +86,7 @@ header {
   & img {
     object-fit: cover;
     object-position: center;
-    image-rendering: crisp-edges;
+    image-rendering: auto;
   }
   nav {
     & a {
