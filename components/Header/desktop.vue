@@ -1,7 +1,7 @@
 <template>
   <header>
     <img
-      src="~/assets/img/logo.webp"
+      src="~/public/img/logo.webp"
       alt=""
       width="140"
       height="50px"
