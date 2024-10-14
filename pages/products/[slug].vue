@@ -99,7 +99,7 @@
       @success="addToFavorites()"
     />
 
-    <div v-if="products.length" class="d-flex-column m-10">
+    <div v-if="products.length" class="d-flex-column brands-products">
       <h1>Продукты этого бренда</h1>
       <div class="scroll mt-5 mb-4">
         <product-card
@@ -313,7 +313,14 @@ export default {
   padding: 20px;
 }
 
+.brands-products {
+  margin: 40px;
+}
+
 @media (max-width: 800px) {
+  .brands-products {
+    margin: 0px;
+  }
   .product-card-content {
     display: flex;
     flex-direction: column;
