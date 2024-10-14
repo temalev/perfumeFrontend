@@ -5,6 +5,7 @@
 
 .el-button {
   cursor: pointer !important;
+  height: 34px !important;
 }
 
 .el-input {
@@ -21,5 +22,6 @@
   --el-border-radius-base: 16px;
 }
 .el-input__inner {
-  --el-input-inner-height: 38px !important;
+  --el-input-inner-height: 32px !important;
 }
+
