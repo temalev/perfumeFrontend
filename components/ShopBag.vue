@@ -646,7 +646,7 @@ export default {
     validateForm() {
       this.$refs.form.validate(valid => {
         if (valid) {
-          console.log(true);
+          this.createOrder();
         } else {
           // Валидация не прошла
           console.log('Ошибка валидации');
@@ -698,6 +698,7 @@ export default {
       const data = {
         origin: 'https://dev.parfburo.com',
         comment: 'Hello world',
+        promocodeUuid: this.promoCodeData?.uuid,
         recepient: {
           name:
             this.form.deliveryTypeId === '1'
@@ -710,7 +711,7 @@ export default {
           deliveryTypeId: this.form.deliveryTypeId,
           deliveryMessage: this.form.deliveryMessage,
           address:
-            this.form.deliveryTypeId !== '1'
+            this.form.deliveryTypeId !== '1' && this.form.deliveryTypeId
               ? [
                   `Город ${this.form.city}`,
                   `Улица ${this.form.street}`,
@@ -734,8 +735,7 @@ export default {
       const req = this.user ? createOrder : createOrderPublic;
       try {
         const res = await req(data);
-        window.open(res.paymentUrl);
-        paymentUrl;
+        window.location.href = res.paymentUrl;
       } catch (e) {
         console.error(e);
       }
