@@ -193,6 +193,12 @@ export async function getCodeFromCall(requestData) {
       body: JSON.stringify(requestData), // Преобразуем объект data в строку JSON
     });
 
+    if (response.status === 401) {
+      // Если сервер вернул статус 401 (Unauthorized), выбрасываем свою ошибку
+      const errorData = await response.json();
+      throw new Error(errorData.message);
+    }
+
     if (!response.ok) {
       throw new Error('Ошибка при получении кода');
     }
@@ -220,7 +226,7 @@ export async function login(requestData) {
     });
 
     if (!response.ok) {
-      throw new Error('Ошибка при получении кода');
+      throw new Error('Ошибка авторизации');
     }
 
     const data = await response.json();
