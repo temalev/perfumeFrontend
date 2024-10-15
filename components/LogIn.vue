@@ -6,10 +6,18 @@
           Позвоним или пришлём SMS. Введите последние четыре цифры номера
           телефона или код из SMS-сообщения.
         </p>
-        <!-- <the-input-phone v-model="value" /> -->
-        <el-input v-mask="'(###) ###-##-##'" v-model="value">
-          <template #prefix> <div class="mr-1">+7</div> </template>
-        </el-input>
+        <el-form :model="form">
+          <el-form-item
+            label="Введите последние четыре цифры входящего номера"
+            label-position="top"
+            :error="errorCode"
+          >
+            <el-input v-mask="'(###) ###-##-##'" v-model="form.value">
+              <template #prefix> <div class="mr-1">+7</div> </template>
+            </el-input>
+          </el-form-item>
+        </el-form>
+
         <!-- <TheButton class="mt-4" @click="getCode">Получить код</TheButton> -->
         <el-button
           :loading="getCodeLoading"
@@ -21,11 +29,18 @@
         </el-button>
       </template>
       <template v-if="step === 'code'">
-        <h1>Подтвердите номер</h1>
-        <p class="mt-2 mb-3">
+        <!-- <p class="mt-2 mb-3">
           Введите последние четыре цифры входящего номера.
-        </p>
-        <el-input v-model="code" />
+        </p> -->
+        <el-form :model="form">
+          <el-form-item
+            label="Введите последние четыре цифры входящего номера"
+            label-position="top"
+            :error="errorLogin"
+          >
+            <el-input v-model="form.code" />
+          </el-form-item>
+        </el-form>
         <span v-if="timeLeft" class="text-secondary">
           Запросить следующий код возможно через {{ timeLeft }} сек.
         </span>
@@ -61,9 +76,14 @@ export default {
       step: 'call',
       timeLeft: null,
       uuid: null,
-      code: null,
       getCodeLoading: false,
       loginLoading: false,
+      errorCode: null,
+      errorLogin: '',
+      form: {
+        code: null,
+        value: null,
+      },
     };
   },
   mounted() {},
@@ -74,7 +94,7 @@ export default {
     async getCode() {
       this.getCodeLoading = true;
       const data = {
-        phoneNumber: `7${this.value.replace(/\D/g, '')}`,
+        phoneNumber: `7${this.form.value.replace(/\D/g, '')}`,
       };
       try {
         const res = await getCodeFromCall(data);
@@ -84,13 +104,14 @@ export default {
         this.timeLeft = 60;
       } catch (e) {
         console.error(e);
+        this.errorCode = e;
       }
       this.getCodeLoading = false;
     },
     async login() {
       this.loginLoading = true;
       const data = {
-        code: this.code,
+        code: this.form.code,
         uuid: this.uuid,
       };
       try {
@@ -99,6 +120,7 @@ export default {
         this.$emit('close');
       } catch (e) {
         console.error(e);
+        this.errorLogin = e;
       }
       this.loginLoading = false;
     },
