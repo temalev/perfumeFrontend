@@ -40,10 +40,16 @@ export default {
   },
   methods: {
     navigateToCategory(id) {
-      this.$router.push({
-        name: 'products-list',
-        query: { categoryId: id || undefined },
-      });
+      if (id === 999) {
+        this.$router.push({
+          name: 'decantInfo',
+        });
+      } else {
+        this.$router.push({
+          name: 'products-list',
+          query: { categoryId: id || undefined },
+        });
+      }
       this.$emit('close');
     },
   },

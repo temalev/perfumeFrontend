@@ -112,6 +112,12 @@ export default {
           slug: '',
           parentId: null,
         });
+        this.category.push({
+          id: 999,
+          name: 'Отливанты',
+          slug: '',
+          parentId: null,
+        });
       } catch (e) {
         console.error(e);
       }
