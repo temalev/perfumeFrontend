@@ -1,8 +1,7 @@
 <template>
   <div class="footer">
     <div class="d-flex-column">
-      <el-text class="mx-1" size="large">Информация</el-text>
-      <ul class="mt-4">
+      <ul>
         <li class="pointer" @click="$emit('onInfoModal', 'about')">О нас</li>
         <li class="pointer mt-1" @click="$emit('onInfoModal', 'delivery')">
           Доставка
@@ -10,7 +9,7 @@
       </ul>
     </div>
     <div class="d-flex-column">
-      <div class="d-flex gap-4 mb-4">
+      <div class="d-flex gap-4 mb-2">
         <el-link>+7(993)269-01-88</el-link>
         <el-link :underline="false" href="https://t.me/parfburoo">
           <Icon name="logos:telegram" style="font-size: 20px" />
