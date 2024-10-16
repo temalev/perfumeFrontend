@@ -18,46 +18,44 @@
     />
     <Icon name="ph:magnifying-glass-bold" style="font-size: 20px" />
     <div v-if="isLeftMenu" class="left-menu">
-      <nav>
-        <ul class="d-flex-column gap-4 m-4">
-          <li>
-            <button
-              class="text"
-              @click="
-                $emit('openCatalog');
-                isLeftMenu = false;
-              "
-            >
-              КАТАЛОГ
-            </button>
-          </li>
-          <li>
-            <button
-              class="text"
-              @click="
-                $emit('openBrands');
-                isLeftMenu = false;
-              "
-            >
-              БРЕНДЫ
-            </button>
-          </li>
-          <li>
-            <button
-              class="text"
-              @click="
-                $router.push({
-                  name: 'products-list',
-                  query: { isSale: true },
-                });
-                isLeftMenu = false;
-              "
-            >
-              СКИДКИ
-            </button>
-          </li>
-        </ul>
-      </nav>
+      <ul class="d-flex-column gap-4 m-4">
+        <li>
+          <el-button
+            type="text"
+            @click="
+              $emit('openCatalog');
+              isLeftMenu = false;
+            "
+          >
+            КАТАЛОГ
+          </el-button>
+        </li>
+        <li>
+          <el-button
+            type="text"
+            @click="
+              $emit('openBrands');
+              isLeftMenu = false;
+            "
+          >
+            БРЕНДЫ
+          </el-button>
+        </li>
+        <li>
+          <el-button
+            type="text"
+            @click="
+              $router.push({
+                name: 'products-list',
+                query: { isSale: true },
+              });
+              isLeftMenu = false;
+            "
+          >
+            СКИДКИ
+          </el-button>
+        </li>
+      </ul>
     </div>
   </header>
 </template>
