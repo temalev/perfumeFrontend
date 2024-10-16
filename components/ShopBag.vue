@@ -621,7 +621,7 @@ export default {
     async getProduct(slug) {
       this.getProductProcess = true;
       try {
-        const res = await getProduct(slug);
+        const res = await getProduct(slug, this.user);
 
         if (!res) {
         }

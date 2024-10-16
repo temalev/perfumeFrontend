@@ -32,7 +32,7 @@
         <div class="price mb-4">
           {{ new Intl.NumberFormat('ru').format(product?.price) }} ₽
         </div>
-        <div class="d-flex gap-2">
+        <div class="d-flex">
           <el-button
             @click="addToShopBag(product.slug)"
             size="large"
@@ -40,11 +40,17 @@
             >Добавить в корзину</el-button
           >
           <el-button
+            style="width: 42px"
             size="large"
-            type="primary"
             @click="addToFavorites(product.slug)"
-            >Добавить в избранное</el-button
           >
+            <Icon
+              v-if="product?.isFavorite"
+              name="ph:tag-fill"
+              style="font-size: 20px; color: black"
+            />
+            <Icon v-else name="ph:tag-bold" style="font-size: 20px" />
+          </el-button>
         </div>
         <div class="product-card-info">
           <div class="product-card-info-header">Подробные характеристики</div>
@@ -180,7 +186,7 @@ export default {
       ];
       this.getProductProcess = true;
       try {
-        const res = await getProduct(this.$route.params.slug);
+        const res = await getProduct(this.$route.params.slug, this.user);
         this.product = res;
         this.breadcrumb.push({
           name: this.product.brand,
@@ -324,6 +330,7 @@ export default {
   .product-card-content {
     display: flex;
     flex-direction: column;
+    align-items: center;
   }
   .scroll {
     flex-direction: column;

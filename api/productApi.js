@@ -116,10 +116,23 @@ export async function checkPromoCode(params) {
 export async function getProduct(params) {
   const config = useRuntimeConfig();
   const apiUrl = config.public.URL;
+  const cookie = useCookie('accessToken');
+  const token = cookie.value;
+
+  const user = useCookie('user');
+
+  let url = `${apiUrl}/products/${params}`;
+  if (user) {
+    url = `${apiUrl}/products/private/${params}`;
+  }
 
   try {
-    const response = await fetch(`${apiUrl}/products/${params}`, {
+    const response = await fetch(url, {
       method: 'GET',
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
     });
 
     if (!response.ok) {
