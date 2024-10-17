@@ -41,12 +41,17 @@
         </div>
         <el-empty v-else description="Вы еще ничего не заказывали" />
       </el-tab-pane>
+      <el-tab-pane label="Настройки" :name="4">
+        <div>
+          <el-button @click="logOut"> Выйти </el-button>
+        </div>
+      </el-tab-pane>
     </el-tabs>
   </div>
 </template>
 
 <script>
-import { getMe, getFavorites, getOrders } from '@/api/productApi.js';
+import { getMe, getFavorites, getOrders, logOut } from '@/api/productApi.js';
 import ProductCard from '~/components/ProductCard.vue';
 import OrderCard from '~/components/OrderCard.vue';
 
@@ -114,6 +119,15 @@ export default {
         this.ordersHistory = res;
         this.orders = res.filter(el => el.statusId < 6);
         console.log(this.orders);
+      } catch (e) {
+        console.error(e);
+      }
+    },
+    async logOut() {
+      try {
+        const res = await logOut();
+        this.$router.replace('/');
+        this.user = null;
       } catch (e) {
         console.error(e);
       }
