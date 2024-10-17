@@ -122,7 +122,7 @@ export async function getProduct(params) {
   const user = useCookie('user');
 
   let url = `${apiUrl}/products/${params}`;
-  if (user) {
+  if (user?.id) {
     url = `${apiUrl}/products/private/${params}`;
   }
 
