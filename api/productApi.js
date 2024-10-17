@@ -258,6 +258,45 @@ export async function login(requestData) {
   }
 }
 
+export async function logOut(requestData) {
+  const config = useRuntimeConfig();
+  const apiUrl = config.public.URL;
+
+  try {
+    const response = await fetch(`${apiUrl}/auth/logout`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(requestData),
+      credentials: 'include',
+    });
+
+    if (!response.ok) {
+      const errorData = await response.text(); // Используем text() для обработки пустого ответа
+      throw new Error(`Ошибка: ${errorData || response.statusText}`);
+    }
+
+    // Если сервер возвращает пустое тело при статусе 201
+    let responseData;
+    if (response.status !== 204) {
+      // 204 No Content или любой другой статус, где нет контента
+      responseData = await response.json().catch(() => null); // Ловим ошибку, если JSON пустой
+    }
+
+    // Удаление куки на клиенте
+    if (process.client) {
+      const cookie = useCookie('accessToken');
+      cookie.value = null; // Удаляем токен из куки
+    }
+
+    return responseData || {}; // Возвращаем пустой объект, если данных нет
+  } catch (error) {
+    console.error('Ошибка при логауте:', error.message);
+    throw error;
+  }
+}
+
 export async function getMe() {
   const config = useRuntimeConfig();
   const apiUrl = config.public.URL;
