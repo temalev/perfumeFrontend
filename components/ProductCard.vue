@@ -1,5 +1,5 @@
 <template>
-  <div class="card d-flex-column" @click="handleCardClick">
+  <article class="card d-flex-column" @click="handleCardClick">
     <div class="img-container d-flex j-c">
       <img :src="image(data?.images[0])" :alt="data.name" />
       <button
@@ -50,7 +50,7 @@
         preventCardClick = true;
       "
     />
-  </div>
+  </article>
 </template>
 
 <script>
