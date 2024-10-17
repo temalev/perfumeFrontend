@@ -112,6 +112,7 @@
           v-for="product in products"
           :key="product.id"
           :data="product"
+          class="card"
         />
       </div>
     </div>
@@ -333,7 +334,11 @@ export default {
     align-items: center;
   }
   .scroll {
-    flex-direction: column;
+    scroll-snap-type: x mandatory;
+
+    & .card {
+      scroll-snap-align: center;
+    }
   }
 }
 </style>
