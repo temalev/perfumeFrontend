@@ -13,6 +13,6 @@ RUN npm i --force
 
 COPY . .
 
-RUN npm run build
+RUN npx nuxi generate
 
-CMD node .output/server/index.mjs
+CMD npx serve .output/public
