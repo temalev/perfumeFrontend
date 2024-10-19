@@ -332,6 +332,9 @@ export default {
     display: flex;
     flex-direction: column;
     align-items: center;
+    h1 {
+      font-size: 20px;
+    }
   }
   .scroll {
     scroll-snap-type: x mandatory;

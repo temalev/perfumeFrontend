@@ -202,7 +202,11 @@
                     <UiTheSelect
                       :options="points"
                       @change="val => (form.deliveryPoint = val)"
-                    />
+                    >
+                      <template #default="{ option }">
+                        <div>{{ option.addressFull }}</div>
+                      </template>
+                    </UiTheSelect>
                   </el-form-item>
                 </el-form>
               </el-collapse-item>
