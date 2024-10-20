@@ -53,7 +53,7 @@
       </div>
     </div>
     <div class="offers m-8">
-      <h3>Новинки</h3>
+      <h3>Хиты</h3>
       <div class="slider">
         <product-card
           v-for="product in productsSale"
