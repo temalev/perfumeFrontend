@@ -148,7 +148,7 @@
           </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="onSubmit">Отправить</el-button>
-            <el-button>Отменить</el-button>
+            <el-button @click="infoModal = null">Отменить</el-button>
           </el-form-item>
         </el-form>
       </div>
