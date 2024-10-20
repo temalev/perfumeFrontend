@@ -66,7 +66,7 @@ import Modal from './ui/Modal.vue';
 import TheInputPhone from './ui/TheInput/TheInputPhone.vue';
 import TheInput from './ui/TheInput/TheInput.vue';
 
-import { getCodeFromCall, login } from '@/api/productApi.js';
+import { getCodeFromSms, login } from '@/api/productApi.js';
 
 export default {
   components: { Modal, TheInputPhone, TheButton, TheInput },
@@ -97,7 +97,7 @@ export default {
         phoneNumber: `7${this.form.value.replace(/\D/g, '')}`,
       };
       try {
-        const res = await getCodeFromCall(data);
+        const res = await getCodeFromSms(data);
         this.step = 'code';
         this.uuid = res.uuid;
         this.startTimer();
