@@ -132,22 +132,27 @@
             ]"
             prop="name"
           >
-            <el-input v-mask="'(###) ###-##-##'" v-model="form.phone">
+            <el-input v-mask="'(###) ###-##-##'" v-model="form.phoneNumber">
               <template #prefix> <div class="mr-1">+7</div> </template>
             </el-input>
           </el-form-item>
           <el-form-item label="Способ связи">
-            <el-radio-group v-model="form.connectVariant">
+            <el-radio-group v-model="form.communicationTypeId">
               <el-radio :value="1">Телеграмм</el-radio>
               <el-radio :value="2">Вотсап</el-radio>
               <el-radio :value="3">Звонок</el-radio>
             </el-radio-group>
           </el-form-item>
           <el-form-item label="Поле для ваших пожеланий">
-            <el-input v-model="form.desc" type="textarea" />
+            <el-input v-model="form.products" type="textarea" />
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" @click="onSubmit">Отправить</el-button>
+            <el-button
+              :loading="sendLoading"
+              type="primary"
+              @click="postProductsRequests"
+              >Отправить</el-button
+            >
             <el-button @click="infoModal = null">Отменить</el-button>
           </el-form-item>
         </el-form>
@@ -171,7 +176,11 @@
 </template>
 
 <script>
-import { getMe, addToFavorites } from '@/api/productApi.js';
+import {
+  getMe,
+  addToFavorites,
+  postProductsRequests,
+} from '@/api/productApi.js';
 import MobilePanel from '~/components/MobilePanel.vue';
 import ShopBag from '~/components/ShopBag.vue';
 import LogIn from '~/components/LogIn.vue';
@@ -187,11 +196,12 @@ export default {
       infoModal: '',
       isDrawer: false,
       isLoginModal: false,
+      sendLoading: false,
       form: {
         name: '',
-        phone: '',
-        connectVariant: 1,
-        desc: '',
+        phoneNumber: '',
+        communicationTypeId: 1,
+        products: '',
       },
     };
   },
@@ -239,6 +249,16 @@ export default {
       } catch (e) {
         console.error(e);
       }
+    },
+    async postProductsRequests() {
+      this.sendLoading = true;
+      try {
+        const res = await postProductsRequests(this.form);
+        this.infoModal = false;
+      } catch (e) {
+        console.error(e);
+      }
+      this.sendLoading = false;
     },
   },
 };
