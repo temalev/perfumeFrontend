@@ -130,7 +130,7 @@
                 trigger: ['blur', 'change'],
               },
             ]"
-            prop="name"
+            prop="phoneNumber"
           >
             <el-input v-mask="'(###) ###-##-##'" v-model="form.phoneNumber">
               <template #prefix> <div class="mr-1">+7</div> </template>
@@ -143,14 +143,24 @@
               <el-radio :value="3">Звонок</el-radio>
             </el-radio-group>
           </el-form-item>
-          <el-form-item label="Поле для ваших пожеланий">
+          <el-form-item
+            :rules="[
+              {
+                required: true,
+                message: 'Поле обязательно для заполнения',
+                trigger: ['blur', 'change'],
+              },
+            ]"
+            label="Поле для ваших пожеланий"
+            prop="products"
+          >
             <el-input v-model="form.products" type="textarea" />
           </el-form-item>
           <el-form-item>
             <el-button
               :loading="sendLoading"
               type="primary"
-              @click="postProductsRequests"
+              @click="validateForm"
               >Отправить</el-button
             >
             <el-button @click="infoModal = null">Отменить</el-button>
@@ -259,6 +269,16 @@ export default {
         console.error(e);
       }
       this.sendLoading = false;
+    },
+    validateForm() {
+      this.$refs.form.validate(valid => {
+        if (valid) {
+          this.postProductsRequests();
+        } else {
+          // Валидация не прошла
+          console.log('Ошибка валидации');
+        }
+      });
     },
   },
 };
