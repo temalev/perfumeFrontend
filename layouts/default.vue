@@ -86,6 +86,73 @@
         </p>
       </div>
     </UiModal>
+    <UiModal
+      v-if="infoModal === 'noBrands'"
+      @close="infoModal = null"
+      header="Нет нужного аромата/бренда"
+    >
+      <div class="modal-body">
+        <p>
+          Если вы не нашли желаемый флакон, скорее всего, мы пока не добавили
+          его на сайт, наш ассортимент насчитывает более 30000 наименований,
+          включая винтажные, труднодоступные ароматы и миниатюры.
+        </p>
+        <p>
+          Пожалуйста, оставьте заявку для уточнения наличия интересующего вас
+          флакона, мы вернемся к вам с обратной связью в течение 1 рабочего дня.
+        </p>
+        <el-form
+          ref="form"
+          :model="form"
+          label-position="top"
+          label-width="auto"
+          @submit.prevent
+        >
+          <el-form-item
+            label="Имя"
+            :rules="[
+              {
+                required: true,
+                message: 'Поле обязательно для заполнения',
+                trigger: ['blur', 'change'],
+              },
+            ]"
+            prop="name"
+          >
+            <el-input v-model="form.name" />
+          </el-form-item>
+          <el-form-item
+            label="Телефон"
+            :rules="[
+              {
+                required: true,
+                message: 'Поле обязательно для заполнения',
+                trigger: ['blur', 'change'],
+              },
+            ]"
+            prop="name"
+          >
+            <el-input v-mask="'(###) ###-##-##'" v-model="form.phone">
+              <template #prefix> <div class="mr-1">+7</div> </template>
+            </el-input>
+          </el-form-item>
+          <el-form-item label="Способ связи">
+            <el-radio-group v-model="form.connectVariant">
+              <el-radio :value="1">Телеграмм</el-radio>
+              <el-radio :value="2">Вотсап</el-radio>
+              <el-radio :value="3">Звонок</el-radio>
+            </el-radio-group>
+          </el-form-item>
+          <el-form-item label="Поле для ваших пожеланий">
+            <el-input v-model="form.desc" type="textarea" />
+          </el-form-item>
+          <el-form-item>
+            <el-button type="primary" @click="onSubmit">Отправить</el-button>
+            <el-button>Отменить</el-button>
+          </el-form-item>
+        </el-form>
+      </div>
+    </UiModal>
     <shop-bag
       v-if="isDrawer"
       :user="user"
@@ -120,6 +187,12 @@ export default {
       infoModal: '',
       isDrawer: false,
       isLoginModal: false,
+      form: {
+        name: '',
+        phone: '',
+        connectVariant: 1,
+        desc: '',
+      },
     };
   },
   mounted() {

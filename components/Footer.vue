@@ -6,6 +6,9 @@
         <li class="pointer mt-1" @click="$emit('onInfoModal', 'delivery')">
           Доставка
         </li>
+        <li class="pointer mt-1" @click="$emit('onInfoModal', 'noBrands')">
+          Нет нужного аромата / бренда
+        </li>
       </ul>
     </div>
     <div class="d-flex-column">
