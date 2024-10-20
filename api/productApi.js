@@ -489,6 +489,39 @@ export async function addToFavorites(params) {
   }
 }
 
+export async function postProductsRequests(requestData) {
+  const config = useRuntimeConfig();
+  const apiUrl = config.public.URL;
+
+  try {
+    const response = await fetch(`${apiUrl}/product-requests`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(requestData),
+    });
+
+    if (!response.ok) {
+      throw new Error('Ошибка при выполнении запроса');
+    }
+
+    if (response.status === 201) {
+      return null;
+    }
+
+    const responseText = await response.text();
+    if (responseText) {
+      return JSON.parse(responseText);
+    }
+
+    return null;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
 export async function getFavorites(params) {
   const config = useRuntimeConfig();
   const apiUrl = config.public.URL;
