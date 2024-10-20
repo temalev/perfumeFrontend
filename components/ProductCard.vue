@@ -33,11 +33,7 @@
           class="ico-btn d-flex align-center j-c shop-bag-ico"
           @click.stop="addToShopBag(data.slug)"
         >
-          <Icon
-            name="heroicons-solid:plus-sm"
-            class="plus-ico"
-            style="font-size: 20px"
-          />
+          <span class="plus-ico" style="font-size: 20px">+</span>
           <Icon name="ph:shopping-cart-simple-bold" style="font-size: 20px" />
         </button>
       </div>

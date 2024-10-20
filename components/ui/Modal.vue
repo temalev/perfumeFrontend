@@ -10,7 +10,7 @@
           <h1 class="modal-header-text">{{ header }}</h1>
 
           <button class="ico-btn" @click="onClose">
-            <Icon name="material-symbols-light:close" style="font-size: 40px" />
+            <span style="font-size: 30px">✕</span>
           </button>
         </div>
         <div class="modal-content">
