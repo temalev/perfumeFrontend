@@ -202,6 +202,7 @@ export default {
   gap: 20px;
   overflow-x: auto;
   padding: 20px 20px 40px 20px;
+  scroll-behavior: smooth;
 }
 
 .info {
@@ -223,6 +224,9 @@ export default {
 }
 
 @media (max-width: 600px) {
+  .slider {
+    scroll-snap-type: x mandatory;
+  }
   .info {
     display: none;
   }
