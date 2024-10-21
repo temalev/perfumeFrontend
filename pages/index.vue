@@ -245,7 +245,7 @@ export default {
       border: 1px solid #2a4d84;
       padding: 2px;
       height: 200px;
-      width: 200px;
+      width: 115px;
       object-fit: cover;
     }
   }

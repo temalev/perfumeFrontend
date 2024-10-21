@@ -301,13 +301,10 @@ export async function getMe() {
   const config = useRuntimeConfig();
   const apiUrl = config.public.URL;
 
-  const cookie = useCookie('accessToken');
-  const token = cookie.value;
   try {
     const response = await fetch(`${apiUrl}/users/me`, {
       method: 'GET',
       headers: {
-        Authorization: `Bearer ${token}`,
         'Content-Type': 'application/json',
       },
     });
