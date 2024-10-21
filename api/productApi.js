@@ -116,8 +116,6 @@ export async function checkPromoCode(params) {
 export async function getProduct(params) {
   const config = useRuntimeConfig();
   const apiUrl = config.public.URL;
-  const cookie = useCookie('accessToken');
-  const token = cookie.value;
 
   const user = useCookie('user');
 
@@ -129,8 +127,8 @@ export async function getProduct(params) {
   try {
     const response = await fetch(url, {
       method: 'GET',
+      credentials: 'include',
       headers: {
-        Authorization: `Bearer ${token}`,
         'Content-Type': 'application/json',
       },
     });
@@ -241,17 +239,6 @@ export async function login(requestData) {
     if (!response.ok) {
       throw new Error('Ошибка авторизации');
     }
-
-    const data = await response.json();
-
-    if (data.accessToken) {
-      const cookie = useCookie('accessToken');
-      cookie.value = data.accessToken;
-
-      return data;
-    } else {
-      throw new Error('Токен доступа не найден в ответе');
-    }
   } catch (error) {
     console.error('Ошибка:', error.message);
     throw error;
@@ -284,12 +271,6 @@ export async function logOut(requestData) {
       responseData = await response.json().catch(() => null); // Ловим ошибку, если JSON пустой
     }
 
-    // Удаление куки на клиенте
-    if (process.client) {
-      const cookie = useCookie('accessToken');
-      cookie.value = null; // Удаляем токен из куки
-    }
-
     return responseData || {}; // Возвращаем пустой объект, если данных нет
   } catch (error) {
     console.error('Ошибка при логауте:', error.message);
@@ -304,6 +285,7 @@ export async function getMe() {
   try {
     const response = await fetch(`${apiUrl}/users/me`, {
       method: 'GET',
+      credentials: 'include',
       headers: {
         'Content-Type': 'application/json',
       },
@@ -325,13 +307,11 @@ export async function createOrder(requestData) {
   const config = useRuntimeConfig();
   const apiUrl = config.public.URL;
 
-  const cookie = useCookie('accessToken');
-  const token = cookie.value;
   try {
     const response = await fetch(`${apiUrl}/orders`, {
       method: 'POST',
+      credentials: 'include',
       headers: {
-        Authorization: `Bearer ${token}`,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(requestData),
@@ -353,13 +333,11 @@ export async function createOrderPublic(requestData) {
   const config = useRuntimeConfig();
   const apiUrl = config.public.URL;
 
-  const cookie = useCookie('accessToken');
-  const token = cookie.value;
   try {
     const response = await fetch(`${apiUrl}/orders/public`, {
       method: 'POST',
+      credentials: 'include',
       headers: {
-        Authorization: `Bearer ${token}`,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(requestData),
@@ -381,13 +359,11 @@ export async function getOrders() {
   const config = useRuntimeConfig();
   const apiUrl = config.public.URL;
 
-  const cookie = useCookie('accessToken');
-  const token = cookie.value;
   try {
     const response = await fetch(`${apiUrl}/orders`, {
       method: 'GET',
+      credentials: 'include',
       headers: {
-        Authorization: `Bearer ${token}`,
         'Content-Type': 'application/json',
       },
     });
@@ -408,13 +384,11 @@ export async function getRegions() {
   const config = useRuntimeConfig();
   const apiUrl = config.public.URL;
 
-  const cookie = useCookie('accessToken');
-  const token = cookie.value;
   try {
     const response = await fetch(`${apiUrl}/cdek/regions`, {
       method: 'GET',
+      credentials: 'include',
       headers: {
-        Authorization: `Bearer ${token}`,
         'Content-Type': 'application/json',
       },
     });
@@ -435,14 +409,12 @@ export async function getSdekPoints(params) {
   const config = useRuntimeConfig();
   const apiUrl = config.public.URL;
 
-  const cookie = useCookie('accessToken');
-  const token = cookie.value;
   const queryString = new URLSearchParams(params).toString();
   try {
     const response = await fetch(`${apiUrl}/cdek/points/?${queryString}`, {
       method: 'GET',
+      credentials: 'include',
       headers: {
-        Authorization: `Bearer ${token}`,
         'Content-Type': 'application/json',
       },
     });
@@ -462,14 +434,12 @@ export async function getSdekPoints(params) {
 export async function addToFavorites(params) {
   const config = useRuntimeConfig();
   const apiUrl = config.public.URL;
-  const cookie = useCookie('accessToken');
-  const token = cookie.value;
 
   try {
     const response = await fetch(`${apiUrl}/favorite-products/${params}`, {
       method: 'POST',
+      credentials: 'include',
       headers: {
-        Authorization: `Bearer ${token}`,
         'Content-Type': 'application/json',
       },
     });
@@ -522,14 +492,12 @@ export async function postProductsRequests(requestData) {
 export async function getFavorites(params) {
   const config = useRuntimeConfig();
   const apiUrl = config.public.URL;
-  const cookie = useCookie('accessToken');
-  const token = cookie.value;
 
   try {
     const response = await fetch(`${apiUrl}/favorite-products`, {
       method: 'GET',
+      credentials: 'include',
       headers: {
-        Authorization: `Bearer ${token}`,
         'Content-Type': 'application/json',
       },
     });
