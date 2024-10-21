@@ -271,11 +271,6 @@ export async function logOut(requestData) {
       responseData = await response.json().catch(() => null); // Ловим ошибку, если JSON пустой
     }
 
-    // Удаление куки на клиенте
-    if (process.client) {
-          cookie.value = null; // Удаляем токен из куки
-    }
-
     return responseData || {}; // Возвращаем пустой объект, если данных нет
   } catch (error) {
     console.error('Ошибка при логауте:', error.message);
