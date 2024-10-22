@@ -2,13 +2,39 @@
   <article class="card d-flex-column" @click="handleCardClick">
     <div class="img-container d-flex j-c">
       <img :src="image(data?.images[0])" :alt="data.name" />
-      <button
+      <!-- <button
         v-if="isFavorites"
         class="ico-btn d-flex align-center j-c favorite-ico"
         @click.stop="addToFavorites(data.slug)"
       >
         <Icon name="ph:tag-bold" style="font-size: 20px" />
-      </button>
+      </button> -->
+      <el-button
+        v-if="!data?.isFavorite"
+        style="width: 42px"
+        class="ico-btn"
+        :loading="favoriteLoading"
+        @click.stop="addToFavorites(data.slug)"
+      >
+        <Icon
+          v-if="!favoriteLoading"
+          name="ph:tag-bold"
+          style="font-size: 20px"
+        />
+      </el-button>
+      <el-button
+        v-else
+        style="width: 42px"
+        class="ico-btn"
+        :loading="favoriteLoading"
+        @click.stop="deleteFavorite(data.id)"
+      >
+        <Icon
+          v-if="!favoriteLoading"
+          name="ph:tag-fill"
+          style="font-size: 20px; color: black"
+        />
+      </el-button>
     </div>
 
     <div class="info d-flex-column align-flex-start gap-3">
@@ -51,6 +77,7 @@
 
 <script>
 import LogIn from '~/components/LogIn.vue';
+import { deleteFavorite, addToFavorites } from '@/api/productApi.js';
 export default {
   components: { LogIn },
   props: {
@@ -69,6 +96,7 @@ export default {
       user: useState('user'),
       isLoginModal: false,
       preventCardClick: false,
+      favoriteLoading: false,
     };
   },
   methods: {
@@ -90,9 +118,30 @@ export default {
     },
     addToFavorites() {
       if (this.user) {
+        this.addToFavorites();
       } else {
         this.isLoginModal = true;
       }
+    },
+    async deleteFavorite(id) {
+      this.favoriteLoading = true;
+      try {
+        await deleteFavorite(id);
+        this.data.isFavorite = false;
+      } catch (e) {
+        console.error(e);
+      }
+      this.favoriteLoading = false;
+    },
+    async addToFavorites(slug) {
+      this.favoriteLoading = true;
+      try {
+        await addToFavorites(slug);
+        this.data.isFavorite = true;
+      } catch (e) {
+        console.error(e);
+      }
+      this.favoriteLoading = false;
     },
     addToShopBag(slug) {
       console.log(slug);

@@ -69,13 +69,26 @@ export async function getProducts(params) {
   const config = useRuntimeConfig();
   const apiUrl = config.public.URL;
 
-  console.log(config);
-
   const queryString = new URLSearchParams(params).toString();
 
+  const userData = localStorage.getItem('user');
+  let user = null;
+  if (userData) {
+    user = JSON.parse(userData);
+  }
+
+  let url = `${apiUrl}/products?${queryString}`;
+  if (user) {
+    url = `${apiUrl}/products/private?${queryString}`;
+  }
+
   try {
-    const response = await fetch(`${apiUrl}/products?${queryString}`, {
+    const response = await fetch(url, {
       method: 'GET',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+      },
       params,
     });
 
@@ -117,10 +130,14 @@ export async function getProduct(params) {
   const config = useRuntimeConfig();
   const apiUrl = config.public.URL;
 
-  const user = useCookie('user');
+  const userData = localStorage.getItem('user');
+  let user = null;
+  if (userData) {
+    user = JSON.parse(userData);
+  }
 
   let url = `${apiUrl}/products/${params}`;
-  if (user?.id) {
+  if (user) {
     url = `${apiUrl}/products/private/${params}`;
   }
 
@@ -296,9 +313,11 @@ export async function getMe() {
     }
 
     const data = await response.json();
+    localStorage.setItem('user', JSON.stringify(data));
     return data;
   } catch (error) {
     console.error('Ошибка:', error.message);
+    localStorage.removeItem('user');
     throw error;
   }
 }
@@ -445,11 +464,52 @@ export async function addToFavorites(params) {
     });
 
     if (!response.ok) {
-      throw new Error('Ошибка при получении товаров');
+      throw new Error('Ошибка при выполнении запроса');
     }
 
-    const data = await response.json();
-    return data;
+    if (response.status === 201) {
+      return null;
+    }
+
+    const responseText = await response.text();
+    if (responseText) {
+      return JSON.parse(responseText);
+    }
+
+    return null;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
+export async function deleteFavorite(id) {
+  const config = useRuntimeConfig();
+  const apiUrl = config.public.URL;
+
+  try {
+    const response = await fetch(`${apiUrl}/favorite-products/${id}`, {
+      method: 'delete',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error('Ошибка при выполнении запроса');
+    }
+
+    if (response.status === 201) {
+      return null;
+    }
+
+    const responseText = await response.text();
+    if (responseText) {
+      return JSON.parse(responseText);
+    }
+
+    return null;
   } catch (error) {
     console.error(error);
     throw error;
