@@ -9,8 +9,8 @@
         :class="{ 'drawer-close': isClosed }"
         @animationend="onAnimationEnd"
       >
-        <button class="ico-btn d-flex align-center j-c" @click="onClose">
-          <Icon name="material-symbols-light:close" style="font-size: 40px" />
+        <button class="ico-btn d-flex align-center j-c p-3" @click="onClose">
+          <span style="font-size: 30px">✕</span>
         </button>
         <div class="drawer-content">
           <slot></slot>
