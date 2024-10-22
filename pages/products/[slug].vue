@@ -7,7 +7,19 @@
     <div v-if="product" class="product-card-content gap-4 mt-4">
       <img :src="image(product?.images[0])" :alt="product?.name" />
       <div class="d-flex-column">
-        <h1 v-if="product?.name">{{ product?.name }}</h1>
+        <h1
+          @click="
+            $router.push({
+              name: 'products-list',
+              query: { brand: product.brand },
+            })
+          "
+          v-if="product?.name"
+          class="pointer"
+        >
+          {{ product?.brand }}
+        </h1>
+        <h2 v-if="product?.name">{{ product?.name }}</h2>
         <span class="text-secondary">Артикул: {{ product?.article }}</span>
 
         <div class="options mt-4">
