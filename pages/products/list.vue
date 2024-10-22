@@ -1,13 +1,7 @@
 <template>
   <div v-loading="getProductsProcess" class="products">
     <h1 v-if="$route.query.isSale">Специальное предложение</h1>
-    <div class="filters">
-      <!-- <el-dropdown split-button type="primary">
-        Фильтры
-        <template #dropdown>
-          <el-dropdown-menu> тут содержимое </el-dropdown-menu>
-        </template>
-      </el-dropdown> -->
+    <div v-if="isHydrated" class="filters">
       <div class="d-flex-column gap-2 filter-item">
         <p>Бренды</p>
         <el-select
@@ -68,18 +62,8 @@
       <div class="d-flex-column filter-item" style="gap: 6px">
         <p style="text-wrap: nowrap">
           Диапазон стоимости от
-          <!-- <el-input-number
-            v-model="price[0]"
-            :controls="false"
-            style="width: 90px"
-          /> -->
           <el-tag type="primary" effect="dark" round> {{ price[0] }} </el-tag>
           до
-          <!-- <el-input-number
-            :controls="false"
-            v-model="price[1]"
-            style="width: 90px"
-          /> -->
           <el-tag type="primary" effect="dark" round>{{ price[1] }}</el-tag>
         </p>
         <el-slider
@@ -112,6 +96,7 @@ export default {
       getProductsProcess: false,
       brands: [],
       category: [],
+      isHydrated: false,
 
       price: [0, 100000],
       sortList: [
@@ -144,7 +129,7 @@ export default {
     },
   },
   mounted() {
-    console.log(this.price[1]);
+    this.isHydrated = true;
     this.getBrands();
     this.getCategory();
     this.setQuery();

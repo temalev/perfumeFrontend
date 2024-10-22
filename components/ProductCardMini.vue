@@ -7,7 +7,7 @@
     <div class="main-info d-flex-row j-sb align-flex-start">
       <div class="info d-flex-column j-sb h100">
         <div class="info-name d-flex-column align-flex-start">
-          <span class="name">{{ product?.name }}</span>
+          <span class="name">{{ `${product?.brand} ${product?.name}` }}</span>
           <span class="category">{{ product?.type }}</span>
         </div>
         <div class="info-price d-flex align-flex-end">
