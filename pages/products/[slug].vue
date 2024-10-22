@@ -52,16 +52,30 @@
             >Добавить в корзину</el-button
           >
           <el-button
+            v-if="!product?.isFavorite"
             style="width: 42px"
             size="large"
+            :loading="favoriteLoading"
             @click="addToFavorites(product.slug)"
           >
             <Icon
-              v-if="product?.isFavorite"
+              v-if="!favoriteLoading"
+              name="ph:tag-bold"
+              style="font-size: 20px"
+            />
+          </el-button>
+          <el-button
+            v-else
+            style="width: 42px"
+            size="large"
+            :loading="favoriteLoading"
+            @click="deleteFavorite(product.id)"
+          >
+            <Icon
+              v-if="!favoriteLoading"
               name="ph:tag-fill"
               style="font-size: 20px; color: black"
             />
-            <Icon v-else name="ph:tag-bold" style="font-size: 20px" />
           </el-button>
         </div>
         <div class="product-card-info">
@@ -132,7 +146,13 @@
 </template>
 
 <script>
-import { getProduct, getGroupProduct, getProducts } from '@/api/productApi.js';
+import {
+  getProduct,
+  getGroupProduct,
+  getProducts,
+  deleteFavorite,
+  addToFavorites,
+} from '@/api/productApi.js';
 import BreadCrumb from '~/components/ui/BreadCrumb.vue';
 import LogIn from '~/components/LogIn.vue';
 import ProductCard from '~/components/ProductCard.vue';
@@ -151,10 +171,10 @@ export default {
       ],
       options: [],
       ordersSlugs: useState('ordersSlugs'),
-      user: useState('user'),
-      favorites: useState('favoritesSlugs'),
+      user: null,
       isLoginModal: false,
       products: [],
+      favoriteLoading: false,
     };
   },
   watch: {
@@ -163,16 +183,39 @@ export default {
     },
   },
   mounted() {
+    this.user = localStorage.getItem('user');
     this.getProduct();
   },
 
   methods: {
     addToFavorites() {
       if (this.user) {
-        this.favorites = this.product.slug;
+        this.addToFavorites();
       } else {
         this.isLoginModal = true;
       }
+    },
+    async deleteFavorite(id) {
+      this.favoriteLoading = true;
+      try {
+        await deleteFavorite(id);
+        console.log(true);
+
+        this.product.isFavorite = false;
+      } catch (e) {
+        console.error(e);
+      }
+      this.favoriteLoading = false;
+    },
+    async addToFavorites() {
+      this.favoriteLoading = true;
+      try {
+        await addToFavorites(this.product.slug);
+        this.product.isFavorite = true;
+      } catch (e) {
+        console.error(e);
+      }
+      this.favoriteLoading = false;
     },
     addToShopBag(slug) {
       if (window.localStorage.getItem('ordersSlugs')) {
