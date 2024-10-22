@@ -15,4 +15,4 @@ COPY . .
 
 RUN npx nuxi generate
 
-CMD npx serve .output/public
+CMD npx serve -s .output/public
