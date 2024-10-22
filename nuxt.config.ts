@@ -27,7 +27,7 @@ export default defineNuxtConfig({
   plugins: [
     '~/plugins/yandex-metrika.client.js', '~/plugins/maska.js',
   ],
-  modules: ['@nuxt/eslint', 'nuxt-icon', '@nuxt/fonts'],
+  modules: ['@nuxt/eslint', 'nuxt-icon', '@nuxt/fonts', "@nuxt/icon"],
   ssr: true,
   runtimeConfig: {
     public: {
@@ -58,4 +58,3 @@ export default defineNuxtConfig({
   },
   
 });
-
