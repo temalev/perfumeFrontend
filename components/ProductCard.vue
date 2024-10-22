@@ -33,11 +33,7 @@
           class="ico-btn d-flex align-center j-c shop-bag-ico"
           @click.stop="addToShopBag(data.slug)"
         >
-          <Icon
-            name="heroicons-solid:plus-sm"
-            class="plus-ico"
-            style="font-size: 20px"
-          />
+          <span class="plus-ico" style="font-size: 20px">+</span>
           <Icon name="ph:shopping-cart-simple-bold" style="font-size: 20px" />
         </button>
       </div>
@@ -119,6 +115,7 @@ export default {
 
 <style scoped lang="scss">
 .card {
+  scroll-snap-align: center;
   width: 300px;
   box-shadow: rgba(50, 50, 93, 0.123) 0px 13px 27px -5px,
     rgba(0, 0, 0, 0.093) 0px 8px 16px -8px;

@@ -47,4 +47,10 @@ export default {
     margin-left: 4px;
   }
 }
+
+@media (max-width: 800px) {
+  li {
+    font-size: 14px;
+  }
+}
 </style>

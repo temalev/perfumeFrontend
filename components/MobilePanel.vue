@@ -46,7 +46,7 @@ export default {
 
 <style scoped lang="scss">
 .panel {
-  height: 60px;
+  height: 50px;
   background-color: #fff;
   width: 100%;
   display: flex;

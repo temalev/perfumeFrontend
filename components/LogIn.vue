@@ -2,13 +2,10 @@
   <modal header="Вход / Регистрация" @close="handleClose">
     <div class="login-modal">
       <template v-if="step === 'call'">
-        <p class="mt-2 mb-3">
-          Позвоним или пришлём SMS. Введите последние четыре цифры номера
-          телефона или код из SMS-сообщения.
-        </p>
-        <el-form :model="form">
+        <p class="mt-2 mb-3">Пришлём SMS. Введите код из SMS-сообщения.</p>
+        <el-form :model="form" @submit.prevent @keyup.enter="getCode">
           <el-form-item
-            label="Введите последние четыре цифры входящего номера"
+            label="Введите код из SMS-сообщения"
             label-position="top"
             :error="errorCode"
           >
@@ -32,9 +29,9 @@
         <!-- <p class="mt-2 mb-3">
           Введите последние четыре цифры входящего номера.
         </p> -->
-        <el-form :model="form">
+        <el-form :model="form" @submit.prevent>
           <el-form-item
-            label="Введите последние четыре цифры входящего номера"
+            label="Введите код из SMS-сообщения"
             label-position="top"
             :error="errorLogin"
           >
@@ -52,7 +49,7 @@
           :loading="loginLoading"
           type="primary"
           class="mt-4"
-          @click="login"
+          @click.prevent="login"
           >Подтвердить номер</el-button
         >
       </template>
@@ -66,7 +63,7 @@ import Modal from './ui/Modal.vue';
 import TheInputPhone from './ui/TheInput/TheInputPhone.vue';
 import TheInput from './ui/TheInput/TheInput.vue';
 
-import { getCodeFromCall, login } from '@/api/productApi.js';
+import { getCodeFromSms, login } from '@/api/productApi.js';
 
 export default {
   components: { Modal, TheInputPhone, TheButton, TheInput },
@@ -97,7 +94,7 @@ export default {
         phoneNumber: `7${this.form.value.replace(/\D/g, '')}`,
       };
       try {
-        const res = await getCodeFromCall(data);
+        const res = await getCodeFromSms(data);
         this.step = 'code';
         this.uuid = res.uuid;
         this.startTimer();

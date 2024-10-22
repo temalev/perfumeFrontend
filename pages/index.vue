@@ -53,7 +53,7 @@
       </div>
     </div>
     <div class="offers m-8">
-      <h3>Новинки</h3>
+      <h3>Хиты</h3>
       <div class="slider">
         <product-card
           v-for="product in productsSale"
@@ -202,6 +202,7 @@ export default {
   gap: 20px;
   overflow-x: auto;
   padding: 20px 20px 40px 20px;
+  scroll-behavior: smooth;
 }
 
 .info {
@@ -223,6 +224,9 @@ export default {
 }
 
 @media (max-width: 600px) {
+  .slider {
+    scroll-snap-type: x mandatory;
+  }
   .info {
     display: none;
   }
@@ -241,7 +245,7 @@ export default {
       border: 1px solid #2a4d84;
       padding: 2px;
       height: 200px;
-      width: 200px;
+      width: 115px;
       object-fit: cover;
     }
   }

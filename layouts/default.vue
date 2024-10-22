@@ -86,6 +86,88 @@
         </p>
       </div>
     </UiModal>
+    <UiModal
+      v-if="infoModal === 'noBrands'"
+      @close="infoModal = null"
+      header="Нет нужного аромата/бренда"
+    >
+      <div class="modal-body">
+        <p>
+          Если вы не нашли желаемый флакон, скорее всего, мы пока не добавили
+          его на сайт, наш ассортимент насчитывает более 30000 наименований,
+          включая винтажные, труднодоступные ароматы и миниатюры.
+        </p>
+        <p>
+          Пожалуйста, оставьте заявку для уточнения наличия интересующего вас
+          флакона, мы вернемся к вам с обратной связью в течение 1 рабочего дня.
+        </p>
+        <el-form
+          ref="form"
+          :model="form"
+          label-position="top"
+          label-width="auto"
+          @submit.prevent
+        >
+          <el-form-item
+            label="Имя"
+            :rules="[
+              {
+                required: true,
+                message: 'Поле обязательно для заполнения',
+                trigger: ['blur', 'change'],
+              },
+            ]"
+            prop="name"
+          >
+            <el-input v-model="form.name" />
+          </el-form-item>
+          <el-form-item
+            label="Телефон"
+            :rules="[
+              {
+                required: true,
+                message: 'Поле обязательно для заполнения',
+                trigger: ['blur', 'change'],
+              },
+            ]"
+            prop="phoneNumber"
+          >
+            <el-input v-mask="'(###) ###-##-##'" v-model="form.phoneNumber">
+              <template #prefix> <div class="mr-1">+7</div> </template>
+            </el-input>
+          </el-form-item>
+          <el-form-item label="Способ связи">
+            <el-radio-group v-model="form.communicationTypeId">
+              <el-radio :value="1">Телеграмм</el-radio>
+              <el-radio :value="2">Вотсап</el-radio>
+              <el-radio :value="3">Звонок</el-radio>
+            </el-radio-group>
+          </el-form-item>
+          <el-form-item
+            :rules="[
+              {
+                required: true,
+                message: 'Поле обязательно для заполнения',
+                trigger: ['blur', 'change'],
+              },
+            ]"
+            label="Поле для ваших пожеланий"
+            prop="products"
+          >
+            <el-input v-model="form.products" type="textarea" />
+          </el-form-item>
+          <el-form-item>
+            <el-button
+              :loading="sendLoading"
+              type="primary"
+              @click="validateForm"
+              >Отправить</el-button
+            >
+            <el-button @click="infoModal = null">Отменить</el-button>
+          </el-form-item>
+        </el-form>
+      </div>
+    </UiModal>
     <shop-bag
       v-if="isDrawer"
       :user="user"
@@ -104,7 +186,11 @@
 </template>
 
 <script>
-import { getMe, addToFavorites } from '@/api/productApi.js';
+import {
+  getMe,
+  addToFavorites,
+  postProductsRequests,
+} from '@/api/productApi.js';
 import MobilePanel from '~/components/MobilePanel.vue';
 import ShopBag from '~/components/ShopBag.vue';
 import LogIn from '~/components/LogIn.vue';
@@ -120,6 +206,13 @@ export default {
       infoModal: '',
       isDrawer: false,
       isLoginModal: false,
+      sendLoading: false,
+      form: {
+        name: '',
+        phoneNumber: '',
+        communicationTypeId: 1,
+        products: '',
+      },
     };
   },
   mounted() {
@@ -166,6 +259,26 @@ export default {
       } catch (e) {
         console.error(e);
       }
+    },
+    async postProductsRequests() {
+      this.sendLoading = true;
+      try {
+        const res = await postProductsRequests(this.form);
+        this.infoModal = false;
+      } catch (e) {
+        console.error(e);
+      }
+      this.sendLoading = false;
+    },
+    validateForm() {
+      this.$refs.form.validate(valid => {
+        if (valid) {
+          this.postProductsRequests();
+        } else {
+          // Валидация не прошла
+          console.log('Ошибка валидации');
+        }
+      });
     },
   },
 };

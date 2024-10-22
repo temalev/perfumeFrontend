@@ -7,6 +7,7 @@ export default defineNuxtConfig({
       title: 'ПарфБюро',
       meta: [
         { name: 'description', content: 'Оригиналы мировых брендов' },
+        { property: 'og:site_name', content: 'ПарфБюро' },
       ],
     },
   },

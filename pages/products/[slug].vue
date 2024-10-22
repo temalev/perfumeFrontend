@@ -332,6 +332,13 @@ export default {
     display: flex;
     flex-direction: column;
     align-items: center;
+    h1 {
+      font-size: 20px;
+    }
+    img {
+      height: 200px;
+      object-fit: contain;
+    }
   }
   .scroll {
     scroll-snap-type: x mandatory;
