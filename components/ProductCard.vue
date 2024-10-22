@@ -13,7 +13,7 @@
 
     <div class="info d-flex-column align-flex-start gap-3">
       <span class="category">{{ data.type }}</span>
-      <span class="name">{{ data?.name }}</span>
+      <span class="name">{{ `${data?.brand} ${data?.name}` }}</span>
 
       <div class="pay d-flex-row j-sb w100">
         <div class="info-price d-flex align-flex-end">
