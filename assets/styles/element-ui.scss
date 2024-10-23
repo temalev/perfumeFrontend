@@ -35,3 +35,12 @@
   font-size: inherit !important;
 }
 
+.el-button [class*=el-icon]+span {
+  display: none;
+}
+
+.ico-btn {
+  border: none !important;
+  background-color: transparent !important;
+}
+

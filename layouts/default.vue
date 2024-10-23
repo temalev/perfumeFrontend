@@ -138,9 +138,9 @@
           </el-form-item>
           <el-form-item label="Способ связи">
             <el-radio-group v-model="form.communicationTypeId">
-              <el-radio :value="1">Телеграмм</el-radio>
-              <el-radio :value="2">Вотсап</el-radio>
-              <el-radio :value="3">Звонок</el-radio>
+              <el-radio :value="1">Telegram</el-radio>
+              <el-radio :value="2">WhatsApp</el-radio>
+              <el-radio :value="3">Позвоните мне</el-radio>
             </el-radio-group>
           </el-form-item>
           <el-form-item
