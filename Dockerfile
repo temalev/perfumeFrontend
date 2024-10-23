@@ -15,4 +15,4 @@ COPY . .
 
 RUN npx nuxi build
 
-CMD nuxt start
+CMD npm start
