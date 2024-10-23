@@ -13,6 +13,6 @@ RUN npm i --force
 
 COPY . .
 
-RUN npx nuxi generate
+RUN npx nuxi build
 
-CMD npx serve .output/public
+CMD nuxt start
