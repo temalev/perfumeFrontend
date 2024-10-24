@@ -55,6 +55,11 @@ export default {
     padding: 22px;
     align-content: flex-start;
     overflow: auto;
+    @media (max-width: 500px) {
+      flex-direction: column;
+      flex-wrap: nowrap;
+      width: 100%;
+    }
   }
 }
 
