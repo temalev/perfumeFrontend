@@ -157,12 +157,11 @@
   const apiUrl = config.public.URL;
   const route = useRoute()
   const slug = route.params.slug;
-  const { data: product } = useFetch(`${apiUrl}/products/${slug}`)
-  defineExpose({
-    product
-  })
+  const { data: product } = await useAsyncData('product', () => $fetch(`${apiUrl}/products/${slug}`))
+
 
   console.log(product)
+  if (product.value) {
   useHead({
       meta: [
         {
@@ -187,7 +186,7 @@
         },
         {
           name: 'twitter:title',
-          content: `Купить ${product.value?.name}`,
+          content: `Купить ${product.value?.name || 'товар'}`,
         },
         {
           name: 'twitter:image',
@@ -195,6 +194,11 @@
         },
       ]
     })
+  }
+
+  defineExpose({
+    product
+  })
 </script>
 
 <script>
