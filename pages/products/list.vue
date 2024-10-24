@@ -126,6 +126,7 @@ export default {
   watch: {
     '$route.query'() {
       this.getProducts();
+      this.queryParams = this.getParams();
     },
   },
   mounted() {
