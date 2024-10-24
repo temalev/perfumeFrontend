@@ -4,8 +4,8 @@
       <Title>Купить {{ product?.name }}</Title>
     </Head>
     <bread-crumb :data="breadcrumb" />
-    <div v-if="product" class="product-card-content gap-4 mt-4">
-      <img :src="image(product?.images[0])" :alt="product?.name" />
+    <div v-if="product" class="product-card-content gap-4 mt-4" itemprop="offers" itemscope itemtype="https://schema.org/Offer">
+      <img :src="image(product?.images[0])" :alt="product?.name" itemprop="image" />
       <div class="d-flex-column">
         <h1
           @click="
@@ -16,11 +16,13 @@
           "
           v-if="product?.name"
           class="pointer"
+          itemprop="brand"
+          :content=product?.brand
         >
           {{ product?.brand }}
         </h1>
-        <h2 v-if="product?.name">{{ product?.name }}</h2>
-        <span class="text-secondary">Артикул: {{ product?.article }}</span>
+        <h2 v-if="product?.name" itemprop="name">{{ product?.name }}</h2>
+        <span class="text-secondary" itemprop="sku">Артикул: {{ product?.article }}</span>
 
         <div class="options mt-4">
           <div class="options-label">Объем/мл</div>
@@ -41,7 +43,7 @@
             </div>
           </div>
         </div>
-        <div class="price mb-4">
+        <div class="price mb-4" itemprop="price" :content=product?.price>
           {{ new Intl.NumberFormat('ru').format(product?.price) }} ₽
         </div>
         <div class="d-flex">
@@ -52,11 +54,11 @@
             >Добавить в корзину</el-button
           >
           <el-button
-            v-if="!product?.isFavorite"
+            v-if="!isFavorite"
             style="width: 42px"
             size="large"
             :loading="favoriteLoading"
-            @click="addToFavorites(product.slug)"
+            @click="addProductToFavorites(product.slug)"
           >
             <Icon
               v-if="!favoriteLoading"
@@ -69,7 +71,7 @@
             style="width: 42px"
             size="large"
             :loading="favoriteLoading"
-            @click="deleteFavorite(product.id)"
+            @click="deleteFavoriteProduct(product.id)"
           >
             <Icon
               v-if="!favoriteLoading"
@@ -128,7 +130,7 @@
     <log-in
       v-if="isLoginModal"
       @close="isLoginModal = false"
-      @success="addToFavorites()"
+      @success="addProductToFavorites()"
     />
 
     <div v-if="products.length" class="d-flex-column brands-products">
@@ -145,13 +147,26 @@
   </div>
 </template>
 
+<script setup>
+  import { useRoute } from 'vue-router'
+
+  const config = useRuntimeConfig();
+  const apiUrl = config.public.URL;
+  const route = useRoute()
+  const slug = route.params.slug;
+  const { data: product } = useFetch(`${apiUrl}/products/${slug}`)
+  defineExpose({
+    product
+  })
+</script>
+
 <script>
 import {
-  getProduct,
   getGroupProduct,
   getProducts,
   deleteFavorite,
   addToFavorites,
+  getFavorites,
 } from '@/api/productApi.js';
 import BreadCrumb from '~/components/ui/BreadCrumb.vue';
 import LogIn from '~/components/LogIn.vue';
@@ -161,7 +176,7 @@ export default {
   components: { BreadCrumb, LogIn, ProductCard },
   data() {
     return {
-      product: null,
+      preloadedProduct: null,
       getProductProcess: false,
       breadcrumb: [
         {
@@ -174,7 +189,8 @@ export default {
       user: null,
       isLoginModal: false,
       products: [],
-      favoriteLoading: false,
+      favoriteLoading: true,
+      isFavorite: false
     };
   },
   watch: {
@@ -183,35 +199,42 @@ export default {
     },
   },
   mounted() {
+    this.breadcrumb = [
+      {
+        name: 'Главная',
+        route: 'index',
+      },
+    ];
+    const instance = getCurrentInstance()
+    this.preloadedProduct = instance.exposed.product.value
     this.user = localStorage.getItem('user');
-    this.getProduct();
+    this.getFavoriteProducts();
+    this.getGroupProduct();
+    this.getProducts();
   },
 
   methods: {
-    addToFavorites() {
-      if (this.user) {
-        this.addToFavorites();
-      } else {
-        this.isLoginModal = true;
-      }
-    },
-    async deleteFavorite(id) {
+    async deleteFavoriteProduct(id) {
       this.favoriteLoading = true;
       try {
         await deleteFavorite(id);
-        console.log(true);
 
-        this.product.isFavorite = false;
+        this.isFavorite = false;
       } catch (e) {
         console.error(e);
       }
       this.favoriteLoading = false;
     },
-    async addToFavorites() {
+    async addProductToFavorites() {
+      if (!this.user) {
+        this.isLoginModal = true;
+        return
+      }
+
       this.favoriteLoading = true;
       try {
-        await addToFavorites(this.product.slug);
-        this.product.isFavorite = true;
+        await addToFavorites(this.preloadedProduct.slug);
+        this.isFavorite = true;
       } catch (e) {
         console.error(e);
       }
@@ -233,31 +256,20 @@ export default {
     image(url) {
       return url ? url : '/img/no_image.png';
     },
-    async getProduct() {
-      this.breadcrumb = [
-        {
-          name: 'Главная',
-          route: 'index',
-        },
-      ];
-      this.getProductProcess = true;
+    async getFavoriteProducts() {
       try {
-        const res = await getProduct(this.$route.params.slug, this.user);
-        this.product = res;
-        this.breadcrumb.push({
-          name: this.product.brand,
-          route: 'products',
-        });
-        this.getGroupProduct();
-        this.getProducts();
-      } catch (e) {
-        console.error(e);
+        this.favoriteLoading = true;
+        const favoritesProducts = await getFavorites()
+        this.isFavorite = favoritesProducts.some((fp) => fp?.product?.id === this.preloadedProduct.id)
+      } catch(e) {
+        console.error(e)
+      } finally {
+        this.favoriteLoading = false;
       }
-      this.getProductProcess = false;
     },
     async getGroupProduct() {
       try {
-        const res = await getGroupProduct(this.product.groupId);
+        const res = await getGroupProduct(this.preloadedProduct.groupId);
         this.options = res;
       } catch (e) {
         console.error(e);
@@ -265,7 +277,7 @@ export default {
     },
     async getProducts() {
       this.getProductsProcess = true;
-      const params = { brand: this.product.brand };
+      const params = { brand: this.preloadedProduct.brand };
       try {
         const res = await getProducts(params);
         this.products = res;
