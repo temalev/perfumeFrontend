@@ -2,7 +2,9 @@
   <div v-loading="getProductProcess" class="product-card">
     <Head>
       <Title>Купить {{ product?.name }}</Title>
+      <meta property="og:image" v-if="product.images.length" :content=product.images[0]>
     </Head>
+
     <bread-crumb :data="breadcrumb" />
     <div v-if="product" class="product-card-content gap-4 mt-4" itemprop="offers" itemscope itemtype="https://schema.org/Offer">
       <img :src="image(product?.images[0])" :alt="product?.name" itemprop="image" />
@@ -149,6 +151,7 @@
 
 <script setup>
   import { useRoute } from 'vue-router'
+  import { useHead } from '@vueuse/head'
 
   const config = useRuntimeConfig();
   const apiUrl = config.public.URL;
@@ -158,6 +161,40 @@
   defineExpose({
     product
   })
+
+  console.log(product)
+  useHead({
+      meta: [
+        {
+          property: 'og:image',
+          content: product.value?.images?.length ? product.value.images[0] : ''
+        },
+        {
+          property: 'og:title',
+          content: `Купить ${product.value.name || 'товар'}`,
+        },
+        {
+          property: 'og:url',
+          content: `https://parfburo.com/products/${product.value.slug}`,
+        },
+        {
+          property: 'og:type',
+          content: 'product',
+        },
+        {
+          name: 'twitter:card',
+          content: 'summary_large_image',
+        },
+        {
+          name: 'twitter:title',
+          content: `Купить ${product.value.name}`,
+        },
+        {
+          name: 'twitter:image',
+          content: product.value?.images?.length ? product.value.images[0] : '',
+        },
+      ]
+    })
 </script>
 
 <script>
