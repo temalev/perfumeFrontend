@@ -1,12 +1,12 @@
 <template>
-  <div v-loading="getProductProcess" class="product-card">
+  <div v-loading="getProductProcess" class="product-card" >
     <Head>
       <Title>Купить {{ product?.name }}</Title>
       <meta property="og:image" v-if="product.images.length" :content=product.images[0]>
     </Head>
 
     <bread-crumb :data="breadcrumb" />
-    <div v-if="product" class="product-card-content gap-4 mt-4" itemprop="offers" itemscope itemtype="https://schema.org/Offer">
+    <div v-if="product" class="product-card-content gap-4 mt-4"  itemscope itemtype="https://schema.org/Offer">
       <img :src="image(product?.images[0])" :alt="product?.name" itemprop="image" />
       <div class="d-flex-column">
         <h1
@@ -159,8 +159,6 @@
   const slug = route.params.slug;
   const { data: product } = await useAsyncData('product', () => $fetch(`${apiUrl}/products/${slug}`))
 
-
-  console.log(product)
   if (product.value) {
   useHead({
       meta: [
@@ -171,6 +169,18 @@
         {
           property: 'og:title',
           content: `Купить ${product.value?.name || 'товар'}`,
+        },
+        {
+          property: 'og:url',
+          content: `https://parfburo.com/products/${product.value?.slug}`,
+        },
+        {
+          property: 'og:locale',
+          content: "ru_RU",
+        },
+        {
+          property: 'og:logo',
+          content: "https://parfburo.com/_nuxt/logo.3sM_t13Y.webp",
         },
         {
           property: 'og:url',
