@@ -205,8 +205,12 @@ export default {
         route: 'index',
       },
     ];
+
     const instance = getCurrentInstance()
-    this.preloadedProduct = instance.exposed.product.value
+    if (instance.exposed.product) {
+      this.preloadedProduct = instance.exposed.product.value
+    }
+  
     this.user = localStorage.getItem('user');
     this.getFavoriteProducts();
     this.getGroupProduct();
@@ -224,6 +228,31 @@ export default {
         console.error(e);
       }
       this.favoriteLoading = false;
+    },
+    async getProduct() {
+      this.breadcrumb = [
+        {
+          name: 'Главная',
+          route: 'index',
+        },
+      ];
+      this.getProductProcess = true;
+      try {
+        const res = await getProduct(this.$route.params.slug, this.user);
+        this.preloadedProduct = res;
+
+        instance.exposed.product.value = this.preloadedProduct
+
+        this.breadcrumb.push({
+          name: this.preloadedProduct.brand,
+          route: 'products',
+        });
+        this.getGroupProduct();
+        this.getProducts();
+      } catch (e) {
+        console.error(e);
+      }
+      this.getProductProcess = false;
     },
     async addProductToFavorites() {
       if (!this.user) {
@@ -257,6 +286,11 @@ export default {
       return url ? url : '/img/no_image.png';
     },
     async getFavoriteProducts() {
+      if (!localStorage.getItem('user')) {
+        this.favoriteLoading = false;
+        return
+      }
+
       try {
         this.favoriteLoading = true;
         const favoritesProducts = await getFavorites()
