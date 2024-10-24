@@ -1,13 +1,26 @@
 <template>
-  <div v-loading="getProductProcess" class="product-card" >
+  <div v-loading="getProductProcess" class="product-card">
     <Head>
       <Title>Купить {{ product?.name }}</Title>
-      <meta property="og:image" v-if="product.images.length" :content=product.images[0]>
+      <meta
+        property="og:image"
+        v-if="product.images.length"
+        :content="product.images[0]"
+      />
     </Head>
 
     <bread-crumb :data="breadcrumb" />
-    <div v-if="product" class="product-card-content gap-4 mt-4"  itemscope itemtype="https://schema.org/Offer">
-      <img :src="image(product?.images[0])" :alt="product?.name" itemprop="image" />
+    <div
+      v-if="product"
+      class="product-card-content gap-4 mt-4"
+      itemscope
+      itemtype="https://schema.org/Offer"
+    >
+      <img
+        :src="image(product?.images[0])"
+        :alt="product?.name"
+        itemprop="image"
+      />
       <div class="d-flex-column">
         <h1
           @click="
@@ -18,12 +31,14 @@
           "
           v-if="product?.name"
           class="pointer"
-          :content=product?.brand
+          :content="product?.brand"
         >
           {{ product?.brand }}
         </h1>
         <h2 v-if="product?.name" itemprop="name">{{ product?.name }}</h2>
-        <span class="text-secondary" itemprop="sku">Артикул: {{ product?.article }}</span>
+        <span class="text-secondary" itemprop="sku"
+          >Артикул: {{ product?.article }}</span
+        >
 
         <div class="options mt-4">
           <div class="options-label">Объем/мл</div>
@@ -44,7 +59,7 @@
             </div>
           </div>
         </div>
-        <div class="price mb-4" itemprop="price" :content=product?.price>
+        <div class="price mb-4" itemprop="price" :content="product?.price">
           {{ new Intl.NumberFormat('ru').format(product?.price) }} ₽
         </div>
         <div class="d-flex">
@@ -149,65 +164,68 @@
 </template>
 
 <script setup>
-  import { useRoute } from 'vue-router'
-  import { useHead } from '@vueuse/head'
+import { useRoute } from 'vue-router';
+import { useHead } from '@vueuse/head';
 
-  const config = useRuntimeConfig();
-  const apiUrl = config.public.URL;
-  const route = useRoute()
-  const slug = route.params.slug;
-  const { data: product } = await useAsyncData('product', () => $fetch(`${apiUrl}/products/${slug}`))
+const config = useRuntimeConfig();
+const apiUrl = config.public.URL;
+const route = useRoute();
+const slug = route.params.slug;
 
-  if (product.value) {
+const { data: product } = await useAsyncData('product', () =>
+  $fetch(`${apiUrl}/products/${slug}`)
+);
+
+if (product.value) {
   useHead({
-      meta: [
-        {
-          property: 'og:image',
-          content: product.value?.images?.length ? product.value.images[0] : ''
-        },
-        {
-          property: 'og:title',
-          content: `Купить ${product.value?.name || 'товар'}`,
-        },
-        {
-          property: 'og:url',
-          content: `https://parfburo.com/products/${product.value?.slug}`,
-        },
-        {
-          property: 'og:locale',
-          content: "ru_RU",
-        },
-        {
-          property: 'og:logo',
-          content: "https://parfburo.com/_nuxt/logo.3sM_t13Y.webp",
-        },
-        {
-          property: 'og:url',
-          content: `https://parfburo.com/products/${product.value?.slug}`,
-        },
-        {
-          property: 'og:type',
-          content: 'product',
-        },
-        {
-          name: 'twitter:card',
-          content: 'summary_large_image',
-        },
-        {
-          name: 'twitter:title',
-          content: `Купить ${product.value?.name || 'товар'}`,
-        },
-        {
-          name: 'twitter:image',
-          content: product.value?.images?.length ? product.value.images[0] : '',
-        },
-      ]
-    })
-  }
+    meta: [
+      {
+        property: 'og:image',
+        content: product.value?.images?.length ? product.value.images[0] : '',
+      },
+      {
+        property: 'og:title',
+        content: `Купить ${product.value?.name || 'товар'}`,
+      },
+      {
+        property: 'og:url',
+        content: `https://parfburo.com/products/${product.value?.slug}`,
+      },
+      {
+        property: 'og:locale',
+        content: 'ru_RU',
+      },
+      {
+        property: 'og:logo',
+        content: 'https://parfburo.com/_nuxt/logo.3sM_t13Y.webp',
+      },
+      {
+        property: 'og:url',
+        content: `https://parfburo.com/products/${product.value?.slug}`,
+      },
+      {
+        property: 'og:type',
+        content: 'product',
+      },
+      {
+        name: 'twitter:card',
+        content: 'summary_large_image',
+      },
+      {
+        name: 'twitter:title',
+        content: `Купить ${product.value?.name || 'товар'}`,
+      },
+      {
+        name: 'twitter:image',
+        content: product.value?.images?.length ? product.value.images[0] : '',
+      },
+    ],
+  });
+}
 
-  defineExpose({
-    product
-  })
+defineExpose({
+  product,
+});
 </script>
 
 <script>
@@ -241,7 +259,7 @@ export default {
       isLoginModal: false,
       products: [],
       favoriteLoading: true,
-      isFavorite: false
+      isFavorite: false,
     };
   },
   watch: {
@@ -250,6 +268,8 @@ export default {
     // },
   },
   mounted() {
+    this.user = localStorage.getItem('user');
+
     this.breadcrumb = [
       {
         name: 'Главная',
@@ -257,17 +277,15 @@ export default {
       },
     ];
 
-    const instance = getCurrentInstance()
+    const instance = getCurrentInstance();
     if (instance?.exposed?.product?.value) {
-      this.preloadedProduct = instance.exposed.product.value
+      this.preloadedProduct = instance.exposed.product.value;
       this.getFavoriteProducts();
       this.getGroupProduct();
       this.getProducts();
     } else {
       this.getNewProduct();
     }
-  
-    this.user = localStorage.getItem('user');
   },
 
   methods: {
@@ -308,7 +326,7 @@ export default {
     async addProductToFavorites() {
       if (!this.user) {
         this.isLoginModal = true;
-        return
+        return;
       }
 
       this.favoriteLoading = true;
@@ -339,15 +357,17 @@ export default {
     async getFavoriteProducts() {
       if (!this.user) {
         this.favoriteLoading = false;
-        return
+        return;
       }
 
       try {
         this.favoriteLoading = true;
-        const favoritesProducts = await getFavorites()
-        this.isFavorite = favoritesProducts.some((fp) => fp?.product?.id === this.preloadedProduct.id)
-      } catch(e) {
-        console.error(e)
+        const favoritesProducts = await getFavorites();
+        this.isFavorite = favoritesProducts.some(
+          fp => fp?.product?.id === this.preloadedProduct.id
+        );
+      } catch (e) {
+        console.error(e);
       } finally {
         this.favoriteLoading = false;
       }
