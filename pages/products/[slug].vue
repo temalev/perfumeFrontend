@@ -162,6 +162,7 @@
 
 <script>
 import {
+  getProduct,
   getGroupProduct,
   getProducts,
   deleteFavorite,
@@ -194,9 +195,9 @@ export default {
     };
   },
   watch: {
-    '$route.query'() {
-      this.getProduct();
-    },
+    // '$route.query'() {
+    //   this.getNewProduct();
+    // },
   },
   mounted() {
     this.breadcrumb = [
@@ -207,14 +208,20 @@ export default {
     ];
 
     const instance = getCurrentInstance()
-    if (instance.exposed.product) {
+    console.log(instance.exposed.product.value)
+    if (instance?.exposed?.product?.value) {
       this.preloadedProduct = instance.exposed.product.value
+      console.log( instance.exposed.product)
+      console.log( instance.exposed.product.value)
+      console.log( this.preloadedProduct)
+      this.getFavoriteProducts();
+      this.getGroupProduct();
+      this.getProducts();
+    } else {
+      this.getNewProduct();
     }
   
     this.user = localStorage.getItem('user');
-    this.getFavoriteProducts();
-    this.getGroupProduct();
-    this.getProducts();
   },
 
   methods: {
@@ -229,7 +236,7 @@ export default {
       }
       this.favoriteLoading = false;
     },
-    async getProduct() {
+    async getNewProduct() {
       this.breadcrumb = [
         {
           name: 'Главная',
@@ -240,8 +247,6 @@ export default {
       try {
         const res = await getProduct(this.$route.params.slug, this.user);
         this.preloadedProduct = res;
-
-        instance.exposed.product.value = this.preloadedProduct
 
         this.breadcrumb.push({
           name: this.preloadedProduct.brand,
@@ -269,7 +274,7 @@ export default {
       }
       this.favoriteLoading = false;
     },
-    addToShopBag(slug) {
+    addToShogroupIdpBag(slug) {
       if (window.localStorage.getItem('ordersSlugs')) {
         this.ordersSlugs.push(slug);
         if (this.ordersSlug?.length) {
@@ -286,7 +291,7 @@ export default {
       return url ? url : '/img/no_image.png';
     },
     async getFavoriteProducts() {
-      if (!localStorage.getItem('user')) {
+      if (!this.user) {
         this.favoriteLoading = false;
         return
       }
