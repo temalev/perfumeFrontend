@@ -2,8 +2,6 @@ export async function getCategory() {
   const config = useRuntimeConfig();
   const apiUrl = config.public.URL;
 
-  console.log(config);
-
   try {
     const response = await fetch(`${apiUrl}/categories`, {
       method: 'GET',
@@ -45,8 +43,6 @@ export async function getMedia() {
 export async function getBrands() {
   const config = useRuntimeConfig();
   const apiUrl = config.public.URL;
-
-  console.log(config);
 
   try {
     const response = await fetch(`${apiUrl}/products/brands`, {
@@ -316,8 +312,9 @@ export async function getMe() {
     localStorage.setItem('user', JSON.stringify(data));
     return data;
   } catch (error) {
-    console.error('Ошибка:', error.message);
     localStorage.removeItem('user');
+
+    console.error('Ошибка:', error.message);
     throw error;
   }
 }
