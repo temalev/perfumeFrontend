@@ -14,7 +14,10 @@
         style="width: 42px"
         class="ico-btn"
         :loading="favoriteLoading"
-        @click.stop="addToFavorites(data.slug)"
+        @click.stop="
+          preventCardClick = true;
+          onAddToFavorites(data.slug);
+        "
       >
         <Icon
           v-if="!favoriteLoading"
@@ -93,11 +96,14 @@ export default {
   data() {
     return {
       ordersSlugs: useState('ordersSlugs'),
-      user: useState('user'),
+      user: null,
       isLoginModal: false,
       preventCardClick: false,
       favoriteLoading: false,
     };
+  },
+  mounted() {
+    this.user = localStorage.getItem('user');
   },
   methods: {
     handleCardClick() {
@@ -107,7 +113,6 @@ export default {
           params: { slug: this.data.slug },
         });
       }
-      this.preventCardClick = false;
     },
     handleLoginClose() {
       this.isLoginModal = false;
@@ -116,9 +121,9 @@ export default {
     image(url) {
       return url ? url : '/img/no_image.png';
     },
-    addToFavorites() {
+    onAddToFavorites(slug) {
       if (this.user) {
-        this.addToFavorites();
+        this.addToFavorites(slug);
       } else {
         this.isLoginModal = true;
       }
@@ -136,7 +141,7 @@ export default {
     async addToFavorites(slug) {
       this.favoriteLoading = true;
       try {
-        await addToFavorites(slug);
+        await addToFavorites(this.data.slug);
         this.data.isFavorite = true;
       } catch (e) {
         console.error(e);
