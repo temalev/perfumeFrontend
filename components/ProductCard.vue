@@ -198,6 +198,14 @@ img {
     top: 20px;
     right: 20px;
   }
+
+  & ::v-deep {
+    .el-button {
+      height: 20px !important;
+      width: 20px !important;
+      padding: 0 !important;
+    }
+  }
 }
 
 .product-price {
