@@ -171,11 +171,11 @@
         },
         {
           property: 'og:title',
-          content: `Купить ${product.value.name || 'товар'}`,
+          content: `Купить ${product.value?.name || 'товар'}`,
         },
         {
           property: 'og:url',
-          content: `https://parfburo.com/products/${product.value.slug}`,
+          content: `https://parfburo.com/products/${product.value?.slug}`,
         },
         {
           property: 'og:type',
@@ -187,7 +187,7 @@
         },
         {
           name: 'twitter:title',
-          content: `Купить ${product.value.name}`,
+          content: `Купить ${product.value?.name}`,
         },
         {
           name: 'twitter:image',
