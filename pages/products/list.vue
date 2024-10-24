@@ -69,10 +69,10 @@
         <el-slider
           v-model="price"
           range
-          step="100"
-          max="100000"
+          :step="100"
+          :max="100000"
           style="padding: 0 20px; width: 260px"
-          @change="setQuery()"
+          @change="test"
         />
       </div>
     </div>
@@ -138,6 +138,11 @@ export default {
   },
 
   methods: {
+    test() {
+      (this.queryParams.fromPrice = this.price?.[0]),
+        (this.queryParams.toPrice = this.price?.[1]),
+        this.setQuery();
+    },
     getParams() {
       return {
         brand: this.$route.query.brand,
@@ -146,8 +151,8 @@ export default {
           : undefined,
         orderBy: this.$route.query.orderBy || 'name',
         order: this.$route.query.order || 'DESC',
-        fromPrice: this.price?.[0] || 0,
-        toPrice: this.price?.[1] || 100000,
+        fromPrice: this.price?.[0],
+        toPrice: this.price?.[1],
       };
     },
     getItemById(id, arr) {
@@ -162,23 +167,11 @@ export default {
       this.getProductsProcess = true;
       this.products = [];
 
-      this.queryParams.fromPrice = this.price?.[0];
-      this.queryParams.toPrice = this.price?.[1];
-      console.log(this.removeEmptyFields(this.$route.query));
-
       try {
         const res = await getProducts(
           this.removeEmptyFields(this.$route.query)
         );
         this.products = res;
-        this.price[0] = this.products.reduce(
-          (min, item) => (item.price < min ? item.price : min),
-          this.products[0].price
-        );
-        this.price[1] = this.products.reduce(
-          (max, item) => (item.price > max ? item.price : max),
-          this.products[0].price
-        );
       } catch (e) {
         console.error(e);
       }
