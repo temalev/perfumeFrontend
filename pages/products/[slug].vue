@@ -33,7 +33,7 @@
               class="options-item"
               :class="{ active: option.id === product.id }"
               @click="
-                this.$router.replace({
+                $router.replace({
                   name: 'products-slug',
                   params: { slug: option.slug },
                 })
