@@ -208,12 +208,8 @@ export default {
     ];
 
     const instance = getCurrentInstance()
-    console.log(instance.exposed.product.value)
     if (instance?.exposed?.product?.value) {
       this.preloadedProduct = instance.exposed.product.value
-      console.log( instance.exposed.product)
-      console.log( instance.exposed.product.value)
-      console.log( this.preloadedProduct)
       this.getFavoriteProducts();
       this.getGroupProduct();
       this.getProducts();
