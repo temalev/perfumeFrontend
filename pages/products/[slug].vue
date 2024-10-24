@@ -18,7 +18,6 @@
           "
           v-if="product?.name"
           class="pointer"
-          itemprop="brand"
           :content=product?.brand
         >
           {{ product?.brand }}
