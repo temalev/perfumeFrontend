@@ -126,6 +126,7 @@ export default {
   watch: {
     '$route.query'() {
       this.getProducts();
+      this.queryParams = this.getParams();
     },
   },
   mounted() {
@@ -140,7 +141,9 @@ export default {
     getParams() {
       return {
         brand: this.$route.query.brand,
-        categoryId: this.$route.query.categoryId,
+        categoryId: this.$route.query.categoryId
+          ? Number(this.$route.query.categoryId)
+          : undefined,
         orderBy: this.$route.query.orderBy || 'name',
         order: this.$route.query.order || 'DESC',
         fromPrice: this.price?.[0] || 0,
