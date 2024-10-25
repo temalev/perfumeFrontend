@@ -4,7 +4,10 @@
       <div
         class="btnMenu"
         :class="isLeftMenu ? 'active' : ''"
-        @click="isLeftMenu = !isLeftMenu"
+        @click="
+          isLeftMenu = !isLeftMenu;
+          $emit('closeModal');
+        "
       >
         <span></span>
       </div>
