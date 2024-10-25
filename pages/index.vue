@@ -1,4 +1,5 @@
 <template>
+  <VitePwaManifest />
   <div class="body-home-page">
     <div class="d-flex" style="position: relative">
       <img
