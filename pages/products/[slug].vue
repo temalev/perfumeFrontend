@@ -1,7 +1,7 @@
 <template>
   <div v-loading="getProductProcess" class="product-card">
     <Head>
-      <Title>Купить {{ product?.name }}</Title>
+      <Title>Купить {{ [product.brand, product.name].filter(Boolean).join(' ') }}</Title>
       <meta
         property="og:image"
         v-if="product.images.length"
@@ -177,6 +177,7 @@ const { data: product } = await useAsyncData('product', () =>
 );
 
 if (product.value) {
+  const fullName = [product.value?.brand, product.value?.name].filter(Boolean).join(' ')
   useHead({
     meta: [
       {
@@ -185,7 +186,7 @@ if (product.value) {
       },
       {
         property: 'og:title',
-        content: `Купить ${product.value?.name || 'товар'}`,
+        content: `Купить ${ fullName || 'товар'}`,
       },
       {
         property: 'og:url',
@@ -208,12 +209,16 @@ if (product.value) {
         content: 'product',
       },
       {
+        property: 'og:description',
+        content: 'Насладитесь утонченными нотами, которые подчеркнут вашу индивидуальность. Наши духи раскрывают истинную красоту через каждую каплю. Найдите аромат, который станет вашим!',
+      },
+      {
         name: 'twitter:card',
         content: 'summary_large_image',
       },
       {
         name: 'twitter:title',
-        content: `Купить ${product.value?.name || 'товар'}`,
+        content: `Купить ${fullName || 'товар'}`,
       },
       {
         name: 'twitter:image',
