@@ -1,7 +1,7 @@
 <template>
   <div v-loading="getProductProcess" class="product-card">
     <Head>
-      <Title>Купить {{ [product.value?.brand, product.value?.name].filter(Boolean).join(' ') }}</Title>
+      <Title>Купить {{ [product.brand, product.name].filter(Boolean).join(' ') }}</Title>
       <meta
         property="og:image"
         v-if="product.images.length"
