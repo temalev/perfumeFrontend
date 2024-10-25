@@ -4,7 +4,10 @@
       <div
         class="btnMenu"
         :class="isLeftMenu ? 'active' : ''"
-        @click="isLeftMenu = !isLeftMenu"
+        @click="
+          isLeftMenu = !isLeftMenu;
+          $emit('closeModal');
+        "
       >
         <span></span>
       </div>
@@ -14,7 +17,11 @@
       alt=""
       width="140"
       height="50px"
-      @click="$router.push('/')"
+      @click="
+        $router.push('/');
+        isLeftMenu = false;
+        $emit('closeModal');
+      "
     />
     <Icon name="ph:magnifying-glass-bold" style="font-size: 20px" />
     <div v-if="isLeftMenu" class="left-menu">
