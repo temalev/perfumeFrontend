@@ -28,7 +28,7 @@ export default defineNuxtConfig({
   plugins: [
     '~/plugins/yandex-metrika.client.js', '~/plugins/maska.js',
   ],
-  modules: ['@nuxt/eslint', 'nuxt-icon', '@nuxt/fonts', '@nuxt/icon'],
+  modules: ['@nuxt/eslint', 'nuxt-icon', '@nuxt/fonts', '@nuxt/icon', '@vite-pwa/nuxt'],
   ssr: true,
   runtimeConfig: {
     public: {
@@ -55,6 +55,31 @@ export default defineNuxtConfig({
         // indent: 'tab',
         semi: true,
       },
+    },
+  },
+  pwa: {
+    manifest: {
+      name: 'ПарфБюро - оригиналы мировых брендов',
+      short_name: 'ПарфБюро',
+      description: 'Оригиналы мировых брендов',
+      start_url: '/',
+      display: 'standalone',
+      background_color: '#ffffff',
+      theme_color: '#ffffff',
+      icons: [
+        {
+          src: '/img/logo.webp',
+          sizes: '512x512',
+          type: 'image/webp',
+        },
+      ],
+    },
+    workbox: {
+      navigateFallback: '/',
+    },
+    devOptions: {
+      enabled: true,
+      type: 'module',
     },
   },
 });
