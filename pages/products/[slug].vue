@@ -208,6 +208,10 @@ if (product.value) {
         content: 'product',
       },
       {
+        property: 'og:description',
+        content: 'Насладитесь утонченными нотами, которые подчеркнут вашу индивидуальность. Наши духи раскрывают истинную красоту через каждую каплю. Найдите аромат, который станет вашим!',
+      },
+      {
         name: 'twitter:card',
         content: 'summary_large_image',
       },
