@@ -1,6 +1,5 @@
 <template>
   <div v-loading="getProductsProcess" class="products">
-    <h1 v-if="$route.query.isSale">Специальное предложение</h1>
     <div v-if="isHydrated" class="filters">
       <div class="d-flex-column gap-2 filter-item">
         <p>Бренды</p>
@@ -73,6 +72,15 @@
           :max="100000"
           style="padding: 0 20px; width: 260px"
           @change="test"
+        />
+      </div>
+      <div class="d-flex-column gap-2 filter-item">
+        <p>Скидка</p>
+        <el-switch
+          v-model="queryParams.isSale"
+          active-color="#2A4D84"
+          label="Со скидкой"
+          @change="setQuery()"
         />
       </div>
     </div>
@@ -153,6 +161,7 @@ export default {
         order: this.$route.query.order || 'DESC',
         fromPrice: this.price?.[0],
         toPrice: this.price?.[1],
+        isSale: this.$route.query.isSale === 'true' ? true : false,
       };
     },
     getItemById(id, arr) {
@@ -239,10 +248,19 @@ export default {
   border-bottom: 1px solid #eee;
   padding-bottom: 20px;
   display: flex;
-  gap: 12px;
+  gap: 16px;
   overflow: scroll;
   scroll-behavior: smooth;
   scroll-snap-type: x mandatory;
+  @media (max-width: 500px) {
+    gap: 12px;
+  }
+  @media (min-width: 1600px) {
+    gap: 16px;
+  }
+  @media (max-width: 1500px) {
+    justify-content: space-between;
+  }
 }
 
 @media (max-width: 500px) {
