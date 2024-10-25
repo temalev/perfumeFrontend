@@ -1,0 +1,16 @@
+{
+  "name": "ПарфБюро - оригиналы мировых брендов",
+  "short_name": "ПарфБюро",
+  "description": "Оригиналы мировых брендов",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#ffffff",
+  "icons": [
+    {
+      "src": "/img/logo.webp",
+      "sizes": "512x512",
+      "type": "image/webp"
+    }
+  ]
+}
