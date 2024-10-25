@@ -1,6 +1,6 @@
 <template>
   <div class="footer">
-    <div class="d-flex-column">
+    <div class="d-flex-column mb-4">
       <ul>
         <li class="pointer" @click="$emit('onInfoModal', 'about')">О нас</li>
         <li class="pointer mt-1" @click="$emit('onInfoModal', 'delivery')">
@@ -10,13 +10,13 @@
           Отливанты
         </li>
         <li class="pointer mt-1" @click="$emit('onInfoModal', 'noBrands')">
-          Нет нужного аромата / бренда
+          Не нашли нужного аромата?
         </li>
       </ul>
     </div>
     <div class="d-flex-column">
-      <div class="d-flex gap-4 mb-2">
-        <el-link>+7(993)269-01-88</el-link>
+      <div class="d-flex gap-4 mb-2 align-center">
+        <el-link style="font-size: 18px">+7(993)269-01-88</el-link>
         <el-link :underline="false" href="https://t.me/parfburoo">
           <Icon name="logos:telegram" style="font-size: 20px" />
         </el-link>
@@ -25,11 +25,11 @@
         </el-link>
       </div>
       <div>
-        <el-link>info@parfburo.com</el-link>
+        <el-link style="font-size: 18px">info@parfburo.com</el-link>
         - По вопросам сотрудничества, идеям по улучшению и жалобам.
       </div>
 
-      <ul>
+      <ul class="mt-4">
         <li>
           <el-text class="mx-1" type="info" size="small"
             >ИНДИВИДУАЛЬНЫЙ ПРЕДПРИНИМАТЕЛЬ ДЁМИН МИХАИЛ МИХАЙЛОВИЧ</el-text
@@ -58,7 +58,6 @@ export default {};
 .footer {
   display: flex;
   flex-wrap: wrap;
-  height: 300px;
   background-color: #000;
   color: #fff;
   padding: 20px;
@@ -70,6 +69,10 @@ export default {};
 
   & .pointer:hover {
     opacity: 0.8;
+  }
+
+  & a:hover {
+    color: #fff;
   }
 }
 </style>
