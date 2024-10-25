@@ -42,7 +42,7 @@
         <source :src="item.url" type="video/mp4" />
       </video>
     </div>
-    <div class="offers m-8">
+    <div class="offers mt-4">
       <h3>Специальные предложения</h3>
       <div class="slider">
         <product-card
@@ -52,7 +52,7 @@
         />
       </div>
     </div>
-    <div class="offers m-8">
+    <div class="offers">
       <h3>Хиты</h3>
       <div class="slider">
         <product-card
@@ -255,5 +255,28 @@ export default {
   display: flex;
   flex-direction: column;
   gap: 12px;
+  // margin: 32px 28px;
+  position: relative;
+  & h3 {
+    margin: 0 28px;
+  }
+
+  // &::before {
+  //   content: '';
+  //   position: absolute;
+  //   top: 0;
+  //   left: 0;
+  //   right: 0;
+  //   bottom: 0;
+  //   background: linear-gradient(
+  //     to right,
+  //     rgba(255, 255, 255, 0.8),
+  //     transparent 10%,
+  //     transparent 90%,
+  //     rgba(255, 255, 255, 0.8)
+  //   );
+  //   z-index: 99;
+  //   pointer-events: none;
+  // }
 }
 </style>
