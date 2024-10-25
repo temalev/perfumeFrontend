@@ -30,6 +30,10 @@
         isBrandsModal = true;
         isCatalog = false;
       "
+      @closeModal="
+        isBrandsModal = false;
+        isCatalog = false;
+      "
       class="mobile"
     />
 

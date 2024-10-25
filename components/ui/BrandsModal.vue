@@ -1,7 +1,7 @@
 <template>
   <div class="brands-modal">
-    <button class="ico-btn m-4" @click="$emit('close')">
-      <Icon name="material-symbols-light:close" style="font-size: 40px" />
+    <button class="ico-btn mr-6 mt-4" @click="$emit('close')">
+      <span style="font-size: 30px">✕</span>
     </button>
     <div class="brands-modal-content">
       <div v-for="col in data" :key="col.title" class="column">
