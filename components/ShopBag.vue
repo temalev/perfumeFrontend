@@ -14,7 +14,7 @@
             @drop="dropItem"
           />
         </div>
-        <div class="d-flex-column">
+        <div class="bottom">
           <div class="d-flex-column gap-4 mb-6">
             <h2>Сумма заказа</h2>
             <UiInfoBlock
@@ -780,6 +780,21 @@ export default {
   flex-direction: column;
   gap: 12px;
   height: calc(100% - 50px);
+  padding: 20px;
+
+  @media (max-width: 500px) {
+    padding: 0;
+  }
+
+  & h1 {
+    padding: 0 20px;
+  }
+
+  & .bottom {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+  }
 }
 .shop-bag-main {
   display: flex;
@@ -787,17 +802,20 @@ export default {
   justify-content: space-between;
   height: 100%;
   overflow: scroll;
+  > form {
+    padding: 20px;
+  }
 }
 .order-list {
-  border: 1px solid $border-color;
+  border-top: 1px solid $border-color;
+  border-bottom: 1px solid $border-color;
   display: flex;
   flex-direction: column;
   gap: 8px;
-  padding: 12px;
+  // padding: 12px;
 }
 
 form {
-  height: 100%;
   margin-top: 20px;
   display: flex;
   flex-direction: column;
@@ -812,6 +830,10 @@ form {
 ::v-deep {
   .el-collapse-item__wrap {
     overflow: visible;
+  }
+  .el-collapse-item__header {
+    text-align: left;
+    line-height: 20px !important;
   }
 }
 

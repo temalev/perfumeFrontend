@@ -94,7 +94,6 @@ export default {
 }
 
 .drawer-content {
-  padding: 20px;
   height: 100%;
 }
 
