@@ -175,9 +175,14 @@ export default {
     rgba(0, 0, 0, 0.093) 0px 8px 16px -8px;
   cursor: pointer;
   transition: 0.2s;
+
   &:hover {
     box-shadow: rgba(50, 50, 93, 0.044) 0px 13px 27px -5px,
       rgba(0, 0, 0, 0.034) 0px 8px 16px -8px;
+  }
+
+  @media (max-width: 500px) {
+    width: 100%;
   }
 }
 

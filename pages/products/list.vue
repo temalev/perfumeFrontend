@@ -75,7 +75,7 @@
         />
       </div>
       <div class="d-flex-column gap-2 filter-item">
-        <p>Скидка</p>
+        <p>Скидки</p>
         <el-switch
           v-model="queryParams.isSale"
           active-color="#2A4D84"
@@ -241,6 +241,10 @@ export default {
     justify-content: center;
     flex-wrap: wrap;
     gap: 22px;
+  }
+
+  @media (max-width: 500px) {
+    margin: 30px 20px;
   }
 }
 

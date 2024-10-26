@@ -9,6 +9,9 @@ export default defineNuxtConfig({
         { name: 'description', content: 'Оригиналы мировых брендов' },
         { property: 'og:site_name', content: 'ПарфБюро' },
       ],
+      htmlAttrs: {
+        lang: 'ru',
+      },
     },
   },
   devServer: {

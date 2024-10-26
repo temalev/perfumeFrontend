@@ -16,7 +16,9 @@
     </div>
     <div class="d-flex-column">
       <div class="d-flex gap-4 mb-2 align-center">
-        <el-link style="font-size: 18px">+7(993)269-01-88</el-link>
+        <el-link style="font-size: 18px" href="tel:+79932690188"
+          >+7(993)269-01-88</el-link
+        >
         <el-link :underline="false" href="https://t.me/parfburoo">
           <Icon name="logos:telegram" style="font-size: 20px" />
         </el-link>
@@ -25,7 +27,9 @@
         </el-link>
       </div>
       <div>
-        <el-link style="font-size: 18px">info@parfburo.com</el-link>
+        <el-link style="font-size: 18px" href="mailto:info@parfburo.com"
+          >info@parfburo.com</el-link
+        >
         - По вопросам сотрудничества, идеям по улучшению и жалобам.
       </div>
 
