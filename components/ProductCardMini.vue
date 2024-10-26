@@ -1,31 +1,27 @@
 <template>
-  <div class="card d-flex-row">
-    <div class="img d-flex">
-      <img :src="imgUrl(product?.images[0])" :alt="product?.name" />
-    </div>
+  <div class="card">
+    <img :src="imgUrl(product?.images[0])" :alt="product?.name" />
 
     <div class="main-info d-flex-row j-sb align-flex-start">
-      <div class="info d-flex-column j-sb h100">
+      <div class="info h100">
         <div class="info-name d-flex-column align-flex-start">
           <span class="name">{{ `${product?.brand} ${product?.name}` }}</span>
           <span class="category">{{ product?.type }}</span>
         </div>
-        <div class="info-price d-flex align-flex-end">
-          <span class="params">{{ product?.capacity }} мл.</span>
-          <span class="params">{{ product.count }} шт.</span>
+        <div class="info-price mt-2">
+          <div class="d-flex gap-2">
+            <span class="params">{{ product?.capacity }} мл.</span>
+            <span class="params">{{ product.count }} шт.</span>
+          </div>
+          <span class="new-price"
+            >{{ new Intl.NumberFormat('ru').format(product?.price) }} ₽
+          </span>
         </div>
       </div>
 
       <div class="btn-pay d-flex">
-        <span class="new-price"
-          >{{ new Intl.NumberFormat('ru').format(product?.price) }} ₽
-        </span>
-        <button class="ico-btn d-flex j-c">
-          <Icon
-            name="material-symbols-light:close"
-            style="font-size: 20px"
-            @click="$emit('drop', product.id)"
-          />
+        <button @click="$emit('drop', product.id)" class="ico-btn d-flex j-c">
+          <span style="font-size: 20px">✕</span>
         </button>
       </div>
     </div>
@@ -48,10 +44,14 @@ export default {
 };
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .card {
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
   max-width: 800px;
+  display: flex;
+  align-items: center;
+  min-height: 100px;
+  padding: 0 10px;
 }
 
 img {
@@ -62,6 +62,10 @@ img {
   left: 76px;
   background-color: #ffffff;
   flex-shrink: 0;
+  @media (max-width: 500px) {
+    width: 80px;
+    height: 80px;
+  }
 }
 .product-price {
   margin-bottom: 1rem;
@@ -76,10 +80,17 @@ img {
   text-align: center;
 }
 .new-price {
-  font-family: Anselm Sans;
   font-size: 18px;
-  font-weight: 400;
   text-wrap: nowrap;
+  @media (max-width: 400px) {
+    font-size: 16px;
+  }
+}
+.info {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 100%;
 }
 .info-name {
   gap: 4px;
@@ -107,16 +118,14 @@ img {
   line-height: 14.15px;
   text-align: left;
 }
-.info {
-  padding: 0.8rem;
-}
 
 .info-price {
-  gap: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .btn-pay {
-  padding: 1rem;
   gap: 1rem;
 }
 

@@ -9,6 +9,9 @@ export default defineNuxtConfig({
         { name: 'description', content: 'Оригиналы мировых брендов' },
         { property: 'og:site_name', content: 'ПарфБюро' },
       ],
+      htmlAttrs: {
+        lang: 'ru',
+      },
     },
   },
   devServer: {
@@ -26,7 +29,7 @@ export default defineNuxtConfig({
     },
   },
   plugins: [
-    '~/plugins/yandex-metrika.client.js', '~/plugins/maska.js',
+    '~/plugins/yandex-metrika.client.js', '~/plugins/maska.js', '~/plugins/google-analytics.js',
   ],
   modules: ['@nuxt/eslint', 'nuxt-icon', '@nuxt/fonts', '@nuxt/icon', '@vite-pwa/nuxt'],
   ssr: true,

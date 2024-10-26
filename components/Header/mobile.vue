@@ -1,6 +1,6 @@
 <template>
   <header>
-    <div class="wrapper">
+    <div class="header-elements">
       <div
         class="btnMenu"
         :class="isLeftMenu ? 'active' : ''"
@@ -11,19 +11,52 @@
       >
         <span></span>
       </div>
+      <img
+        src="~/public/img/logo.webp"
+        alt=""
+        width="140"
+        height="50px"
+        @click="
+          $router.push('/');
+          isLeftMenu = false;
+          $emit('closeModal');
+        "
+      />
+      <button class="ico-btn" aria-label="Открыть поиск">
+        <Icon
+          @click.prevent="onInput"
+          name="ph:magnifying-glass-bold"
+          style="font-size: 20px"
+        />
+      </button>
     </div>
-    <img
-      src="~/public/img/logo.webp"
-      alt=""
-      width="140"
-      height="50px"
-      @click="
-        $router.push('/');
-        isLeftMenu = false;
-        $emit('closeModal');
-      "
-    />
-    <Icon name="ph:magnifying-glass-bold" style="font-size: 20px" />
+
+    <el-autocomplete
+      v-if="isSearch"
+      ref="input"
+      class="search-input"
+      v-model="search"
+      autofocus
+      @blur="isSearch = false"
+      :fetch-suggestions="querySearch"
+      popper-class="my-autocomplete"
+      placeholder="Поиск..."
+      @select="handleSelect"
+    >
+      <template #default="{ item }">
+        <div class="d-flex j-b align-center mt-2 mb-2">
+          <img
+            width="40"
+            height="40"
+            :src="imgUrl(item?.images[0])"
+            :alt="item?.name"
+          />
+          <div class="ml-2">{{ item.name }}</div>
+          <div class="ml-2">{{ item.price }} ₽</div>
+        </div>
+      </template>
+    </el-autocomplete>
+
     <div v-if="isLeftMenu" class="left-menu">
       <ul class="d-flex-column gap-4 m-4">
         <li>
@@ -69,10 +102,42 @@
 
 <script>
 export default {
+  props: {
+    querySearch: {
+      type: Array,
+      default: () => [],
+    },
+  },
   data() {
     return {
       isLeftMenu: false,
+      isSearch: false,
+      search: '',
     };
+  },
+  watch: {
+    search(val) {
+      this.$emit('onSearch', val);
+    },
+  },
+
+  methods: {
+    imgUrl(url) {
+      return url ? url : '/img/no_image.png';
+    },
+    onInput() {
+      this.isSearch = true;
+      setTimeout(() => {
+        this.$refs.input.focus();
+      }, 100);
+    },
+    handleSelect(val) {
+      this.$router.push({
+        name: 'products-slug',
+        params: { slug: val.slug },
+      });
+      this.isSearch = false;
+    },
   },
 };
 </script>
@@ -81,12 +146,15 @@ export default {
 header {
   width: 100%;
   display: flex;
+  flex-direction: column;
   align-items: center;
   background: #fff;
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-  height: 50px;
+  min-height: 50px;
   justify-content: space-around;
   z-index: 2;
+  position: relative;
+  transition: 0.2s all;
 
   & img {
     object-fit: cover;
@@ -98,6 +166,12 @@ header {
       font-size: 14px;
     }
   }
+}
+.header-elements {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  width: 100%;
 }
 .left-menu {
   display: flex;
@@ -111,9 +185,10 @@ header {
 }
 .btnMenu {
   display: flex;
-  position: absolute;
-  top: 5px;
-  left: 20px;
+  position: relative;
+  // position: absolute;
+  // top: 5px;
+  // left: 20px;
   z-index: 50;
   align-items: center;
   justify-content: center;
@@ -162,5 +237,24 @@ header {
     top: 50%;
     transform: rotate(45deg) translate(0, 0%);
   }
+}
+
+::v-deep {
+  .search-input {
+    position: absolute;
+    right: 0;
+    top: 50px;
+    & .el-input {
+      border: none;
+    }
+  }
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 1s ease;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active на Vue 2 */ {
+  opacity: 0;
 }
 </style>

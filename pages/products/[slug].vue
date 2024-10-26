@@ -1,7 +1,10 @@
 <template>
   <div v-loading="getProductProcess" class="product-card">
     <Head>
-      <Title>Купить {{ [product.brand, product.name].filter(Boolean).join(' ') }}</Title>
+      <Title
+        >Купить
+        {{ [product.brand, product.name].filter(Boolean).join(' ') }}</Title
+      >
       <meta
         property="og:image"
         v-if="product.images.length"
@@ -177,7 +180,9 @@ const { data: product } = await useAsyncData('product', () =>
 );
 
 if (product.value) {
-  const fullName = [product.value?.brand, product.value?.name].filter(Boolean).join(' ')
+  const fullName = [product.value?.brand, product.value?.name]
+    .filter(Boolean)
+    .join(' ');
   useHead({
     link: [
       {
@@ -192,7 +197,7 @@ if (product.value) {
       },
       {
         property: 'og:title',
-        content: `Купить ${ fullName || 'товар'}`,
+        content: `Купить ${fullName || 'товар'}`,
       },
       {
         property: 'og:url',
@@ -216,7 +221,8 @@ if (product.value) {
       },
       {
         property: 'og:description',
-        content: 'Насладитесь утонченными нотами, которые подчеркнут вашу индивидуальность. Наши духи раскрывают истинную красоту через каждую каплю. Найдите аромат, который станет вашим!',
+        content:
+          'Насладитесь утонченными нотами, которые подчеркнут вашу индивидуальность. Наши духи раскрывают истинную красоту через каждую каплю. Найдите аромат, который станет вашим!',
       },
       {
         name: 'twitter:card',
@@ -402,6 +408,19 @@ export default {
       }
       this.getProductsProcess = false;
     },
+    addToShopBag(slug) {
+      if (window.localStorage.getItem('ordersSlugs')) {
+        this.ordersSlugs.push(slug);
+        if (this.ordersSlug?.length) {
+          window.localStorage.setItem('ordersSlugs', this.ordersSlugs);
+        } else {
+          window.localStorage.removeItem('ordersSlugs');
+        }
+      } else {
+        this.ordersSlugs.push(slug);
+        window.localStorage.setItem('ordersSlugs', slug);
+      }
+    },
   },
 };
 </script>
@@ -515,9 +534,9 @@ export default {
     display: flex;
     flex-direction: column;
     align-items: center;
-    h1 {
-      font-size: 20px;
-    }
+    // h1 {
+    //   font-size: 20px;
+    // }
     img {
       height: 200px;
       object-fit: contain;
