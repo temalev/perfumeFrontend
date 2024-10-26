@@ -179,6 +179,12 @@ const { data: product } = await useAsyncData('product', () =>
 if (product.value) {
   const fullName = [product.value?.brand, product.value?.name].filter(Boolean).join(' ')
   useHead({
+    link: [
+      {
+        rel: 'canonical',
+        href: `https://parfburo.com/products/${slug}`
+      }
+    ],
     meta: [
       {
         property: 'og:image',
