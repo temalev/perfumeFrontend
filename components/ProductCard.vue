@@ -149,8 +149,6 @@ export default {
       this.favoriteLoading = false;
     },
     addToShopBag(slug) {
-      console.log(slug);
-
       if (window.localStorage.getItem('ordersSlugs')) {
         this.ordersSlugs.push(slug);
         if (this.ordersSlug?.length) {
