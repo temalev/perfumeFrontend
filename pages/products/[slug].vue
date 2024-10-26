@@ -184,6 +184,12 @@ if (product.value) {
     .filter(Boolean)
     .join(' ');
   useHead({
+    link: [
+      {
+        rel: 'canonical',
+        href: `https://parfburo.com/products/${slug}`
+      }
+    ],
     meta: [
       {
         property: 'og:image',
