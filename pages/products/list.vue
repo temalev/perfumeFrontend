@@ -242,6 +242,10 @@ export default {
     flex-wrap: wrap;
     gap: 22px;
   }
+
+  @media (max-width: 500px) {
+    margin: 30px 20px;
+  }
 }
 
 .filters {
