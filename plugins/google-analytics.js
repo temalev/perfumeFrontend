@@ -1,23 +1,19 @@
-// plugins/google-analytics.js
 export default defineNuxtPlugin(nuxtApp => {
-  // Инициализация Google Analytics
-  if (process.env.NODE_ENV === 'production') {
-    // Добавление тега для gtag.js
-    const scriptTag = document.createElement('script');
-    scriptTag.async = true;
-    scriptTag.src = `https://www.googletagmanager.com/gtag/js?id=G-P53X3TN8G0`;
-    document.head.appendChild(scriptTag);
+  if (process.client) {
+    // Подключаем скрипт Google Tag Manager асинхронно
+    const script = document.createElement('script');
+    script.async = true;
+    script.src = 'https://www.googletagmanager.com/gtag/js?id=G-P53X3TN8G0';
+    document.head.appendChild(script);
 
-    // Инициализация dataLayer и gtag
+    // Настраиваем функцию gtag
     window.dataLayer = window.dataLayer || [];
     function gtag() {
-      window.dataLayer.push(arguments);
+      dataLayer.push(arguments);
     }
+    window.gtag = gtag;
 
     gtag('js', new Date());
     gtag('config', 'G-P53X3TN8G0');
-
-    // Добавление функции gtag в nuxtApp для глобального использования
-    nuxtApp.provide('gtag', gtag);
   }
 });
