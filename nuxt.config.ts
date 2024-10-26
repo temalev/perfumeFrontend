@@ -29,7 +29,7 @@ export default defineNuxtConfig({
     },
   },
   plugins: [
-    '~/plugins/yandex-metrika.client.js', '~/plugins/maska.js',
+    '~/plugins/yandex-metrika.client.js', '~/plugins/maska.js', '~/plugins/google-analytics.js',
   ],
   modules: ['@nuxt/eslint', 'nuxt-icon', '@nuxt/fonts', '@nuxt/icon', '@vite-pwa/nuxt'],
   ssr: true,
