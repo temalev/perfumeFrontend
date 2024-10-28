@@ -89,7 +89,7 @@
     <UiModal
       v-if="infoModal === 'noBrands'"
       @close="infoModal = null"
-      header="Нет нужного аромата/бренда"
+      header="Не нашли нужного аромата"
     >
       <div class="modal-body">
         <p>

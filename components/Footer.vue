@@ -12,6 +12,9 @@
         <li class="pointer mt-1" @click="$emit('onInfoModal', 'noBrands')">
           Не нашли нужного аромата?
         </li>
+        <li class="pointer mt-3" @click="$router.push('documents')">
+          Юридическая информация
+        </li>
       </ul>
     </div>
     <div class="d-flex-column">
