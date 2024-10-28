@@ -2,10 +2,14 @@
   <modal header="Вход / Регистрация" @close="handleClose">
     <div class="login-modal">
       <template v-if="step === 'call'">
-        <p class="mt-2 mb-3">Пришлём SMS. Введите код из SMS-сообщения.</p>
+        <p class="mt-2 mb-3">
+          Позвоним или пришлём SMS. <br />
+          Введите последние четыре цифры номера телефона или код из
+          SMS-сообщения.
+        </p>
         <el-form :model="form" @submit.prevent @keyup.enter="getCode">
           <el-form-item
-            label="Введите код из SMS-сообщения"
+            label="Введите последние четыре цифры входящего номера."
             label-position="top"
             :error="errorCode"
           >
@@ -63,7 +67,7 @@ import Modal from './ui/Modal.vue';
 import TheInputPhone from './ui/TheInput/TheInputPhone.vue';
 import TheInput from './ui/TheInput/TheInput.vue';
 
-import { getCodeFromSms, login } from '@/api/productApi.js';
+import { getCodeFromCall, getCodeFromSms, login } from '@/api/productApi.js';
 
 export default {
   components: { Modal, TheInputPhone, TheButton, TheInput },
@@ -94,7 +98,7 @@ export default {
         phoneNumber: `7${this.form.value.replace(/\D/g, '')}`,
       };
       try {
-        const res = await getCodeFromSms(data);
+        const res = await getCodeFromCall(data);
         this.step = 'code';
         this.uuid = res.uuid;
         this.startTimer();
