@@ -8,7 +8,7 @@ export default defineNuxtConfig({
       meta: [
         { name: 'description', content: 'Оригиналы мировых брендов' },
         { property: 'og:site_name', content: 'ПарфБюро' },
-        { hid: 'og:image', property: 'og:image', content: '/img/parfBuro.png' },
+        { property: 'og:image', content: '/img/parfBuro.png' },
       ],
       htmlAttrs: {
         lang: 'ru',
