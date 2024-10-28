@@ -81,7 +81,6 @@ export default {
   display: flex;
   flex-direction: column;
 }
-
 ::v-deep {
   .el-step__title {
     font-size: 13px;
