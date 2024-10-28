@@ -32,7 +32,7 @@
             class="w100"
             @click="user ? (step = 'makingAnOrder') : $emit('login')"
           >
-            Перейти к оплате
+            Оформить заказ
           </UiTheButton>
         </div>
       </div>
@@ -515,7 +515,7 @@
               />
             </div>
             <UiTheButton class="w100" @click.prevent="validateForm">
-              Оформить заказ
+              Перейти к оплате
             </UiTheButton>
           </el-form-item>
         </el-form>
