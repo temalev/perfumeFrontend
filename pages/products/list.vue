@@ -1,5 +1,10 @@
 <template>
   <div v-loading="getProductsProcess" class="products">
+    <Head>
+      <Title v-if="params.brand"
+        >{{ params.brand }} - Купить в ПарфБюро по выгодной цене</Title
+      >
+    </Head>
     <div v-if="isHydrated" class="filters">
       <div class="d-flex-column gap-2 filter-item">
         <p>Бренды</p>
@@ -94,13 +99,96 @@
   </div>
 </template>
 
+<script setup>
+import { useRoute } from 'vue-router';
+import { useHead } from '@vueuse/head';
+
+const config = useRuntimeConfig();
+const apiUrl = config.public.URL;
+const route = useRoute();
+const fullPath = route.fullPath;
+
+let params = null;
+const slug = route.params.slug;
+
+const getParams = () => {
+  return {
+    brand: route.query.brand,
+    categoryId: route.query.categoryId
+      ? Number(route.query.categoryId)
+      : undefined,
+    orderBy: route.query.orderBy || 'name',
+    order: route.query.order || 'DESC',
+    isSale: route.query.isSale === 'true' ? true : false,
+  };
+};
+
+params = getParams();
+
+if (params) {
+  useHead({
+    link: [
+      {
+        rel: 'canonical',
+        href: `https://parfburo.com${fullPath}`,
+      },
+    ],
+    meta: [
+      {
+        property: 'title',
+        content: `${
+          params.brand || 'товар'
+        } - купить в ПарфБюро по выгодной цене`,
+      },
+      {
+        property: 'og:title',
+        content: `Купить продукцию ${
+          params.brand || 'любого бренда'
+        } по выгодной цене`,
+      },
+      {
+        property: 'og:url',
+        content: `https://parfburo.com${fullPath}`,
+      },
+      {
+        property: 'og:locale',
+        content: 'ru_RU',
+      },
+      {
+        property: 'og:logo',
+        content: 'https://parfburo.com/_nuxt/logo.3sM_t13Y.webp',
+      },
+      {
+        property: 'og:type',
+        content: 'product',
+      },
+      {
+        property: 'og:description',
+        content:
+          'Насладитесь утонченными нотами, которые подчеркнут вашу индивидуальность. Наши духи раскрывают истинную красоту через каждую каплю. Найдите аромат, который станет вашим!',
+      },
+      {
+        name: 'twitter:card',
+        content: 'summary_large_image',
+      },
+      {
+        name: 'twitter:title',
+        content: `Купить продукцию бренда ${
+          params.brand || 'товар'
+        } по выгодной цене`,
+      },
+    ],
+  });
+}
+</script>
+
 <script>
 import { getProducts, getBrands, getCategory } from '@/api/productApi.js';
 
 export default {
   data() {
     return {
-      products: [],
+      // products: [],
       getProductsProcess: false,
       brands: [],
       category: [],
