@@ -5,11 +5,6 @@
         >Купить
         {{ [product.brand, product.name].filter(Boolean).join(' ') }}</Title
       >
-      <meta
-        property="og:image"
-        v-if="product.images.length"
-        :content="product.images[0]"
-      />
     </Head>
 
     <bread-crumb :data="breadcrumb" />
@@ -187,8 +182,8 @@ if (product.value) {
     link: [
       {
         rel: 'canonical',
-        href: `https://parfburo.com/products/${slug}`
-      }
+        href: `https://parfburo.com/products/${slug}`,
+      },
     ],
     meta: [
       {
