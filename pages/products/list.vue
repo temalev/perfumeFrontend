@@ -159,7 +159,7 @@ useHead({
     },
     {
       property: 'og:type',
-      content: 'product',
+      content: 'website',
     },
     {
       property: 'og:description',
