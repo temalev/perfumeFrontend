@@ -5,11 +5,6 @@
         >Купить
         {{ [product.brand, product.name].filter(Boolean).join(' ') }}</Title
       >
-      <meta
-        property="og:image"
-        v-if="product?.images.length"
-        :content="product?.images[0]"
-      />
     </Head>
 
     <bread-crumb :data="breadcrumb" />
