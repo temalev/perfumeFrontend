@@ -125,61 +125,59 @@ const getParams = () => {
 
 params = getParams();
 
-if (params) {
-  useHead({
-    link: [
-      {
-        rel: 'canonical',
-        href: `https://parfburo.com${fullPath}`,
-      },
-    ],
-    meta: [
-      {
-        property: 'title',
-        content: `${
-          params.brand || 'товар'
-        } - купить в ПарфБюро по выгодной цене`,
-      },
-      {
-        property: 'og:title',
-        content: `Купить продукцию ${
-          params.brand || 'любого бренда'
-        } по выгодной цене`,
-      },
-      {
-        property: 'og:url',
-        content: `https://parfburo.com${fullPath}`,
-      },
-      {
-        property: 'og:locale',
-        content: 'ru_RU',
-      },
-      {
-        property: 'og:logo',
-        content: 'https://parfburo.com/_nuxt/logo.3sM_t13Y.webp',
-      },
-      {
-        property: 'og:type',
-        content: 'product',
-      },
-      {
-        property: 'og:description',
-        content:
-          'Насладитесь утонченными нотами, которые подчеркнут вашу индивидуальность. Наши духи раскрывают истинную красоту через каждую каплю. Найдите аромат, который станет вашим!',
-      },
-      {
-        name: 'twitter:card',
-        content: 'summary_large_image',
-      },
-      {
-        name: 'twitter:title',
-        content: `Купить продукцию бренда ${
-          params.brand || 'товар'
-        } по выгодной цене`,
-      },
-    ],
-  });
-}
+useHead({
+  link: [
+    {
+      rel: 'canonical',
+      href: `https://parfburo.com${fullPath}`,
+    },
+  ],
+  meta: [
+    {
+      property: 'title',
+      content: `${
+        params.brand || 'товар'
+      } - купить в ПарфБюро по выгодной цене`,
+    },
+    {
+      property: 'og:title',
+      content: `Купить продукцию ${
+        params.brand || 'известных брендов'
+      } по выгодной цене`,
+    },
+    {
+      property: 'og:url',
+      content: `https://parfburo.com${fullPath}`,
+    },
+    {
+      property: 'og:locale',
+      content: 'ru_RU',
+    },
+    {
+      property: 'og:logo',
+      content: 'https://parfburo.com/_nuxt/logo.3sM_t13Y.webp',
+    },
+    {
+      property: 'og:type',
+      content: 'product',
+    },
+    {
+      property: 'og:description',
+      content:
+        'Насладитесь утонченными нотами, которые подчеркнут вашу индивидуальность. Наши духи раскрывают истинную красоту через каждую каплю. Найдите аромат, который станет вашим!',
+    },
+    {
+      name: 'twitter:card',
+      content: 'summary_large_image',
+    },
+    {
+      name: 'twitter:title',
+      content: `Купить продукцию бренда ${
+        params.brand || 'товар'
+      } по выгодной цене`,
+    },
+  ],
+});
 </script>
 
 <script>
