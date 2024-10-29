@@ -187,6 +187,12 @@ if (product.value) {
     ],
     meta: [
       {
+        name: 'keywords',
+        content: `${
+          fullName || 'товар'
+        } купить, цена, интернет-магазин, каталог, бесплатная доставка, Москва, Рязань, оригинал`,
+      },
+      {
         property: 'og:image',
         content: product.value?.images?.length ? product.value.images[0] : '',
       },

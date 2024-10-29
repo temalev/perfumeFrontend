@@ -134,6 +134,12 @@ useHead({
   ],
   meta: [
     {
+      name: 'keywords',
+      content: `${
+        params.brand || 'товар'
+      } купить, цена, интернет-магазин, каталог, бесплатная доставка, Москва, Рязань, оригинал`,
+    },
+    {
       property: 'title',
       content: `${
         params.brand || 'товар'
