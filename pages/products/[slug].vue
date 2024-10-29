@@ -3,7 +3,7 @@
     <Head>
       <Title
         >Купить
-        {{ [product.brand, product.name].filter(Boolean).join(' ') }}</Title
+        {{ [product?.brand, product.name].filter(Boolean).join(' ') }}</Title
       >
     </Head>
 
@@ -24,7 +24,7 @@
           @click="
             $router.push({
               name: 'products-list',
-              query: { brand: product.brand },
+              query: { brand: product?.brand },
             })
           "
           v-if="product?.name"
@@ -325,7 +325,7 @@ export default {
         this.preloadedProduct = res;
 
         this.breadcrumb.push({
-          name: this.preloadedProduct.brand,
+          name: this.preloadedProduct?.brand,
           route: 'products',
         });
         this.getGroupProduct();
@@ -394,7 +394,7 @@ export default {
     },
     async getProducts() {
       this.getProductsProcess = true;
-      const params = { brand: this.preloadedProduct.brand };
+      const params = { brand: this.preloadedProduct?.brand };
       try {
         const res = await getProducts(params);
         this.products = res;
