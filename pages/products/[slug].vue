@@ -3,7 +3,7 @@
     <Head>
       <Title
         >Купить
-        {{ [product.brand, product.name].filter(Boolean).join(' ') }}</Title
+        {{ [product?.brand, product.name].filter(Boolean).join(' ') }}</Title
       >
     </Head>
 
@@ -24,7 +24,7 @@
           @click="
             $router.push({
               name: 'products-list',
-              query: { brand: product.brand },
+              query: { brand: product?.brand },
             })
           "
           v-if="product?.name"
@@ -187,6 +187,12 @@ if (product.value) {
     ],
     meta: [
       {
+        name: 'keywords',
+        content: `${
+          fullName || 'товар'
+        } купить, цена, интернет-магазин, каталог, бесплатная доставка, Москва, Рязань, оригинал`,
+      },
+      {
         property: 'og:image',
         content: product.value?.images?.length ? product.value.images[0] : '',
       },
@@ -216,8 +222,7 @@ if (product.value) {
       },
       {
         property: 'og:description',
-        content:
-          'Насладитесь утонченными нотами, которые подчеркнут вашу индивидуальность. Наши духи раскрывают истинную красоту через каждую каплю. Найдите аромат, который станет вашим!',
+        content: `Насладитесь утонченными нотами ${fullName}, которые подчеркнут вашу индивидуальность. Наши духи раскрывают истинную красоту через каждую каплю. Найдите аромат, который станет вашим!`,
       },
       {
         name: 'twitter:card',
@@ -325,7 +330,7 @@ export default {
         this.preloadedProduct = res;
 
         this.breadcrumb.push({
-          name: this.preloadedProduct.brand,
+          name: this.preloadedProduct?.brand,
           route: 'products',
         });
         this.getGroupProduct();
@@ -394,7 +399,7 @@ export default {
     },
     async getProducts() {
       this.getProductsProcess = true;
-      const params = { brand: this.preloadedProduct.brand };
+      const params = { brand: this.preloadedProduct?.brand };
       try {
         const res = await getProducts(params);
         this.products = res;
