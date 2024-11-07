@@ -43,6 +43,69 @@
   </main>
 </template>
 
+<script setup>
+import { useRoute } from 'vue-router';
+import { useHead } from '@vueuse/head';
+
+const config = useRuntimeConfig();
+const apiUrl = config.public.URL;
+const route = useRoute();
+const fullPath = route.fullPath;
+
+useHead({
+  link: [
+    {
+      rel: 'canonical',
+      href: `https://parfburo.com${fullPath}`,
+    },
+  ],
+  meta: [
+    {
+      name: 'keywords',
+      content: `Москва, Рязань, отливанты, духи на розлив, парфюмерные отливанты, пробники духов, ароматы в мини-формате, атомайзеры, тестирование ароматов, покупка отливантов, духи для путешествий, компактные флаконы духов, флаконы 10 мл, духи на пробу, отливанты цена, купить отливанты, духи с доставкой`,
+    },
+    {
+      property: 'title',
+      hid: 'title',
+      content:
+        'Отливанты — ПарфБюро | Оригинальные ароматы в мини-формате купить с доставкой в Рязани и Москве',
+    },
+    {
+      property: 'og:title',
+      content: `Отливанты — ПарфБюро | Оригинальные ароматы в мини-формате купить с доставкой в Рязани и Москве`,
+    },
+    {
+      property: 'og:url',
+      content: `https://parfburo.com${fullPath}`,
+    },
+    {
+      property: 'og:locale',
+      content: 'ru_RU',
+    },
+    {
+      property: 'og:logo',
+      content: 'https://parfburo.com/_nuxt/logo.3sM_t13Y.webp',
+    },
+    {
+      property: 'og:type',
+      content: 'website',
+    },
+    {
+      property: 'og:description',
+      content: `Купите отливанты оригинальных ароматов в ПарфБюро с доставкой в Рязань и Москву. Удобные мини-флаконы позволяют протестировать духи перед покупкой полноразмерного флакона.`,
+    },
+    {
+      name: 'twitter:card',
+      content: 'summary_large_image',
+    },
+    {
+      name: 'twitter:title',
+      content: `Отливанты — ПарфБюро | Оригинальные ароматы в мини-формате купить с доставкой в Рязани и Москве`,
+    },
+  ],
+});
+</script>
+
 <script>
 export default {};
 </script>
