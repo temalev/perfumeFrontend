@@ -1,6 +1,7 @@
 <template>
-  <VitePwaManifest />
   <div class="body-home-page">
+    <VitePwaManifest />
+
     <div class="d-flex" style="position: relative">
       <img
         src="/img/bg.webp"
