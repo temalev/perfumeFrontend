@@ -228,7 +228,7 @@ export default {
       ElNotification({
         title: 'Мы используем файлы cookie',
         message:
-          'Продолжая использование нашего сайта, вы соглашаетесь с использованием файлов cookie.',
+          'Продолжая использование сайта, вы соглашаетесь с использованием файлов cookie.',
         position: 'bottom-left',
         duration: 0,
         onClose: () => {
