@@ -44,3 +44,10 @@
   background-color: transparent !important;
 }
 
+@media (max-width: 600px) {
+.el-notification {
+  width: calc(100% - 32px) !important;
+}
+}
+
+
