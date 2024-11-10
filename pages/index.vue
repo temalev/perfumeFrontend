@@ -29,7 +29,7 @@
     <div v-loading="mediaLoading" ref="info" class="info">
       <media-card v-for="item in media" :key="item.id" :data="item" />
     </div>
-    <div v-loading="mediaLoading" class="info-mobile">
+    <div v-if="media?.length" v-loading="mediaLoading" class="info-mobile">
       <video
         v-for="item in media"
         :key="item.url"
