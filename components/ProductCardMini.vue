@@ -1,6 +1,6 @@
 <template>
   <div class="card">
-    <img :src="imgUrl(product?.images[0])" :alt="product?.name" />
+    <img :src="imgUrl(product?.previewImage)" :alt="product?.name" />
 
     <div class="main-info d-flex-row j-sb align-flex-start">
       <div class="info h100">

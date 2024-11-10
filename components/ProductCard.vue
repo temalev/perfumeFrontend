@@ -1,7 +1,7 @@
 <template>
   <article class="card d-flex-column" @click="handleCardClick">
     <div class="img-container d-flex j-c">
-      <img :src="image(data?.images[0])" :alt="data.name" />
+      <img :src="image(data?.previewImage)" :alt="data.name" />
       <!-- <button
         v-if="isFavorites"
         class="ico-btn d-flex align-center j-c favorite-ico"
