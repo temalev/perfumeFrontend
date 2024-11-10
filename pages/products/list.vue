@@ -89,7 +89,7 @@
         />
       </div>
     </div>
-    <div class="products-list">
+    <div v-infinite-scroll="load" class="products-list">
       <product-card
         v-for="product in products"
         :data="product"
@@ -224,11 +224,11 @@ export default {
   },
   watch: {
     '$route.query'() {
-      this.getProducts();
       this.queryParams = this.getParams();
     },
   },
   mounted() {
+    this.queryParams = this.getParams();
     this.isHydrated = true;
     this.getBrands();
     this.getCategory();
@@ -237,6 +237,13 @@ export default {
   },
 
   methods: {
+    load() {
+      // this.queryParams.offset += 20;
+      // this.$router.replace({
+      //   query: this.queryParams,
+      // });
+      // this.getProductsLoud();
+    },
     test() {
       (this.queryParams.fromPrice = this.price?.[0]),
         (this.queryParams.toPrice = this.price?.[1]),
@@ -253,6 +260,7 @@ export default {
         fromPrice: this.price?.[0],
         toPrice: this.price?.[1],
         isSale: this.$route.query.isSale === 'true' ? true : false,
+        // offset: 20,
       };
     },
     getItemById(id, arr) {
@@ -260,23 +268,39 @@ export default {
     },
     setQuery() {
       this.$router.replace({
-        query: this.queryParams,
+        query: this.removeEmptyFields(this.queryParams),
       });
+      this.getProducts();
     },
     async getProducts() {
       this.getProductsProcess = true;
       this.products = [];
-
+      const params = {
+        ...this.queryParams,
+        // limit: 20,
+      };
       try {
-        const res = await getProducts(
-          this.removeEmptyFields(this.$route.query)
-        );
+        const res = await getProducts(this.removeEmptyFields(params));
         this.products = res;
       } catch (e) {
         console.error(e);
       }
       this.getProductsProcess = false;
     },
+    // async getProductsLoud() {
+    //   this.getProductsProcessLoud = true;
+    //   const params = {
+    //     ...this.queryParams,
+    //     limit: 20,
+    //   };
+    //   try {
+    //     const res = await getProducts(this.removeEmptyFields(params));
+    //     const lastElem = res[res.length - 1];
+    //   } catch (e) {
+    //     console.error(e);
+    //   }
+    //   this.getProductsProcessLoud = false;
+    // },
     async getBrands() {
       try {
         const res = await getBrands();
