@@ -194,6 +194,7 @@ import {
 import MobilePanel from '~/components/MobilePanel.vue';
 import ShopBag from '~/components/ShopBag.vue';
 import LogIn from '~/components/LogIn.vue';
+import { ElNotification } from 'element-plus';
 
 export default {
   components: { MobilePanel, ShopBag, LogIn },
@@ -223,6 +224,18 @@ export default {
       return slugs ? slugs.split(',') : [];
     });
     this.favorites = useState('favoritesSlugs', () => []);
+    if (!localStorage.isCloseCookie) {
+      ElNotification({
+        title: 'Мы используем файлы cookie',
+        message:
+          'Продолжая использование нашего сайта, вы соглашаетесь с использованием файлов cookie.',
+        position: 'bottom-left',
+        duration: 0,
+        onClose: () => {
+          localStorage.setItem('isCloseCookie', true);
+        },
+      });
+    }
   },
   watch: {
     favorites(val) {
