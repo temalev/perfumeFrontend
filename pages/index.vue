@@ -30,19 +30,12 @@
       <media-card v-for="item in media" :key="item.id" :data="item" />
     </div>
     <div v-if="media?.length" v-loading="mediaLoading" class="info-mobile">
-      <video
+      <img
         v-for="item in media"
         :key="item.url"
-        :data="item"
-        playsinline
-        preload="metadata"
-        loop
-        muted
-        @loadedmetadata="captureFirstFrame($event, item)"
+        :src="item.preview"
         @click="openedVideo = item"
-      >
-        <source :src="item.url" type="video/mp4" />
-      </video>
+      />
     </div>
     <div class="offers mt-4">
       <h3>Специальные предложения</h3>
@@ -107,30 +100,6 @@ export default {
     this.getMedia();
   },
   methods: {
-    captureFirstFrame(event, item) {
-      const videoElement = event.target;
-
-      // Остановить видео после загрузки метаданных
-      videoElement.currentTime = 0;
-      videoElement.pause();
-
-      // Создать canvas для захвата кадра
-      const canvas = document.createElement('canvas');
-      const context = canvas.getContext('2d');
-
-      // Установить размер canvas как у видео
-      canvas.width = videoElement.videoWidth;
-      canvas.height = videoElement.videoHeight;
-
-      // Нарисовать первый кадр на canvas
-      context.drawImage(videoElement, 0, 0, canvas.width, canvas.height);
-
-      // Получить изображение из canvas
-      const dataURL = canvas.toDataURL('image/jpeg');
-
-      // Установить изображение как постер
-      item.poster = dataURL;
-    },
     async getMedia() {
       this.mediaLoading = true;
       try {
@@ -241,12 +210,12 @@ export default {
     gap: 12px;
     min-height: 200px;
 
-    & video {
+    & img {
       scroll-snap-align: start;
       border-radius: 22px;
       border: 1px solid #2a4d84;
       padding: 2px;
-      height: 200px;
+      height: 200px !important;
       width: 115px;
       object-fit: cover;
     }
