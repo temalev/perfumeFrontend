@@ -4,7 +4,7 @@
 
     <div class="d-flex" style="position: relative">
       <img
-        alt=""
+        alt="parfBuro background"
         class="bg-img"
         width="100%"
         height="600px"
