@@ -4,8 +4,8 @@
 
     <div class="d-flex" style="position: relative">
       <img
-        src="/img/bg.webp"
         alt=""
+        class="bg-img"
         width="100%"
         height="600px"
         style="object-fit: cover"
@@ -151,6 +151,13 @@ export default {
     img {
       height: 360px !important;
     }
+  }
+}
+
+.bg-img {
+  content: url('/img/bg.webp');
+  @media (max-width: 500px) {
+    content: url('/img/bg_max-500.webp');
   }
 }
 .text-container {
