@@ -225,6 +225,7 @@ export default {
   watch: {
     '$route.query'() {
       this.queryParams = this.getParams();
+      this.setQuery();
     },
   },
   mounted() {
