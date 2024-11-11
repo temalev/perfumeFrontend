@@ -12,10 +12,10 @@
         <li class="pointer mt-1" @click="$emit('onInfoModal', 'noBrands')">
           Не нашли нужного аромата?
         </li>
-        <li class="pointer mt-3" @click="$router.push('privacy')">
+        <li class="pointer mt-3" @click="$router.push({ name: 'privacy' })">
           Политика конфиденциальности
         </li>
-        <li class="pointer" @click="$router.push('offer')">
+        <li class="pointer" @click="$router.push({ name: 'offer' })">
           Договор публичной оферты
         </li>
       </ul>
