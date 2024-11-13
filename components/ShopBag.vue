@@ -514,9 +514,14 @@
                 :value="`${new Intl.NumberFormat('ru').format(totalPrice)} ₽`"
               />
             </div>
-            <UiTheButton class="w100" @click.prevent="validateForm">
+            <el-button
+              type="primary"
+              class="w100"
+              :loading="createOrderLoading"
+              @click.prevent="validateForm"
+            >
               Перейти к оплате
-            </UiTheButton>
+            </el-button>
           </el-form-item>
         </el-form>
       </div>
@@ -563,6 +568,7 @@ export default {
       checkPromoCodeLoading: false,
       isPromoCodeError: false,
       promoCodeData: null,
+      createOrderLoading: false,
     };
   },
   mounted() {
@@ -650,7 +656,7 @@ export default {
     validateForm() {
       this.$refs.form.validate(valid => {
         if (valid) {
-          this.createOrder();
+          // this.createOrder();
         } else {
           // Валидация не прошла
           console.log('Ошибка валидации');
@@ -699,6 +705,7 @@ export default {
       }
     },
     async createOrder() {
+      this.createOrderLoading = true;
       const data = {
         origin: 'https://dev.parfburo.com',
         comment: 'Hello world',
@@ -743,6 +750,7 @@ export default {
       } catch (e) {
         console.error(e);
       }
+      this.createOrderLoading = false;
     },
     async getRegions() {
       this.regionsLoading = true;
