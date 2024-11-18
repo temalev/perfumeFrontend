@@ -22,7 +22,7 @@
           $emit('closeModal');
         "
       />
-      <button class="ico-btn" aria-label="Открыть поиск">
+      <button class="ico-btn" style="width: 40px" aria-label="Открыть поиск">
         <Icon
           @click.prevent="onInput"
           name="ph:magnifying-glass-bold"
