@@ -202,6 +202,10 @@ if (product.value) {
         } купить, цена, интернет-магазин, каталог, бесплатная доставка, Москва, Рязань, оригинал`,
       },
       {
+        name: 'description',
+        content: `Купить ${product?.type} ${product?.brand} ${product?.name} ${product?.capacityValue} мл в Москве по низкой цене в интернет-магазине ПарфБюро. Подробное описание, применение, состав, фото. Быстрая доставка по всей России.`,
+      },
+      {
         property: 'og:image',
         content: product.value?.images?.length ? product.value.images[0] : '',
       },
