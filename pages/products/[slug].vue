@@ -3,7 +3,16 @@
     <Head>
       <Title
         >Купить
-        {{ [product?.brand, product.name].filter(Boolean).join(' ') }}</Title
+        {{
+          [
+            product?.brand,
+            product?.type,
+            product.name,
+            [`${product?.capacityValue} мл`],
+          ]
+            .filter(Boolean)
+            .join(' ')
+        }}</Title
       >
     </Head>
 
