@@ -5,89 +5,102 @@
         >{{ params.brand }} - Купить в ПарфБюро по выгодной цене</Title
       >
     </Head>
-    <div v-if="isHydrated" class="filters">
-      <div class="d-flex-column gap-2 filter-item">
-        <p>Бренды</p>
-        <el-select
-          v-model="queryParams.brand"
-          multiple
-          placeholder="Выберите бренд"
-          style="min-width: 240px"
-          @blur="setQuery()"
-          @remove-tag="setQuery()"
-        >
-          <el-option
-            v-for="item in brands"
-            :key="item"
-            :label="item"
-            :value="item"
-          />
-        </el-select>
-      </div>
-      <div class="d-flex-column gap-2 filter-item">
-        <p>Категории</p>
-        <el-select
-          v-model="queryParams.categoryId"
-          multiple
-          placeholder="Выберите категорию"
-          style="min-width: 240px"
-          @blur="setQuery()"
-          @remove-tag="setQuery()"
-        >
-          <el-option
-            v-for="item in category"
-            :key="item.name"
-            :label="item.name"
-            :value="item.id"
-          />
-        </el-select>
-      </div>
-      <div class="d-flex-column gap-2 filter-item">
-        <p>Сортировать</p>
-        <div class="d-flex gap-2">
-          <el-segmented
-            @change="setQuery()"
-            v-model="queryParams.orderBy"
-            :options="sortList"
-          />
-          <el-segmented
-            @change="setQuery()"
-            v-model="queryParams.order"
-            :options="orders"
+    <div class="d-flex-column">
+      <div
+        v-if="isHydrated"
+        class="filters"
+        :class="{ unwrap: isUnwrapFilters }"
+      >
+        <div class="d-flex-column gap-2 filter-item">
+          <p>Бренды</p>
+          <el-select
+            v-model="queryParams.brand"
+            multiple
+            placeholder="Выберите бренд"
+            style="min-width: 240px"
+            @blur="setQuery()"
+            @remove-tag="setQuery()"
           >
-            <template #default="{ item }">
-              <div class="flex flex-col items-center gap-2">
-                <Icon :name="item.icon" style="font-size: 20px" />
-              </div>
-            </template>
-          </el-segmented>
+            <el-option
+              v-for="item in brands"
+              :key="item"
+              :label="item"
+              :value="item"
+            />
+          </el-select>
+        </div>
+        <div class="d-flex-column gap-2 filter-item">
+          <p>Категории</p>
+          <el-select
+            v-model="queryParams.categoryId"
+            multiple
+            placeholder="Выберите категорию"
+            style="min-width: 240px"
+            @blur="setQuery()"
+            @remove-tag="setQuery()"
+          >
+            <el-option
+              v-for="item in category"
+              :key="item.name"
+              :label="item.name"
+              :value="item.id"
+            />
+          </el-select>
+        </div>
+        <div class="d-flex-column gap-2 filter-item">
+          <p>Сортировать</p>
+          <div class="d-flex gap-2">
+            <el-segmented
+              @change="setQuery()"
+              v-model="queryParams.orderBy"
+              :options="sortList"
+            />
+            <el-segmented
+              @change="setQuery()"
+              v-model="queryParams.order"
+              :options="orders"
+            >
+              <template #default="{ item }">
+                <div class="flex flex-col items-center gap-2">
+                  <Icon :name="item.icon" style="font-size: 20px" />
+                </div>
+              </template>
+            </el-segmented>
+          </div>
+        </div>
+        <div class="d-flex-column filter-item" style="gap: 6px">
+          <p style="text-wrap: nowrap">
+            Диапазон стоимости от
+            <el-tag type="primary" effect="dark" round> {{ price[0] }} </el-tag>
+            до
+            <el-tag type="primary" effect="dark" round>{{ price[1] }}</el-tag>
+          </p>
+          <el-slider
+            v-model="price"
+            range
+            :step="100"
+            :max="100000"
+            style="padding: 0 20px; width: 260px"
+            @change="test"
+          />
+        </div>
+        <div class="d-flex-column gap-2 filter-item">
+          <p>Скидки</p>
+          <el-switch
+            v-model="queryParams.isSale"
+            active-color="#2A4D84"
+            label="Со скидкой"
+            @change="setQuery()"
+          />
         </div>
       </div>
-      <div class="d-flex-column filter-item" style="gap: 6px">
-        <p style="text-wrap: nowrap">
-          Диапазон стоимости от
-          <el-tag type="primary" effect="dark" round> {{ price[0] }} </el-tag>
-          до
-          <el-tag type="primary" effect="dark" round>{{ price[1] }}</el-tag>
-        </p>
-        <el-slider
-          v-model="price"
-          range
-          :step="100"
-          :max="100000"
-          style="padding: 0 20px; width: 260px"
-          @change="test"
-        />
-      </div>
-      <div class="d-flex-column gap-2 filter-item">
-        <p>Скидки</p>
-        <el-switch
-          v-model="queryParams.isSale"
-          active-color="#2A4D84"
-          label="Со скидкой"
-          @change="setQuery()"
-        />
-      </div>
+      <el-button
+        class="filters-button"
+        type="primary"
+        @click="isUnwrapFilters = !isUnwrapFilters"
+      >
+        Фильтры
+      </el-button>
     </div>
     <div v-infinite-scroll="load" class="products-list">
       <product-card
@@ -224,6 +237,7 @@ export default {
         },
       ],
       queryParams: this.getParams(),
+      isUnwrapFilters: false,
     };
   },
   watch: {
@@ -387,6 +401,12 @@ export default {
   }
 }
 
+.unwrap {
+  flex-direction: column;
+  gap: 20px;
+  transition: 0.2s;
+}
+
 @media (max-width: 500px) {
   .filter-item {
     scroll-snap-align: start; /* Элементы будут прилипать к началу */
@@ -394,6 +414,26 @@ export default {
   }
   .el-select {
     width: 100%;
+  }
+}
+
+@media (min-width: 500px) {
+  .filters-button {
+    display: none;
+  }
+}
+
+::v-deep {
+  .el-select__wrapper {
+    border-radius: 12px;
+  }
+
+  .el-tag {
+    border-radius: 12px;
+  }
+
+  .el-button {
+    border-radius: 12px;
   }
 }
 </style>
