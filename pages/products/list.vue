@@ -94,7 +94,11 @@
           />
         </div>
       </div>
-      <el-button type="primary" @click="isUnwrapFilters = !isUnwrapFilters">
+      <el-button
+        class="filters-button"
+        type="primary"
+        @click="isUnwrapFilters = !isUnwrapFilters"
+      >
         Фильтры
       </el-button>
     </div>
@@ -410,6 +414,12 @@ export default {
   }
   .el-select {
     width: 100%;
+  }
+}
+
+@media (min-width: 500px) {
+  .filters-button {
+    display: none;
   }
 }
 
