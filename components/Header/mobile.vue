@@ -30,33 +30,34 @@
         />
       </button>
     </div>
-
-    <el-autocomplete
-      v-if="isSearch"
-      ref="input"
-      class="search-input"
-      v-model="search"
-      autofocus
-      @blur="isSearch = false"
-      :fetch-suggestions="querySearch"
-      popper-class="my-autocomplete"
-      placeholder="Поиск..."
-      @select="handleSelect"
-    >
-      <template #default="{ item }">
-        <div class="d-flex j-b align-center mt-2 mb-2">
-          <img
-            width="40"
-            height="40"
-            :src="imgUrl(item?.images[0])"
-            :alt="item?.name"
-          />
-          <div class="ml-2">{{ item.name }}</div>
-          <div class="ml-2">{{ item.price }} ₽</div>
-        </div>
-      </template>
-    </el-autocomplete>
-
+    <transition name="slide-fade">
+      <div v-if="isSearch" class="search-input-wrapper">
+        <el-autocomplete
+          ref="input"
+          class="search-input"
+          v-model="search"
+          autofocus
+          @blur="isSearch = false"
+          :fetch-suggestions="querySearch"
+          popper-class="my-autocomplete"
+          placeholder="Поиск..."
+          @select="handleSelect"
+        >
+          <template #default="{ item }">
+            <div class="d-flex j-b align-center mt-2 mb-2">
+              <img
+                width="40"
+                height="40"
+                :src="imgUrl(item?.images[0])"
+                :alt="item?.name"
+              />
+              <div class="ml-2">{{ item.name }}</div>
+              <div class="ml-2">{{ item.price }} ₽</div>
+            </div>
+          </template>
+        </el-autocomplete>
+      </div>
+    </transition>
     <div v-if="isLeftMenu" class="left-menu">
       <ul class="d-flex-column gap-4 m-4">
         <li>
@@ -172,6 +173,8 @@ header {
   align-items: center;
   justify-content: space-around;
   width: 100%;
+  background-color: #fff;
+  z-index: 10;
 }
 .left-menu {
   display: flex;
@@ -240,14 +243,44 @@ header {
 }
 
 ::v-deep {
-  .search-input {
+  .search-input-wrapper {
     position: absolute;
-    right: 0;
+    left: 0;
     top: 50px;
+    width: 100%;
+    z-index: 5;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
     & .el-input {
       border: none;
     }
   }
+  .el-input__wrapper {
+    box-shadow: none !important;
+    border-bottom: 1px solid #eee;
+  }
+  .el-input__inner {
+    padding: 22px 8px;
+  }
+}
+
+/* Анимация */
+.slide-fade-enter-active,
+.slide-fade-leave-active {
+  transition: all 0.2s ease-out;
+}
+
+.slide-fade-enter-from,
+.slide-fade-leave-to {
+  transform: translateY(-100%); /* Скрыт сверху */
+  opacity: 0; /* Прозрачный */
+  box-shadow: none;
+}
+
+.slide-fade-enter-to,
+.slide-fade-leave-from {
+  transform: translateY(0); /* Появляется на месте */
+  opacity: 1; /* Видимый */
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
 }
 
 .fade-enter-active,
