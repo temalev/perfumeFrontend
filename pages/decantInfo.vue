@@ -1,18 +1,11 @@
 <template>
   <main>
+
     <Head>
-      <Title
-        >Отливанты — ПарфБюро | Оригинальные ароматы в мини-формате купить с
-        доставкой в Рязани и Москве</Title
-      >
+      <Title>Отливанты — ПарфБюро | Оригинальные ароматы в мини-формате купить с
+        доставкой в Рязани и Москве</Title>
     </Head>
-    <img
-      src="/img/decant.webp"
-      alt=""
-      width="100%"
-      height="600px"
-      style="object-fit: cover"
-    />
+    <img src="/img/decant.webp" alt="" width="100%" height="600px" style="object-fit: cover" />
     <h1 class="mt-4">Отливанты</h1>
     <p class="mt-4">
       Если у вас есть сомнения в покупке полноразмерного флакона, вы можете
@@ -41,7 +34,7 @@
         </el-link>
       </el-button>
       <el-button>
-        <el-link :underline="false" href="https://wa.me/79932690188">
+        <el-link :underline="false" href="https://wa.me/79156022896">
           <Icon name="logos:whatsapp-icon" style="font-size: 20px" />
         </el-link>
       </el-button>
