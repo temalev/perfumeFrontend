@@ -22,38 +22,29 @@
     </div>
     <div class="d-flex-column">
       <div class="d-flex gap-4 mb-2 align-center">
-        <el-link style="font-size: 18px" href="tel:+79932690188"
-          >+7(993)269-01-88</el-link
-        >
+        <el-link style="font-size: 18px" href="tel:+79156022896">+7(915)602-28-96</el-link>
         <el-link :underline="false" href="https://t.me/parfburoo">
           <Icon name="logos:telegram" style="font-size: 20px" />
         </el-link>
-        <el-link :underline="false" href="https://wa.me/79932690188">
+        <el-link :underline="false" href="https://wa.me/79156022896">
           <Icon name="logos:whatsapp-icon" style="font-size: 20px" />
         </el-link>
       </div>
       <div>
-        <el-link style="font-size: 18px" href="mailto:info@parfburo.com"
-          >info@parfburo.com</el-link
-        >
+        <el-link style="font-size: 18px" href="mailto:info@parfburo.com">info@parfburo.com</el-link>
         - По вопросам сотрудничества, идеям по улучшению и жалобам.
       </div>
 
       <ul class="mt-4">
         <li>
-          <el-text class="mx-1" type="info" size="small"
-            >ИНДИВИДУАЛЬНЫЙ ПРЕДПРИНИМАТЕЛЬ ДЁМИН МИХАИЛ МИХАЙЛОВИЧ</el-text
-          >
+          <el-text class="mx-1" type="info" size="small">ИНДИВИДУАЛЬНЫЙ ПРЕДПРИНИМАТЕЛЬ ДЁМИН МИХАИЛ
+            МИХАЙЛОВИЧ</el-text>
         </li>
         <li>
-          <el-text class="mx-1" type="info" size="small"
-            >ИНН: 621504323474</el-text
-          >
+          <el-text class="mx-1" type="info" size="small">ИНН: 621504323474</el-text>
         </li>
         <li>
-          <el-text class="mx-1" type="info" size="small"
-            >ОГРНИП: 321623400003805</el-text
-          >
+          <el-text class="mx-1" type="info" size="small">ОГРНИП: 321623400003805</el-text>
         </li>
       </ul>
     </div>
