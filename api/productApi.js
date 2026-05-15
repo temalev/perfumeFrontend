@@ -179,83 +179,46 @@ export async function getGroupProduct(params) {
   }
 }
 
-export async function getCodeFromSms(requestData) {
+async function authRequest(path, requestData) {
   const config = useRuntimeConfig();
   const apiUrl = config.public.URL;
+  const response = await fetch(`${apiUrl}${path}`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(requestData),
+    credentials: 'include',
+  });
+
+  if (!response.ok) {
+    let message = 'Ошибка авторизации';
+    try {
+      const data = await response.json();
+      if (data?.message) message = Array.isArray(data.message) ? data.message.join(', ') : data.message;
+    } catch (_) { /* ignore */ }
+    throw new Error(message);
+  }
 
   try {
-    const response = await fetch(`${apiUrl}/auth/code/sms`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json', // Указываем, что данные в формате JSON
-      },
-      body: JSON.stringify(requestData),
-    });
-
-    if (!response.ok) {
-      throw new Error('Ошибка при получении кода');
-    }
-
-    const data = await response.json();
-    return data;
-  } catch (error) {
-    console.error(error);
-    throw error;
+    return await response.json();
+  } catch (_) {
+    return null;
   }
 }
 
-export async function getCodeFromCall(requestData) {
-  const config = useRuntimeConfig();
-  const apiUrl = config.public.URL;
-
-  try {
-    const response = await fetch(`${apiUrl}/auth/code/call`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json', // Указываем, что данные в формате JSON
-      },
-      body: JSON.stringify(requestData), // Преобразуем объект data в строку JSON
-    });
-
-    if (response.status === 401) {
-      // Если сервер вернул статус 401 (Unauthorized), выбрасываем свою ошибку
-      const errorData = await response.json();
-      throw new Error(errorData.message);
-    }
-
-    if (!response.ok) {
-      throw new Error('Ошибка при получении кода');
-    }
-
-    const data = await response.json();
-    return data;
-  } catch (error) {
-    console.error(error);
-    throw error;
-  }
+export function register(requestData) {
+  return authRequest('/auth/register', requestData);
 }
 
-export async function login(requestData) {
-  const config = useRuntimeConfig();
-  const apiUrl = config.public.URL;
+export function login(requestData) {
+  return authRequest('/auth/login', requestData);
+}
 
-  try {
-    const response = await fetch(`${apiUrl}/auth/login`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(requestData),
-      credentials: 'include',
-    });
+export function forgotPassword(email) {
+  return authRequest('/auth/forgot-password', { email });
+}
 
-    if (!response.ok) {
-      throw new Error('Ошибка авторизации');
-    }
-  } catch (error) {
-    console.error('Ошибка:', error.message);
-    throw error;
-  }
+export function resetPassword(requestData) {
+  return authRequest('/auth/reset-password', requestData);
 }
 
 export async function logOut(requestData) {

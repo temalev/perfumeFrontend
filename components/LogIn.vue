@@ -1,145 +1,135 @@
 <template>
-  <modal header="Вход / Регистрация" @close="handleClose">
+  <modal :header="modalHeader" @close="handleClose">
     <div class="login-modal">
-      <template v-if="step === 'call'">
-        <p class="mt-2 mb-3">
-          Позвоним или пришлём SMS. <br />
-          Введите последние четыре цифры номера телефона или код из
-          SMS-сообщения.
-        </p>
-        <el-form :model="form" @submit.prevent @keyup.enter="getCode">
-          <el-form-item
-            label="Введите последние четыре цифры входящего номера."
-            label-position="top"
-            :error="errorCode"
-          >
-            <el-input v-mask="'(###) ###-##-##'" v-model="form.value">
-              <template #prefix> <div class="mr-1">+7</div> </template>
-            </el-input>
-          </el-form-item>
-        </el-form>
+      <el-tabs v-model="mode" class="mb-3">
+        <el-tab-pane label="Вход" name="login" />
+        <el-tab-pane label="Регистрация" name="register" />
+      </el-tabs>
 
-        <!-- <TheButton class="mt-4" @click="getCode">Получить код</TheButton> -->
+      <el-form
+        :model="form"
+        :error="formError"
+        @submit.prevent
+        @keyup.enter="submit"
+      >
+        <el-form-item v-if="mode === 'register'" label="Имя" label-position="top">
+          <el-input v-model="form.name" placeholder="Как к вам обращаться" />
+        </el-form-item>
+
+        <el-form-item label="Email" label-position="top" :error="emailError">
+          <el-input
+            v-model="form.email"
+            type="email"
+            placeholder="you@example.com"
+            autocomplete="email"
+          />
+        </el-form-item>
+
+        <el-form-item label="Пароль" label-position="top" :error="passwordError">
+          <el-input
+            v-model="form.password"
+            type="password"
+            placeholder="Не менее 6 символов"
+            show-password
+            :autocomplete="mode === 'register' ? 'new-password' : 'current-password'"
+          />
+        </el-form-item>
+
+        <p v-if="formError" class="error-text">{{ formError }}</p>
+
         <el-button
-          :loading="getCodeLoading"
-          :disabled="timeLeft"
+          :loading="loading"
           type="primary"
-          class="mt-4"
-          @click="getCode"
-          >Получить код <span v-if="timeLeft">через {{ timeLeft }}</span>
-        </el-button>
-      </template>
-      <template v-if="step === 'code'">
-        <!-- <p class="mt-2 mb-3">
-          Введите последние четыре цифры входящего номера.
-        </p> -->
-        <el-form :model="form" @submit.prevent>
-          <el-form-item
-            label="Введите код из SMS-сообщения"
-            label-position="top"
-            :error="errorLogin"
-          >
-            <el-input v-model="form.code" />
-          </el-form-item>
-        </el-form>
-        <span v-if="timeLeft" class="text-secondary">
-          Запросить следующий код возможно через {{ timeLeft }} сек.
-        </span>
-        <TheButton v-else class="mt-4" type="text" @click="step = 'call'">
-          Получить код повторно
-        </TheButton>
-        <!-- <TheButton class="mt-4" @click="login">Подтвердить номер</TheButton> -->
-        <el-button
-          :loading="loginLoading"
-          type="primary"
-          class="mt-4"
-          @click.prevent="login"
-          >Подтвердить номер</el-button
+          class="mt-2 w-100"
+          @click="submit"
         >
-      </template>
+          {{ mode === 'register' ? 'Создать аккаунт' : 'Войти' }}
+        </el-button>
+
+        <div class="links mt-3">
+          <el-button
+            v-if="mode === 'login'"
+            type="text"
+            @click="$emit('forgot')"
+          >
+            Забыли пароль?
+          </el-button>
+        </div>
+      </el-form>
     </div>
   </modal>
 </template>
 
 <script>
-import TheButton from './ui/TheButton.vue';
 import Modal from './ui/Modal.vue';
-import TheInputPhone from './ui/TheInput/TheInputPhone.vue';
-import TheInput from './ui/TheInput/TheInput.vue';
-
-import { getCodeFromCall, getCodeFromSms, login } from '@/api/productApi.js';
+import { login, register } from '@/api/productApi.js';
 
 export default {
-  components: { Modal, TheInputPhone, TheButton, TheInput },
+  components: { Modal },
+  emits: ['close', 'success', 'forgot'],
   data() {
     return {
-      value: '',
-      step: 'call',
-      timeLeft: null,
-      uuid: null,
-      getCodeLoading: false,
-      loginLoading: false,
-      errorCode: null,
-      errorLogin: '',
+      mode: 'login',
+      loading: false,
+      formError: '',
+      emailError: '',
+      passwordError: '',
       form: {
-        code: null,
-        value: null,
+        email: '',
+        password: '',
+        name: '',
       },
     };
   },
-  mounted() {},
+  computed: {
+    modalHeader() {
+      return this.mode === 'register' ? 'Регистрация' : 'Вход';
+    },
+  },
   methods: {
     handleClose() {
       this.$emit('close');
     },
-    async getCode() {
-      this.getCodeLoading = true;
-      const data = {
-        phoneNumber: `7${this.form.value.replace(/\D/g, '')}`,
-      };
-      try {
-        const res = await getCodeFromCall(data);
-        this.step = 'code';
-        this.uuid = res.uuid;
-        this.startTimer();
-        this.timeLeft = 60;
-      } catch (e) {
-        console.error(e);
-        this.errorCode = e;
-      }
-      this.getCodeLoading = false;
+    resetErrors() {
+      this.formError = '';
+      this.emailError = '';
+      this.passwordError = '';
     },
-    async login() {
-      this.loginLoading = true;
-      const data = {
-        code: this.form.code,
-        uuid: this.uuid,
-      };
+    validate() {
+      this.resetErrors();
+      const email = this.form.email.trim();
+      if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        this.emailError = 'Введите корректный email';
+        return false;
+      }
+      if (!this.form.password || this.form.password.length < 6) {
+        this.passwordError = 'Минимум 6 символов';
+        return false;
+      }
+      return true;
+    },
+    async submit() {
+      if (!this.validate()) return;
+      this.loading = true;
       try {
-        const res = await login(data);
+        const payload = {
+          email: this.form.email.trim().toLowerCase(),
+          password: this.form.password,
+        };
+        if (this.mode === 'register') {
+          payload.name = this.form.name?.trim() || undefined;
+          await register(payload);
+        } else {
+          await login(payload);
+        }
         this.$emit('success');
         this.$emit('close');
       } catch (e) {
-        console.error(e);
-        this.errorLogin = e;
+        this.formError = e?.message || 'Не удалось войти';
+      } finally {
+        this.loading = false;
       }
-      this.loginLoading = false;
     },
-    startTimer() {
-      this.timer = setInterval(() => {
-        if (this.timeLeft > 0) {
-          this.timeLeft--;
-        } else {
-          this.stopTimer();
-        }
-      }, 1000);
-    },
-    stopTimer() {
-      clearInterval(this.timer);
-    },
-  },
-  beforeDestroy() {
-    this.stopTimer();
   },
 };
 </script>
@@ -148,8 +138,16 @@ export default {
 .login-modal {
   padding: 0 20px;
   width: 400px;
-  h1 {
-    // margin: 0 12px;
-  }
+}
+.w-100 {
+  width: 100%;
+}
+.error-text {
+  color: #f56c6c;
+  font-size: 13px;
+  margin-top: 4px;
+}
+.links {
+  text-align: center;
 }
 </style>

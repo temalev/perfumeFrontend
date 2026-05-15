@@ -181,6 +181,14 @@
       v-if="isLoginModal"
       @close="isLoginModal = false"
       @success="$router.push('userCard')"
+      @forgot="
+        isLoginModal = false;
+        isForgotModal = true;
+      "
+    />
+    <forgot-password
+      v-if="isForgotModal"
+      @close="isForgotModal = false"
     />
   </div>
 </template>
@@ -194,10 +202,11 @@ import {
 import MobilePanel from '~/components/MobilePanel.vue';
 import ShopBag from '~/components/ShopBag.vue';
 import LogIn from '~/components/LogIn.vue';
+import ForgotPassword from '~/components/ForgotPassword.vue';
 import { ElNotification } from 'element-plus';
 
 export default {
-  components: { MobilePanel, ShopBag, LogIn },
+  components: { MobilePanel, ShopBag, LogIn, ForgotPassword },
   data() {
     return {
       isModal: false,
@@ -207,6 +216,7 @@ export default {
       infoModal: '',
       isDrawer: false,
       isLoginModal: false,
+      isForgotModal: false,
       sendLoading: false,
       form: {
         name: '',
