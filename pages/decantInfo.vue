@@ -44,7 +44,6 @@
 
 <script setup>
 import { useRoute } from 'vue-router';
-import { useHead } from '@vueuse/head';
 
 const config = useRuntimeConfig();
 const apiUrl = config.public.URL;
