@@ -183,30 +183,32 @@ const { data: product } = await useAsyncData('product', () =>
 );
 
 if (product.value) {
-  const fullName = [product.value?.brand, product.value?.name]
+  const p = product.value;
+  const fullName = [p.brand, p.name].filter(Boolean).join(' ');
+  const descParts = [p.type, p.brand, p.name, p.capacityValue && `${p.capacityValue} мл`]
     .filter(Boolean)
     .join(' ');
+  const ogImage = p.images?.length ? p.images[0] : 'https://parfburo.com/img/logo.webp';
+  const productUrl = `https://parfburo.com/products/${p.slug}`;
   useHead({
     link: [
       {
         rel: 'canonical',
-        href: `https://parfburo.com/products/${slug}`,
+        href: productUrl,
       },
     ],
     meta: [
       {
         name: 'keywords',
-        content: `${
-          fullName || 'товар'
-        } купить, цена, интернет-магазин, каталог, бесплатная доставка, Москва, Рязань, оригинал`,
+        content: `${fullName || 'товар'} купить, цена, интернет-магазин, каталог, бесплатная доставка, Москва, Рязань, оригинал`,
       },
       {
         name: 'description',
-        content: `Купить ${product?.type} ${product?.brand} ${product?.name} ${product?.capacityValue} мл в Москве по низкой цене в интернет-магазине ПарфБюро. Подробное описание, применение, состав, фото. Быстрая доставка по всей России.`,
+        content: `Купить ${descParts} в Москве по низкой цене в интернет-магазине ПарфБюро. Подробное описание, применение, состав, фото. Быстрая доставка по всей России.`,
       },
       {
         property: 'og:image',
-        content: product.value?.images?.length ? product.value.images[0] : '',
+        content: ogImage,
       },
       {
         property: 'og:title',
@@ -214,19 +216,11 @@ if (product.value) {
       },
       {
         property: 'og:url',
-        content: `https://parfburo.com/products/${product.value?.slug}`,
+        content: productUrl,
       },
       {
         property: 'og:locale',
         content: 'ru_RU',
-      },
-      {
-        property: 'og:logo',
-        content: 'https://parfburo.com/_nuxt/logo.3sM_t13Y.webp',
-      },
-      {
-        property: 'og:url',
-        content: `https://parfburo.com/products/${product.value?.slug}`,
       },
       {
         property: 'og:type',
@@ -246,7 +240,7 @@ if (product.value) {
       },
       {
         name: 'twitter:image',
-        content: product.value?.images?.length ? product.value.images[0] : '',
+        content: ogImage,
       },
     ],
   });

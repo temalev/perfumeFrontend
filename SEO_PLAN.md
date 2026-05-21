@@ -10,7 +10,7 @@
 
 Сайт работает на Nuxt 3 SSR — это хорошая база, но **SEO-обвязка собрана фрагментарно и содержит критические ошибки**, которые мешают индексации и ранжированию:
 
-- Нет `robots.txt` и `sitemap.xml` ([public/](public/) пустой по SEO-файлам).
+- Нет `robots.txt` ([public/](public/) пустой). `sitemap.xml` уже генерируется на бэке (`/api/v1/products/sitemap.xml` → nginx проксит на `/sitemap.xml`).
 - На главной странице нет `<h1>`; H-структура нарушена (только `<h3>` после закомментированного `<h1>` в [pages/index.vue:24,41,51](pages/index.vue#L24)).
 - В карточке товара `description` использует **необработанные шаблоны** `${product?.brand}` вместо `${product.value?.brand}` — в SSR в meta улетают строки `undefined undefined` ([pages/products/[slug].vue:205](pages/products/[slug].vue#L205)).
 - На странице каталога нет `<h1>` и тайтл рендерится только при наличии `params.brand` — листинг без бренда отдаёт **дефолтный тайтл из layout** ([pages/products/list.vue:4-7](pages/products/list.vue#L4-L7)).
@@ -25,20 +25,16 @@
 
 ## 2. Критические проблемы (приоритет P0 — блокируют индексацию)
 
-### 2.1. Нет `robots.txt`
-- **Файл**: `public/robots.txt` отсутствует.
-- **Что сделать**: создать `public/robots.txt` со ссылкой на sitemap, запретом служебных страниц (`/userCard`, `/reset-password`, корзина и т.д.) и `User-agent: *`.
+### 2.1. Нет `robots.txt` ✅
+- [x] Создан [public/robots.txt](public/robots.txt) с `User-agent: *`, запретом служебных `/userCard` и `/reset-password`, и ссылкой на `Sitemap: https://parfburo.com/sitemap.xml`. Дублей листинга через query-параметры закроем через `<meta robots="noindex,follow">` в п.2.6.
 
-### 2.2. Нет `sitemap.xml`
-- **Что сделать**: подключить модуль `@nuxtjs/sitemap` (официальный для Nuxt 3), генерировать карту по `/products/*`, `/decantInfo`, `/`, `/offer`, `/privacy`. Источник динамических URL — API `/api/products`.
-- Добавить `lastmod` (берём из БД), `changefreq`, `priority`.
+### 2.2. Нет `sitemap.xml` ✅
+- [x] Уже генерируется на бэке: [server/src/product/product.service.ts:372](server/src/product/product.service.ts#L372), эндпоинт `GET /api/v1/products/sitemap.xml`, nginx проксит на `/sitemap.xml` (см. `default.conf`). Возвращает 200 OK, ~55 КБ XML с продуктами + базовыми страницами, `lastmod` из БД, `priority`/`changefreq` присутствуют.
 
-### 2.3. Сломанная подстановка переменных в meta карточки товара
-- **Файл**: [pages/products/[slug].vue:205](pages/products/[slug].vue#L205).
-- **Сейчас**: `Купить ${product?.type} ${product?.brand} ${product?.name} ...` — `product` это `Ref`, нужно `product.value?.type` и т.д. На SSR в HTML улетают строки с `undefined`.
-- **Что сделать**: использовать `product.value?.*` или вычислить переменные до вызова `useHead`.
-- Этот же блок имеет дубликат `og:url` (строки 217 и 229) — убрать.
-- `og:logo` — невалидное OG-свойство и хеш в URL: заменить на `og:image` со статичным `/img/logo.webp` или `og:logo` через JSON-LD `Organization.logo`.
+### 2.3. Сломанная подстановка переменных в meta карточки товара ✅
+- [x] Распаковка ref через `const p = product.value` + `descParts = [p.type, p.brand, p.name, p.capacityValue && '${...} мл'].filter(Boolean).join(' ')` — теперь не будет `undefined undefined` в description.
+- [x] Дубликат `og:url` убран, оставлен один, `productUrl` вынесен в переменную и переиспользован в canonical.
+- [x] `og:logo` (невалидный + хеш-URL `_nuxt/logo.3sM_t13Y.webp`) удалён. `og:image` теперь fallback на стабильный `https://parfburo.com/img/logo.webp`, если у товара нет своих картинок.
 
 ### 2.4. Нет `<h1>` на главной
 - **Файл**: [pages/index.vue:24](pages/index.vue#L24) — H1 закомментирован, далее идут только `<h3>`.
@@ -124,10 +120,10 @@
 - `lang="ru"` есть ([nuxt.config.ts:13-15](nuxt.config.ts#L13-L15)) — ок.
 - Если в перспективе будет английская версия — заложить `hreflang`.
 
-### 4.5. Core Web Vitals
-- Element Plus тянет большой CSS — проверить, что подключён только нужный (сейчас `element-ui.scss` — глобальный). Использовать `unplugin-vue-components` для авто-импорта Element Plus компонентов по требованию.
-- `mounted()` грузит данные после гидрации (в [pages/index.vue:127-131](pages/index.vue#L127-L131)) — для SEO критично, что хитов/специальных предложений нет в HTML. Переписать на `useAsyncData` в `<script setup>` (как уже сделано для карточки товара).
-- На главной видео-блок закомментирован, но картинка `/img/bg.webp` грузится при любом размере экрана и не приоритезирована.
+### 4.5. Core Web Vitals ✅
+- [x] **Element Plus on-demand** — подключён `@element-plus/nuxt` ([nuxt.config.ts](nuxt.config.ts)), удалён `plugins/element-plus.js` с глобальным импортом. CSS теперь per-component (`el-button.css` ~23kB и т.д.) вместо полного `index.css` (~350kB). Директивы (`v-loading`) и сервисы (`ElNotification`) подхватываются автоматически.
+- [x] **`useAsyncData` вместо `mounted()`** — [pages/index.vue](pages/index.vue) переписан на `<script setup>`, `productsHit`/`productsSale`/`media` тянутся на SSR и попадают в HTML до гидрации. В [api/productApi.js](api/productApi.js) `localStorage.getItem('user')` обёрнут в `if (import.meta.client)`, чтобы не падало на сервере.
+- [x] **LCP-картинка** — фон главной заменён с `<img>` через `content: url()` в CSS (краулер не видел) на `<picture>` с явным `src`/`srcset` для desktop/mobile + `fetchpriority="high"` + `decoding="async"` + `width`/`height` (CLS-защита). Карточки в скроллерах ниже получили `loading="lazy"`.
 
 ---
 

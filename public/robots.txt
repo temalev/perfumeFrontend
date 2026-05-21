@@ -1,0 +1,5 @@
+User-agent: *
+Disallow: /userCard
+Disallow: /reset-password
+
+Sitemap: https://parfburo.com/sitemap.xml
