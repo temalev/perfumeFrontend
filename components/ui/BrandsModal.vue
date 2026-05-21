@@ -8,17 +8,15 @@
         <h2>{{ col.title }}</h2>
 
         <div class="brands">
-          <div
+          <NuxtLink
             v-for="brand in col.brands"
             :key="brand"
+            :to="`/brand/${slugify(brand)}`"
             class="brand pointer"
-            @click="
-              $router.push({ name: 'products-list', query: { brand: brand } });
-              $emit('close');
-            "
+            @click="$emit('close')"
           >
             {{ brand }}
-          </div>
+          </NuxtLink>
         </div>
       </div>
     </div>
@@ -26,12 +24,17 @@
 </template>
 
 <script>
+import { slugify } from '~/utils/slugify.js';
+
 export default {
   props: {
     data: {
       type: Array,
       default: () => [],
     },
+  },
+  methods: {
+    slugify,
   },
 };
 </script>
