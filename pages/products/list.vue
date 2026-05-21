@@ -137,6 +137,50 @@ const getParams = () => {
 
 params = getParams();
 
+const { data: listProducts } = await useAsyncData(
+  `products-list-${fullPath}`,
+  () => $fetch(`${apiUrl}/products`, { params }),
+  { default: () => [] },
+);
+
+const collectionUrl = `https://parfburo.com/products/list${params.brand ? `?brand=${encodeURIComponent(params.brand)}` : ''}`;
+const collectionName = params.brand
+  ? `${params.brand} — каталог парфюмерии`
+  : 'Каталог парфюмерии';
+
+const breadcrumbJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Главная', item: 'https://parfburo.com' },
+    {
+      '@type': 'ListItem',
+      position: 2,
+      name: params.brand || 'Каталог',
+      item: collectionUrl,
+    },
+  ],
+};
+
+const collectionJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'CollectionPage',
+  '@id': `${collectionUrl}#collection`,
+  url: collectionUrl,
+  name: collectionName,
+  isPartOf: { '@id': 'https://parfburo.com/#website' },
+  mainEntity: {
+    '@type': 'ItemList',
+    numberOfItems: listProducts.value?.length || 0,
+    itemListElement: (listProducts.value || []).slice(0, 30).map((p, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      url: `https://parfburo.com/products/${p.slug}`,
+      name: [p.brand, p.name].filter(Boolean).join(' '),
+    })),
+  },
+};
+
 useHead({
   link: [
     {
@@ -196,6 +240,16 @@ useHead({
       content: `Купить продукцию бренда ${
         params.brand || 'товар'
       } по выгодной цене`,
+    },
+  ],
+  script: [
+    {
+      type: 'application/ld+json',
+      innerHTML: JSON.stringify(breadcrumbJsonLd),
+    },
+    {
+      type: 'application/ld+json',
+      innerHTML: JSON.stringify(collectionJsonLd),
     },
   ],
 });

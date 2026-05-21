@@ -193,6 +193,71 @@
   </div>
 </template>
 
+<script setup>
+const organizationJsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'Organization',
+      '@id': 'https://parfburo.com/#organization',
+      name: 'ПарфБюро',
+      url: 'https://parfburo.com',
+      logo: {
+        '@type': 'ImageObject',
+        url: 'https://parfburo.com/img/logo.webp',
+      },
+      description: 'Интернет-магазин оригинальной парфюмерии мировых брендов. Доставка по Москве, Рязани и всей России.',
+      contactPoint: {
+        '@type': 'ContactPoint',
+        telephone: '+7-915-602-28-96',
+        contactType: 'customer service',
+        areaServed: 'RU',
+        availableLanguage: ['ru'],
+      },
+      sameAs: [
+        'https://t.me/parfburoo',
+        'https://wa.me/79156022896',
+      ],
+    },
+    {
+      '@type': 'Store',
+      '@id': 'https://parfburo.com/#store-moscow',
+      name: 'ПарфБюро — Москва',
+      parentOrganization: { '@id': 'https://parfburo.com/#organization' },
+      url: 'https://parfburo.com',
+      telephone: '+7-915-602-28-96',
+      address: {
+        '@type': 'PostalAddress',
+        addressLocality: 'Москва',
+        addressCountry: 'RU',
+      },
+    },
+    {
+      '@type': 'Store',
+      '@id': 'https://parfburo.com/#store-ryazan',
+      name: 'ПарфБюро — Рязань',
+      parentOrganization: { '@id': 'https://parfburo.com/#organization' },
+      url: 'https://parfburo.com',
+      telephone: '+7-915-602-28-96',
+      address: {
+        '@type': 'PostalAddress',
+        addressLocality: 'Рязань',
+        addressCountry: 'RU',
+      },
+    },
+  ],
+};
+
+useHead({
+  script: [
+    {
+      type: 'application/ld+json',
+      innerHTML: JSON.stringify(organizationJsonLd),
+    },
+  ],
+});
+</script>
+
 <script>
 import {
   getMe,

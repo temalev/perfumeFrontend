@@ -57,19 +57,17 @@
 
 ## 3. Высокий приоритет (P1 — структура и сниппеты)
 
-### 3.1. Structured data (JSON-LD)
-Полностью отсутствует, кроме урезанного microdata в карточке. Нужно добавить:
+### 3.1. Structured data (JSON-LD) ✅
 
-| Где | Что |
-| --- | --- |
-| Все страницы (в `layouts/default.vue`) | `Organization` (name, url, logo, contactPoint с телефоном, sameAs c Telegram/WhatsApp) |
-| Главная | `WebSite` с `SearchAction` (для sitelinks search box) |
-| `/products/[slug]` | `Product` с `offers` (price, priceCurrency=RUB, availability, sku=article, brand, image), `aggregateRating` (если есть отзывы) |
-| `/products/list` | `BreadcrumbList`, `CollectionPage`, `ItemList` |
-| Любая страница с хлебными крошками | `BreadcrumbList` |
-| Магазин | `Store`/`LocalBusiness` с адресом Москва/Рязань для локального SEO |
+| Где | Что | Статус |
+| --- | --- | --- |
+| Все страницы ([layouts/default.vue](layouts/default.vue)) | `Organization` + 2× `Store` (Москва, Рязань) в одном `@graph`, телефон, логотип, sameAs (Telegram/WhatsApp) | ✅ |
+| Главная ([pages/index.vue](pages/index.vue)) | `WebSite` с `SearchAction` (target → `/products/list?search={search_term_string}`) | ✅ |
+| `/products/[slug]` ([pages/products/[slug].vue](pages/products/[slug].vue)) | `Product` с `offers` (priceCurrency=RUB, availability=InStock, sku=article, brand, image, seller→Organization) + `BreadcrumbList` (Главная → Бренд → Товар) | ✅ |
+| `/products/list` ([pages/products/list.vue](pages/products/list.vue)) | `BreadcrumbList` + `CollectionPage` с вложенным `ItemList` (до 30 товаров, через `useAsyncData`) | ✅ |
+| `aggregateRating` на товаре | пока пропущено — нет API отзывов | ⏳ |
 
-Реализовать через `useHead({ script: [{ type: 'application/ld+json', innerHTML: JSON.stringify(...) }] })`.
+Реализовано через `useHead({ script: [{ type: 'application/ld+json', innerHTML: JSON.stringify(...) }] })`.
 
 ### 3.2. Исправить microdata карточки товара
 - **Файл**: [pages/products/[slug].vue:24-71](pages/products/[slug].vue#L24-L71).
@@ -120,8 +118,8 @@
 - `lang="ru"` есть ([nuxt.config.ts:13-15](nuxt.config.ts#L13-L15)) — ок.
 - Если в перспективе будет английская версия — заложить `hreflang`.
 
-### 4.5. Core Web Vitals ✅
-- [x] **Element Plus on-demand** — подключён `@element-plus/nuxt` ([nuxt.config.ts](nuxt.config.ts)), удалён `plugins/element-plus.js` с глобальным импортом. CSS теперь per-component (`el-button.css` ~23kB и т.д.) вместо полного `index.css` (~350kB). Директивы (`v-loading`) и сервисы (`ElNotification`) подхватываются автоматически.
+### 4.5. Core Web Vitals (частично ✅)
+- [ ] **Element Plus on-demand** — откатили. `@element-plus/nuxt@1.1.5` использует `import.meta.dev`, который jiti в Nuxt 3.12 не парсит → билд падает. Вариант: обновить Nuxt до 3.14+ (с новым jiti) либо перейти на `unplugin-vue-components` напрямую.
 - [x] **`useAsyncData` вместо `mounted()`** — [pages/index.vue](pages/index.vue) переписан на `<script setup>`, `productsHit`/`productsSale`/`media` тянутся на SSR и попадают в HTML до гидрации. В [api/productApi.js](api/productApi.js) `localStorage.getItem('user')` обёрнут в `if (import.meta.client)`, чтобы не падало на сервере.
 - [x] **LCP-картинка** — фон главной заменён с `<img>` через `content: url()` в CSS (краулер не видел) на `<picture>` с явным `src`/`srcset` для desktop/mobile + `fetchpriority="high"` + `decoding="async"` + `width`/`height` (CLS-защита). Карточки в скроллерах ниже получили `loading="lazy"`.
 
