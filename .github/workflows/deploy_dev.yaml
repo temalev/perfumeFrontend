@@ -24,7 +24,13 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
+            set -e
             cd ~/frontend_dev
+            echo "[disk] before:" && df -h / | tail -1
+            docker container prune -f || true
+            docker image prune -af --filter "until=24h" || true
+            docker builder prune -af --filter "until=24h" || true
+            echo "[disk] after prune:" && df -h / | tail -1
             git pull
             docker compose up --force-recreate -d --no-deps --remove-orphans --build frontend_dev
 
