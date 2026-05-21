@@ -2,23 +2,19 @@
   <div class="body-home-page">
     <VitePwaManifest />
 
-    <div class="d-flex" style="position: relative">
-      <img
-        alt="parfBuro background"
-        class="bg-img"
-        width="100%"
-        height="600px"
-        style="object-fit: cover"
-      />
-      <!-- <video
-        playsinline
-        loop
-        autoplay
-        muted
-        style="height: 600px; width: 100%; object-fit: cover"
-      >
-        <source src="/video/bg.mp4" type="video/mp4" />
-      </video> -->
+    <div class="d-flex hero" style="position: relative">
+      <picture>
+        <source media="(max-width: 500px)" srcset="/img/bg_max-500.webp" type="image/webp" />
+        <img
+          src="/img/bg.webp"
+          alt="parfBuro background"
+          class="bg-img"
+          width="2133"
+          height="1200"
+          fetchpriority="high"
+          decoding="async"
+        />
+      </picture>
       <div class="text-container">
         <div class="text">
           <!-- <h1>TORRICELUMN –50%</h1>
@@ -26,14 +22,15 @@
         </div>
       </div>
     </div>
-    <div v-loading="mediaLoading" ref="info" class="info">
+    <div ref="info" class="info">
       <media-card v-for="item in media" :key="item.id" :data="item" />
     </div>
-    <div v-if="media?.length" v-loading="mediaLoading" class="info-mobile">
+    <div v-if="media?.length" class="info-mobile">
       <img
         v-for="item in media"
         :key="item.url"
         :src="item.preview"
+        loading="lazy"
         @click="openedVideo = item"
       />
     </div>
@@ -75,7 +72,9 @@
 </template>
 
 <script setup>
-import { useRoute } from 'vue-router';
+import { ref } from 'vue';
+import { getProducts, getMedia } from '@/api/productApi.js';
+
 useHead({
   link: [
     {
@@ -86,13 +85,13 @@ useHead({
   meta: [
     {
       name: 'description',
-      content: `Покупайте парфюмерию и профессиональную косметику на официальном сайте «ПарфБюро». 
+      content: `Покупайте парфюмерию и профессиональную косметику на официальном сайте «ПарфБюро».
       Погрузитесь в мир утончённых ароматов вместе с ParfBuro — сделайте выбор, который подчеркнёт вашу индивидуальность и стиль!
       Быстрая доставка по Москве и Рязани. Доставка СДЭК по всей России`,
     },
     {
       property: 'og:description',
-      content: `Покупайте парфюмерию и профессиональную косметику на официальном сайте «ПарфБюро». 
+      content: `Покупайте парфюмерию и профессиональную косметику на официальном сайте «ПарфБюро».
       Погрузитесь в мир утончённых ароматов вместе с ParfBuro — сделайте выбор, который подчеркнёт вашу индивидуальность и стиль!
       Быстрая доставка по Москве и Рязани. Доставка СДЭК по всей России`,
     },
@@ -102,93 +101,51 @@ useHead({
     },
   ],
 });
-</script>
 
-<script>
-import products from 'assets/mock/products.json';
-import ProductCard from '~/components/ProductCard.vue';
-import MediaCard from '~/components/MediaCard.vue';
+const { data: productsHit } = await useAsyncData(
+  'home-products-hit',
+  () => getProducts({ isHit: true }),
+  { default: () => [] },
+);
 
-import { getProducts, getMedia } from '@/api/productApi.js';
-import Modal from '~/components/ui/Modal.vue';
+const { data: productsSale } = await useAsyncData(
+  'home-products-sale',
+  () => getProducts({ isSale: true }),
+  { default: () => [] },
+);
 
-export default {
-  components: { ProductCard, MediaCard, Modal },
-  data() {
-    return {
-      products: products,
-      productsHit: [],
-      productsSale: [],
-      media: [],
-      openedVideo: null,
-      mediaLoading: false,
-    };
+const { data: media } = await useAsyncData(
+  'home-media',
+  async () => {
+    const res = await getMedia();
+    return res?.data?.stories ?? [];
   },
-  mounted() {
-    this.getProductsHit();
-    this.getProductsSale();
-    this.getMedia();
-  },
-  methods: {
-    async getMedia() {
-      this.mediaLoading = true;
-      try {
-        const res = await getMedia();
-        this.media = res.data.stories;
-      } catch (e) {
-        console.error(e);
-      }
-      this.mediaLoading = false;
-    },
-    async getProductsHit() {
-      this.getProductsProcess = true;
-      const params = {
-        isHit: true,
-      };
-      try {
-        const res = await getProducts(params);
-        this.productsHit = res;
-      } catch (e) {
-        console.error(e);
-      }
-      this.getProductsProcess = false;
-    },
-    async getProductsSale() {
-      this.getProductsProcess = true;
-      const params = {
-        isSale: true,
-      };
-      try {
-        const res = await getProducts(params);
-        this.productsSale = res;
-      } catch (e) {
-        console.error(e);
-      }
-      this.getProductsProcess = false;
-    },
-  },
-};
+  { default: () => [] },
+);
+
+const openedVideo = ref(null);
 </script>
 
 <style scoped lang="scss">
 .body-home-page {
   display: flex;
   flex-direction: column;
-  // height: 100%;
-  // overflow: hidden;
+}
+
+.hero {
+  width: 100%;
+  height: 600px;
+  overflow: hidden;
 
   @media (max-width: 600px) {
-    img {
-      height: 360px !important;
-    }
+    height: 360px;
   }
 }
 
 .bg-img {
-  content: url('/img/bg.webp');
-  @media (max-width: 500px) {
-    content: url('/img/bg_max-500.webp');
-  }
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 .text-container {
   position: absolute;
@@ -263,28 +220,9 @@ export default {
   display: flex;
   flex-direction: column;
   gap: 12px;
-  // margin: 32px 28px;
   position: relative;
   & h3 {
     margin: 0 28px;
   }
-
-  // &::before {
-  //   content: '';
-  //   position: absolute;
-  //   top: 0;
-  //   left: 0;
-  //   right: 0;
-  //   bottom: 0;
-  //   background: linear-gradient(
-  //     to right,
-  //     rgba(255, 255, 255, 0.8),
-  //     transparent 10%,
-  //     transparent 90%,
-  //     rgba(255, 255, 255, 0.8)
-  //   );
-  //   z-index: 99;
-  //   pointer-events: none;
-  // }
 }
 </style>

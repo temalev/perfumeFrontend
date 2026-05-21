@@ -67,10 +67,12 @@ export async function getProducts(params) {
 
   const queryString = new URLSearchParams(params).toString();
 
-  const userData = localStorage.getItem('user');
   let user = null;
-  if (userData) {
-    user = JSON.parse(userData);
+  if (import.meta.client) {
+    const userData = localStorage.getItem('user');
+    if (userData) {
+      user = JSON.parse(userData);
+    }
   }
 
   let url = `${apiUrl}/products?${queryString}`;
@@ -126,10 +128,12 @@ export async function getProduct(params) {
   const config = useRuntimeConfig();
   const apiUrl = config.public.URL;
 
-  const userData = localStorage.getItem('user');
   let user = null;
-  if (userData) {
-    user = JSON.parse(userData);
+  if (import.meta.client) {
+    const userData = localStorage.getItem('user');
+    if (userData) {
+      user = JSON.parse(userData);
+    }
   }
 
   let url = `${apiUrl}/products/${params}`;
