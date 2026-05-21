@@ -40,18 +40,14 @@
 - **Файл**: [pages/index.vue:24](pages/index.vue#L24) — H1 закомментирован, далее идут только `<h3>`.
 - **Что сделать**: вернуть один уникальный `<h1>` ("Купить оригинальную парфюмерию в Москве и Рязани — ПарфБюро" или аналог), `<h3>` секций понизить до `<h2>`.
 
-### 2.5. Нет `<h1>` и условный `<title>` на каталоге
-- **Файл**: [pages/products/list.vue:4-7](pages/products/list.vue#L4-L7).
-- **Сейчас**: `<Title>` рендерится только если есть `params.brand`. Иначе тайтл — дефолтный из layout (одинаковый по всему сайту).
-- **Что сделать**:
-  - Всегда задавать осмысленный title: "Каталог парфюмерии — ПарфБюро" или с подстановкой бренда/категории.
-  - Добавить `<h1>` с тем же смыслом.
-  - Сделать дружелюбные URL для каталога по бренду/категории (`/brand/dior`, `/category/woman`) вместо query-параметров — это сильно влияет на ранжирование по бренду.
+### 2.5. Нет `<h1>` и условный `<title>` на каталоге ✅ (частично)
+- [x] `<title>` теперь всегда осмысленный — через `useSiteSeo({ title: pageTitle })`: при наличии бренда «{brand} — купить в ПарфБюро по выгодной цене», иначе «Каталог парфюмерии — ПарфБюро» ([pages/products/list.vue](pages/products/list.vue)). Дефолт из layout больше не используется.
+- [ ] `<h1>` в шаблоне каталога — пока не добавлен (вне scope текущего рефакторинга мета).
+- [ ] Дружелюбные URL `/brand/[slug]`, `/category/[slug]` — отдельный пункт **3.5**.
 
-### 2.6. Canonical с query-параметрами на листинге
-- **Файл**: [pages/products/list.vue:144](pages/products/list.vue#L144) — `canonical` = `https://parfburo.com${fullPath}`.
-- **Риск**: дубли вида `?orderBy=name&order=DESC&fromPrice=0&toPrice=100000&isSale=false` → Google поднимет одну, остальные пометит как дубли, краулинг-бюджет сгорит.
-- **Что сделать**: canonical всегда указывать на чистый URL (`/products/list` или соответствующий бренд/категория URL), фильтры/сортировки не индексировать (`<meta name="robots" content="noindex,follow">` при наличии нестандартных query).
+### 2.6. Canonical с query-параметрами на листинге ✅
+- [x] Canonical теперь строится из `collectionUrl` (только базовый путь, либо с одним `?brand=...`) — query фильтров/сортировок в canonical не попадают.
+- [x] Добавлено `robots: 'noindex,follow'` при наличии query `orderBy`/`order`/`fromPrice`/`toPrice`/`isSale` — отфильтрованные виды не индексируются, но ссылки на товары краулер обходит.
 
 ---
 
@@ -86,9 +82,13 @@
 - [x] `BreadcrumbList` JSON-LD синхронизирован с этой же цепочкой (общий массив `crumbItems` → `.map(... position: i+1)`), позиции пересчитываются автоматически при отсутствии звеньев.
 - [x] Удалён мёртвый код: `data().breadcrumb`, заполнение в `mounted()` и `getNewProduct()`.
 
-### 3.4. Универсальное генерируемое мета через `useSeoMeta`
-- Сейчас в каждой странице руками собирается массив `meta: [...]` — много дублирования и опечаток (`property: 'title'`, `og:logo`).
-- **Что сделать**: перейти на `useSeoMeta({ title, description, ogTitle, ogDescription, ogImage, ogUrl, twitterCard, ... })` — Nuxt сам поставит правильные ключи, можно вынести фабрику в `composables/useProductSeo.ts`.
+### 3.4. Универсальное генерируемое мета через `useSeoMeta` ✅
+- [x] Создан composable [composables/useSiteSeo.js](composables/useSiteSeo.js) с двумя экспортами:
+  - `useSiteSeo({ title, description, keywords, image, url, type, locale, twitterCard, canonical, robots })` — единый вход, под капотом `useSeoMeta` (Nuxt сам подставляет валидные ключи `ogTitle`/`ogDescription`/`ogImage`/`ogUrl`/`ogType`/`ogLocale`/`twitterCard`/`twitterTitle`/`twitterDescription`/`twitterImage`) + `useHead({ link: [{ rel: 'canonical', ... }] })`. Fallback OG-картинки — стабильный `/img/logo.webp` без билд-хеша.
+  - `injectJsonLd(jsonLdOrArray)` — массивная подача JSON-LD через `useHead({ script: [...] })`.
+- [x] Все четыре страницы переехали на новый API: [pages/index.vue](pages/index.vue), [pages/products/list.vue](pages/products/list.vue), [pages/products/[slug].vue](pages/products/[slug].vue), [pages/decantInfo.vue](pages/decantInfo.vue). Длинные ручные массивы `meta: [...]` (по ~60 строк на страницу) свернулись в ~7 строк вызова.
+- [x] Попутно вычищены остатки опечаток: невалидный `property: 'title'`, `name: 'title'`, `og:logo` с хеш-URL `_nuxt/logo.3sM_t13Y.webp`, дубликаты `og:url`.
+- [x] Auto-import composable подтверждён билдом — `useSiteSeo-*.mjs` появляется в чанках Nitro.
 
 ### 3.5. Чистые URL для каталога
 - Сейчас: `/products/list?brand=Dior` — слабо ранжируется по бренду.
