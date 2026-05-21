@@ -78,13 +78,13 @@
 - [x] Вторая `<h1>` «Продукты этого бренда» понижена до `<h2>` — теперь страница имеет одну H1.
 - [x] В setup добавлены computed `productUrl` и `fullProductTitle`, локальные дубли в JSON-LD/meta заменены на `productUrlStr` (фикс прокидывания Ref-объекта в `JSON.stringify`).
 
-### 3.3. Хлебные крошки
-- **Файл**: [pages/products/[slug].vue:282-285](pages/products/[slug].vue#L282-L285).
-- Сейчас крошки — только "Главная" → бренд, без категории и без структурированной разметки.
-- **Что сделать**:
-  - Цепочка: Главная → Категория → Бренд → Товар.
-  - Привязать `BreadcrumbList` JSON-LD.
-  - Использовать обычные `<a href>`, не SPA-переходы через `router.push` (для краулера и копирования ссылки).
+### 3.3. Хлебные крошки ✅
+- [x] [components/ui/BreadCrumb.vue](components/ui/BreadCrumb.vue) полностью переписан: `<nav aria-label>` + `<ol>` + `<NuxtLink :to="item.path">` (рендерится как `<a href>` — краулер видит ссылку, копирование URL работает). Последняя крошка — `<span aria-current="page">` без линка. Разделитель в `<span aria-hidden="true">`.
+- [x] В [pages/products/[slug].vue](pages/products/[slug].vue) построение крошек переехало в computed `breadcrumbs` внутри `<script setup>` — теперь цепочка попадает в HTML на SSR (раньше формировалась в `mounted()` и для краулера была пустой).
+- [x] Категории грузятся параллельно с продуктом через `Promise.all([useAsyncData('product', ...), useAsyncData('categories', ...)])`; computed `productCategory` резолвит первую по `categoryIds[0]`.
+- [x] Финальная цепочка: **Главная** → **Категория** (если есть) → **Бренд** (если есть) → **Полное название товара**. Каждый промежуточный уровень — реальный `<a href>` (например `/products/list?categoryId=9`, `/products/list?brand=Kajal`).
+- [x] `BreadcrumbList` JSON-LD синхронизирован с этой же цепочкой (общий массив `crumbItems` → `.map(... position: i+1)`), позиции пересчитываются автоматически при отсутствии звеньев.
+- [x] Удалён мёртвый код: `data().breadcrumb`, заполнение в `mounted()` и `getNewProduct()`.
 
 ### 3.4. Универсальное генерируемое мета через `useSeoMeta`
 - Сейчас в каждой странице руками собирается массив `meta: [...]` — много дублирования и опечаток (`property: 'title'`, `og:logo`).

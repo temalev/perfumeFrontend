@@ -16,7 +16,7 @@
       >
     </Head>
 
-    <bread-crumb :data="breadcrumb" />
+    <bread-crumb :data="breadcrumbs" />
     <div
       v-if="product"
       class="product-card-content gap-4 mt-4"
@@ -198,9 +198,10 @@ const apiUrl = config.public.URL;
 const route = useRoute();
 const slug = route.params.slug;
 
-const { data: product } = await useAsyncData('product', () =>
-  $fetch(`${apiUrl}/products/${slug}`)
-);
+const [{ data: product }, { data: categories }] = await Promise.all([
+  useAsyncData('product', () => $fetch(`${apiUrl}/products/${slug}`)),
+  useAsyncData('categories', () => $fetch(`${apiUrl}/categories`).catch(() => [])),
+]);
 
 const productUrl = computed(() => {
   const p = product.value;
@@ -213,6 +214,33 @@ const fullProductTitle = computed(() => {
   return [p.brand, p.name, p.capacityValue && `${p.capacityValue} мл`]
     .filter(Boolean)
     .join(' ');
+});
+
+const productCategory = computed(() => {
+  const p = product.value;
+  const list = categories.value;
+  if (!p?.categoryIds?.length || !Array.isArray(list)) return null;
+  return list.find(c => c.id === p.categoryIds[0]) || null;
+});
+
+const breadcrumbs = computed(() => {
+  const p = product.value;
+  const items = [{ name: 'Главная', path: '/' }];
+  const cat = productCategory.value;
+  if (cat?.name) {
+    items.push({
+      name: cat.name,
+      path: `/products/list?categoryId=${cat.id}`,
+    });
+  }
+  if (p?.brand) {
+    items.push({
+      name: p.brand,
+      path: `/products/list?brand=${encodeURIComponent(p.brand)}`,
+    });
+  }
+  items.push({ name: fullProductTitle.value || p?.name || 'Товар' });
+  return items;
 });
 
 if (product.value) {
@@ -244,19 +272,28 @@ if (product.value) {
     },
   };
 
+  const cat = productCategory.value;
+  const crumbItems = [
+    { name: 'Главная', item: 'https://parfburo.com' },
+    ...(cat?.name ? [{
+      name: cat.name,
+      item: `https://parfburo.com/products/list?categoryId=${cat.id}`,
+    }] : []),
+    ...(p.brand ? [{
+      name: p.brand,
+      item: `https://parfburo.com/products/list?brand=${encodeURIComponent(p.brand)}`,
+    }] : []),
+    { name: fullName || p.name, item: productUrlStr },
+  ];
   const breadcrumbJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
-    itemListElement: [
-      { '@type': 'ListItem', position: 1, name: 'Главная', item: 'https://parfburo.com' },
-      ...(p.brand ? [{
-        '@type': 'ListItem',
-        position: 2,
-        name: p.brand,
-        item: `https://parfburo.com/products/list?brand=${encodeURIComponent(p.brand)}`,
-      }] : []),
-      { '@type': 'ListItem', position: p.brand ? 3 : 2, name: fullName || p.name, item: productUrlStr },
-    ],
+    itemListElement: crumbItems.map((c, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      name: c.name,
+      item: c.item,
+    })),
   };
 
   useHead({
@@ -349,12 +386,6 @@ export default {
     return {
       preloadedProduct: null,
       getProductProcess: false,
-      breadcrumb: [
-        {
-          name: 'Главная',
-          route: 'index',
-        },
-      ],
       options: [],
       ordersSlugs: useState('ordersSlugs'),
       user: null,
@@ -371,13 +402,6 @@ export default {
   },
   mounted() {
     this.user = localStorage.getItem('user');
-
-    this.breadcrumb = [
-      {
-        name: 'Главная',
-        route: 'index',
-      },
-    ];
 
     const instance = getCurrentInstance();
     if (instance?.exposed?.product?.value) {
@@ -403,21 +427,10 @@ export default {
       this.favoriteLoading = false;
     },
     async getNewProduct() {
-      this.breadcrumb = [
-        {
-          name: 'Главная',
-          route: 'index',
-        },
-      ];
       this.getProductProcess = true;
       try {
         const res = await getProduct(this.$route.params.slug, this.user);
         this.preloadedProduct = res;
-
-        this.breadcrumb.push({
-          name: this.preloadedProduct?.brand,
-          route: 'products',
-        });
         this.getGroupProduct();
         this.getProducts();
       } catch (e) {
