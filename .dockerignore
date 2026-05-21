@@ -1,0 +1,40 @@
+# Nuxt build outputs — пересобираются в контейнере, тащить с хоста не нужно
+.output
+.nuxt
+.nitro
+.cache
+.data
+dist
+
+# Node deps — ставятся в контейнере через npm i
+node_modules
+
+# Git/VCS
+.git
+.gitignore
+.gitattributes
+
+# CI / locals
+.github
+.idea
+.vscode
+.fleet
+.DS_Store
+
+# Logs
+logs
+*.log
+npm-debug.log*
+
+# Env (билд получает значения через ARG)
+.env
+.env.*
+!.env.example
+
+# Docker meta (Dockerfile сам читается билдером отдельно, в контекст не тянем)
+docker-compose.yml
+docker-compose.yaml
+.dockerignore
+
+# Docs / план
+*.md

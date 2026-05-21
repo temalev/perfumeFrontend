@@ -23,9 +23,11 @@ jobs:
             set -e
             cd ~/frontend_prod
             echo "[disk] before:" && df -h / | tail -1
+            docker system df || true
             docker container prune -f || true
-            docker image prune -af --filter "until=24h" || true
-            docker builder prune -af --filter "until=24h" || true
+            docker image prune -af || true
+            docker builder prune -af || true
+            docker volume prune -f || true
             echo "[disk] after prune:" && df -h / | tail -1
             git pull
             docker compose up --force-recreate -d --no-deps --build frontend_prod --remove-orphans
