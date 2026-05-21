@@ -20,9 +20,6 @@ export default defineNuxtConfig({
     port: 3000,
   },
   css: ['~/assets/styles/main.scss', '~/assets/styles/common.scss', '~/assets/styles/element-ui.scss'],
-  elementPlus: {
-    importStyle: 'css',
-  },
   vite: {
     css: {
       preprocessorOptions: {
@@ -35,7 +32,7 @@ export default defineNuxtConfig({
   plugins: [
     '~/plugins/yandex-metrika.client.js', '~/plugins/maska.js', '~/plugins/google-analytics.js',
   ],
-  modules: ['@nuxt/eslint', '@nuxt/fonts', '@nuxt/icon', '@vite-pwa/nuxt', '@element-plus/nuxt'],
+  modules: ['@nuxt/eslint', '@nuxt/fonts', '@nuxt/icon', '@vite-pwa/nuxt'],
   ssr: true,
   runtimeConfig: {
     public: {
