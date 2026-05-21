@@ -116,9 +116,10 @@
 - **Файл**: [nuxt.config.ts:73-80](nuxt.config.ts#L73-L80) — единственная иконка 512×512 в webp; для PWA-аудита нужно минимум 192×192 PNG + maskable иконка.
 - Добавить иконки 192/512 PNG + maskable.
 
-### 4.3. Шрифты
-- Шрифт `anselmSans` грузится через `@nuxt/fonts` — проверить, что используется `font-display: swap` (предотвращает FOIT).
-- Preload основного шрифта в `<head>`.
+### 4.3. Шрифты ✅
+- [x] В [nuxt.config.ts](nuxt.config.ts) добавлены `display: 'swap'` и `preload: true` для семейства `anselmSans` (модуль `@nuxt/fonts`).
+- [x] В `app.head.link` добавлен явный `<link rel="preload" as="font" type="font/woff2" href="/fonts/anselmsans.woff2" crossorigin>` — гарантированный preload до парсинга CSS.
+- [x] В [assets/styles/main.scss](assets/styles/main.scss) добавлено явное `@font-face` с `font-display: swap` как страховка от того, что `@nuxt/fonts` сгенерит без swap. Текст рендерится сразу системным fallback и заменяется на anselmSans без FOIT.
 
 ### 4.4. `lang`-атрибут и hreflang
 - `lang="ru"` есть ([nuxt.config.ts:13-15](nuxt.config.ts#L13-L15)) — ок.
