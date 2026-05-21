@@ -69,11 +69,14 @@
 
 Реализовано через `useHead({ script: [{ type: 'application/ld+json', innerHTML: JSON.stringify(...) }] })`.
 
-### 3.2. Исправить microdata карточки товара
-- **Файл**: [pages/products/[slug].vue:24-71](pages/products/[slug].vue#L24-L71).
-- В `Offer` обязательны: `priceCurrency` (`<meta itemprop="priceCurrency" content="RUB">`), `availability` (`https://schema.org/InStock`).
-- Корневой тип лучше сделать `Product`, а `Offer` — вложенным.
-- `<h1>` сейчас содержит только бренд (кликабельный для перехода к фильтру) ([pages/products/[slug].vue:32-44](pages/products/[slug].vue#L32-L44)) — это **плохой H1**: должен описывать товар целиком. Перевести `<h1>` на полное название (`{brand} {name} {capacity} мл`), бренд оставить как ссылку рядом.
+### 3.2. Исправить microdata карточки товара ✅
+- [x] Корневой `itemtype` сменён с `schema.org/Offer` на `schema.org/Product` ([pages/products/[slug].vue](pages/products/[slug].vue)), `Offer` теперь вложен через `itemprop="offers"`.
+- [x] В Offer добавлены обязательные `priceCurrency=RUB`, `availability=https://schema.org/InStock`, `itemCondition=https://schema.org/NewCondition`, `url` — через `<meta>`/`<link>`.
+- [x] Бренд вынесен из `<h1>` в отдельную ссылку `<a class="brand-link" itemprop="brand" itemscope itemtype="schema.org/Brand">` с настоящим `href` (краулер видит линк, SPA-переход сохранён через `@click.prevent`).
+- [x] `<h1 itemprop="name">` теперь содержит полное название товара через computed `fullProductTitle` (`{brand} {name} {capacityValue} мл`), убран `<h2 itemprop="name">` (дубль).
+- [x] `sku` обёрнут в `<span itemprop="sku">` внутри строки «Артикул: ...» — текст «Артикул:» больше не попадает в значение sku.
+- [x] Вторая `<h1>` «Продукты этого бренда» понижена до `<h2>` — теперь страница имеет одну H1.
+- [x] В setup добавлены computed `productUrl` и `fullProductTitle`, локальные дубли в JSON-LD/meta заменены на `productUrlStr` (фикс прокидывания Ref-объекта в `JSON.stringify`).
 
 ### 3.3. Хлебные крошки
 - **Файл**: [pages/products/[slug].vue:282-285](pages/products/[slug].vue#L282-L285).
