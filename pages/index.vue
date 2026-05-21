@@ -75,6 +75,25 @@
 import { ref } from 'vue';
 import { getProducts, getMedia } from '@/api/productApi.js';
 
+const websiteJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  '@id': 'https://parfburo.com/#website',
+  url: 'https://parfburo.com',
+  name: 'ПарфБюро',
+  description: 'Интернет-магазин оригинальной парфюмерии',
+  publisher: { '@id': 'https://parfburo.com/#organization' },
+  potentialAction: {
+    '@type': 'SearchAction',
+    target: {
+      '@type': 'EntryPoint',
+      urlTemplate: 'https://parfburo.com/products/list?search={search_term_string}',
+    },
+    'query-input': 'required name=search_term_string',
+  },
+  inLanguage: 'ru-RU',
+};
+
 useHead({
   link: [
     {
@@ -98,6 +117,12 @@ useHead({
     {
       name: 'keywords',
       content: `парфюмерия, духи, элитные ароматы, нишевая парфюмерия, оригинальные духи, купить духи, доставка парфюмерии, доставка по всей России, Москва, Рязань, парфюмерия Москва, парфюмерия Рязань, интернет-магазин парфюмерии, эксклюзивные ароматы, мужская парфюмерия, женская парфюмерия, подбор аромата, парфюмерия на заказ, подарок духи, купить оригинальную парфюмерию.`,
+    },
+  ],
+  script: [
+    {
+      type: 'application/ld+json',
+      innerHTML: JSON.stringify(websiteJsonLd),
     },
   ],
 });

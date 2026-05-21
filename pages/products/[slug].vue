@@ -190,6 +190,42 @@ if (product.value) {
     .join(' ');
   const ogImage = p.images?.length ? p.images[0] : 'https://parfburo.com/img/logo.webp';
   const productUrl = `https://parfburo.com/products/${p.slug}`;
+
+  const productJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Product',
+    name: fullName || p.name,
+    description: `Купить ${descParts} в интернет-магазине ПарфБюро.`,
+    image: p.images?.length ? p.images : [ogImage],
+    sku: p.article,
+    url: productUrl,
+    brand: p.brand ? { '@type': 'Brand', name: p.brand } : undefined,
+    offers: {
+      '@type': 'Offer',
+      url: productUrl,
+      priceCurrency: 'RUB',
+      price: p.price,
+      availability: 'https://schema.org/InStock',
+      itemCondition: 'https://schema.org/NewCondition',
+      seller: { '@id': 'https://parfburo.com/#organization' },
+    },
+  };
+
+  const breadcrumbJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Главная', item: 'https://parfburo.com' },
+      ...(p.brand ? [{
+        '@type': 'ListItem',
+        position: 2,
+        name: p.brand,
+        item: `https://parfburo.com/products/list?brand=${encodeURIComponent(p.brand)}`,
+      }] : []),
+      { '@type': 'ListItem', position: p.brand ? 3 : 2, name: fullName || p.name, item: productUrl },
+    ],
+  };
+
   useHead({
     link: [
       {
@@ -241,6 +277,16 @@ if (product.value) {
       {
         name: 'twitter:image',
         content: ogImage,
+      },
+    ],
+    script: [
+      {
+        type: 'application/ld+json',
+        innerHTML: JSON.stringify(productJsonLd),
+      },
+      {
+        type: 'application/ld+json',
+        innerHTML: JSON.stringify(breadcrumbJsonLd),
       },
     ],
   });
