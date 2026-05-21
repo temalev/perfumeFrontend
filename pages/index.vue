@@ -2,7 +2,7 @@
   <div class="body-home-page">
     <VitePwaManifest />
 
-    <div class="d-flex hero" style="position: relative">
+    <div class="hero" style="position: relative">
       <picture>
         <source media="(max-width: 500px)" srcset="/img/bg_max-500.webp" type="image/webp" />
         <img
@@ -162,12 +162,19 @@ const openedVideo = ref(null);
   height: 600px;
   overflow: hidden;
 
+  & > picture {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
   @media (max-width: 600px) {
     height: 360px;
   }
 }
 
 .bg-img {
+  display: block;
   width: 100%;
   height: 100%;
   object-fit: cover;
