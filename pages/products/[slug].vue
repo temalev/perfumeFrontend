@@ -296,70 +296,16 @@ if (product.value) {
     })),
   };
 
-  useHead({
-    link: [
-      {
-        rel: 'canonical',
-        href: productUrlStr,
-      },
-    ],
-    meta: [
-      {
-        name: 'keywords',
-        content: `${fullName || 'товар'} купить, цена, интернет-магазин, каталог, бесплатная доставка, Москва, Рязань, оригинал`,
-      },
-      {
-        name: 'description',
-        content: `Купить ${descParts} в Москве по низкой цене в интернет-магазине ПарфБюро. Подробное описание, применение, состав, фото. Быстрая доставка по всей России.`,
-      },
-      {
-        property: 'og:image',
-        content: ogImage,
-      },
-      {
-        property: 'og:title',
-        content: `Купить ${fullName || 'товар'}`,
-      },
-      {
-        property: 'og:url',
-        content: productUrlStr,
-      },
-      {
-        property: 'og:locale',
-        content: 'ru_RU',
-      },
-      {
-        property: 'og:type',
-        content: 'product',
-      },
-      {
-        property: 'og:description',
-        content: `Насладитесь утонченными нотами ${fullName}, которые подчеркнут вашу индивидуальность. Наши духи раскрывают истинную красоту через каждую каплю. Найдите аромат, который станет вашим!`,
-      },
-      {
-        name: 'twitter:card',
-        content: 'summary_large_image',
-      },
-      {
-        name: 'twitter:title',
-        content: `Купить ${fullName || 'товар'}`,
-      },
-      {
-        name: 'twitter:image',
-        content: ogImage,
-      },
-    ],
-    script: [
-      {
-        type: 'application/ld+json',
-        innerHTML: JSON.stringify(productJsonLd),
-      },
-      {
-        type: 'application/ld+json',
-        innerHTML: JSON.stringify(breadcrumbJsonLd),
-      },
-    ],
+  useSiteSeo({
+    title: `Купить ${fullName || 'товар'} — ПарфБюро`,
+    description: `Купить ${descParts} в Москве по низкой цене в интернет-магазине ПарфБюро. Подробное описание, состав, фото. Быстрая доставка по всей России.`,
+    keywords: `${fullName || 'товар'} купить, цена, интернет-магазин, каталог, бесплатная доставка, Москва, Рязань, оригинал`,
+    image: ogImage,
+    url: productUrlStr,
+    type: 'product',
   });
+
+  injectJsonLd([productJsonLd, breadcrumbJsonLd]);
 }
 
 defineExpose({

@@ -181,78 +181,32 @@ const collectionJsonLd = {
   },
 };
 
-useHead({
-  link: [
-    {
-      rel: 'canonical',
-      href: `https://parfburo.com${fullPath}`,
-    },
-  ],
-  meta: [
-    {
-      name: 'keywords',
-      content: `${
-        params.brand || 'товар'
-      } купить, цена, интернет-магазин, каталог, бесплатная доставка, Москва, Рязань, оригинал`,
-    },
-    {
-      property: 'title',
-      content: `${
-        params.brand || 'товар'
-      } - купить в ПарфБюро по выгодной цене`,
-    },
-    {
-      name: 'description',
-      content: `Купить ${params.brand} мл в Москве по низкой цене в интернет-магазине ПарфБюро. Подробное описание, применение, состав, фото. Быстрая доставка по всей России.`,
-    },
-    {
-      property: 'og:title',
-      content: `Купить продукцию ${
-        params.brand || 'известных брендов'
-      } по выгодной цене`,
-    },
-    {
-      property: 'og:url',
-      content: `https://parfburo.com${fullPath}`,
-    },
-    {
-      property: 'og:locale',
-      content: 'ru_RU',
-    },
-    {
-      property: 'og:logo',
-      content: 'https://parfburo.com/_nuxt/logo.3sM_t13Y.webp',
-    },
-    {
-      property: 'og:type',
-      content: 'website',
-    },
-    {
-      property: 'og:description',
-      content: `Насладитесь утонченными нотами ${params.brand}, которые подчеркнут вашу индивидуальность. Наши духи раскрывают истинную красоту через каждую каплю. Найдите аромат, который станет вашим!`,
-    },
-    {
-      name: 'twitter:card',
-      content: 'summary_large_image',
-    },
-    {
-      name: 'twitter:title',
-      content: `Купить продукцию бренда ${
-        params.brand || 'товар'
-      } по выгодной цене`,
-    },
-  ],
-  script: [
-    {
-      type: 'application/ld+json',
-      innerHTML: JSON.stringify(breadcrumbJsonLd),
-    },
-    {
-      type: 'application/ld+json',
-      innerHTML: JSON.stringify(collectionJsonLd),
-    },
-  ],
+const hasFilterQuery = Boolean(
+  route.query.orderBy
+  || route.query.order
+  || route.query.fromPrice
+  || route.query.toPrice
+  || route.query.isSale,
+);
+
+const pageTitle = params.brand
+  ? `${params.brand} — купить в ПарфБюро по выгодной цене`
+  : 'Каталог парфюмерии — ПарфБюро';
+
+const pageDescription = params.brand
+  ? `Купить парфюмерию ${params.brand} в Москве по выгодной цене в интернет-магазине ПарфБюро. Подробное описание, состав, фото. Быстрая доставка по всей России.`
+  : 'Каталог оригинальной парфюмерии в интернет-магазине ПарфБюро. Сотни брендов, удобный поиск по нотам и категориям. Быстрая доставка по Москве, Рязани и СДЭК по России.';
+
+useSiteSeo({
+  title: pageTitle,
+  description: pageDescription,
+  keywords: `${params.brand || 'парфюмерия'} купить, цена, интернет-магазин, каталог, бесплатная доставка, Москва, Рязань, оригинал`,
+  url: collectionUrl,
+  canonical: collectionUrl,
+  robots: hasFilterQuery ? 'noindex,follow' : undefined,
 });
+
+injectJsonLd([breadcrumbJsonLd, collectionJsonLd]);
 </script>
 
 <script>
