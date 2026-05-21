@@ -21,7 +21,7 @@
       v-if="product"
       class="product-card-content gap-4 mt-4"
       itemscope
-      itemtype="https://schema.org/Offer"
+      itemtype="https://schema.org/Product"
     >
       <img
         :src="image(product?.images[0])"
@@ -29,22 +29,28 @@
         itemprop="image"
       />
       <div class="d-flex-column">
-        <h1
-          @click="
+        <a
+          v-if="product?.brand"
+          :href="`/products/list?brand=${encodeURIComponent(product.brand)}`"
+          class="brand-link pointer"
+          itemprop="brand"
+          itemscope
+          itemtype="https://schema.org/Brand"
+          @click.prevent="
             $router.push({
               name: 'products-list',
               query: { brand: product?.brand },
             })
           "
-          v-if="product?.name"
-          class="pointer"
-          :content="product?.brand"
         >
-          {{ product?.brand }}
+          <span itemprop="name">{{ product?.brand }}</span>
+        </a>
+        <h1 v-if="product?.name" itemprop="name" class="product-title">
+          {{ fullProductTitle }}
         </h1>
-        <h2 v-if="product?.name" itemprop="name">{{ product?.name }}</h2>
-        <span class="text-secondary" itemprop="sku"
-          >Артикул: {{ product?.article }}</span
+        <span class="text-secondary"
+          >Артикул:
+          <span itemprop="sku">{{ product?.article }}</span></span
         >
 
         <div class="options mt-4">
@@ -66,42 +72,56 @@
             </div>
           </div>
         </div>
-        <div class="price mb-4" itemprop="price" :content="product?.price">
-          {{ new Intl.NumberFormat('ru').format(product?.price) }} ₽
-        </div>
-        <div class="d-flex">
-          <el-button
-            @click="addToShopBag(product.slug)"
-            size="large"
-            type="primary"
-            >Добавить в корзину</el-button
-          >
-          <el-button
-            v-if="!isFavorite"
-            style="width: 42px"
-            size="large"
-            :loading="favoriteLoading"
-            @click="addProductToFavorites(product.slug)"
-          >
-            <Icon
-              v-if="!favoriteLoading"
-              name="ph:tag-bold"
-              style="font-size: 20px"
-            />
-          </el-button>
-          <el-button
-            v-else
-            style="width: 42px"
-            size="large"
-            :loading="favoriteLoading"
-            @click="deleteFavoriteProduct(product.id)"
-          >
-            <Icon
-              v-if="!favoriteLoading"
-              name="ph:tag-fill"
-              style="font-size: 20px; color: black"
-            />
-          </el-button>
+        <div
+          itemprop="offers"
+          itemscope
+          itemtype="https://schema.org/Offer"
+          class="offer-block"
+        >
+          <meta itemprop="priceCurrency" content="RUB" />
+          <link itemprop="availability" href="https://schema.org/InStock" />
+          <link
+            itemprop="itemCondition"
+            href="https://schema.org/NewCondition"
+          />
+          <link itemprop="url" :href="productUrl" />
+          <div class="price mb-4" itemprop="price" :content="product?.price">
+            {{ new Intl.NumberFormat('ru').format(product?.price) }} ₽
+          </div>
+          <div class="d-flex">
+            <el-button
+              @click="addToShopBag(product.slug)"
+              size="large"
+              type="primary"
+              >Добавить в корзину</el-button
+            >
+            <el-button
+              v-if="!isFavorite"
+              style="width: 42px"
+              size="large"
+              :loading="favoriteLoading"
+              @click="addProductToFavorites(product.slug)"
+            >
+              <Icon
+                v-if="!favoriteLoading"
+                name="ph:tag-bold"
+                style="font-size: 20px"
+              />
+            </el-button>
+            <el-button
+              v-else
+              style="width: 42px"
+              size="large"
+              :loading="favoriteLoading"
+              @click="deleteFavoriteProduct(product.id)"
+            >
+              <Icon
+                v-if="!favoriteLoading"
+                name="ph:tag-fill"
+                style="font-size: 20px; color: black"
+              />
+            </el-button>
+          </div>
         </div>
         <div class="product-card-info">
           <div class="product-card-info-header">Подробные характеристики</div>
@@ -157,7 +177,7 @@
     />
 
     <div v-if="products.length" class="d-flex-column brands-products">
-      <h1>Продукты этого бренда</h1>
+      <h2>Продукты этого бренда</h2>
       <div class="scroll mt-5 mb-4">
         <product-card
           v-for="product in products"
@@ -182,6 +202,19 @@ const { data: product } = await useAsyncData('product', () =>
   $fetch(`${apiUrl}/products/${slug}`)
 );
 
+const productUrl = computed(() => {
+  const p = product.value;
+  return p?.slug ? `https://parfburo.com/products/${p.slug}` : 'https://parfburo.com';
+});
+
+const fullProductTitle = computed(() => {
+  const p = product.value;
+  if (!p) return '';
+  return [p.brand, p.name, p.capacityValue && `${p.capacityValue} мл`]
+    .filter(Boolean)
+    .join(' ');
+});
+
 if (product.value) {
   const p = product.value;
   const fullName = [p.brand, p.name].filter(Boolean).join(' ');
@@ -189,7 +222,7 @@ if (product.value) {
     .filter(Boolean)
     .join(' ');
   const ogImage = p.images?.length ? p.images[0] : 'https://parfburo.com/img/logo.webp';
-  const productUrl = `https://parfburo.com/products/${p.slug}`;
+  const productUrlStr = productUrl.value;
 
   const productJsonLd = {
     '@context': 'https://schema.org',
@@ -198,11 +231,11 @@ if (product.value) {
     description: `Купить ${descParts} в интернет-магазине ПарфБюро.`,
     image: p.images?.length ? p.images : [ogImage],
     sku: p.article,
-    url: productUrl,
+    url: productUrlStr,
     brand: p.brand ? { '@type': 'Brand', name: p.brand } : undefined,
     offers: {
       '@type': 'Offer',
-      url: productUrl,
+      url: productUrlStr,
       priceCurrency: 'RUB',
       price: p.price,
       availability: 'https://schema.org/InStock',
@@ -222,7 +255,7 @@ if (product.value) {
         name: p.brand,
         item: `https://parfburo.com/products/list?brand=${encodeURIComponent(p.brand)}`,
       }] : []),
-      { '@type': 'ListItem', position: p.brand ? 3 : 2, name: fullName || p.name, item: productUrl },
+      { '@type': 'ListItem', position: p.brand ? 3 : 2, name: fullName || p.name, item: productUrlStr },
     ],
   };
 
@@ -230,7 +263,7 @@ if (product.value) {
     link: [
       {
         rel: 'canonical',
-        href: productUrl,
+        href: productUrlStr,
       },
     ],
     meta: [
@@ -252,7 +285,7 @@ if (product.value) {
       },
       {
         property: 'og:url',
-        content: productUrl,
+        content: productUrlStr,
       },
       {
         property: 'og:locale',
@@ -498,6 +531,25 @@ export default {
 
 .price {
   font-size: 32px;
+}
+
+.brand-link {
+  display: inline-block;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #2a4d84;
+  text-decoration: none;
+  cursor: pointer;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.product-title {
+  font-size: 24px;
+  margin: 4px 0 0;
 }
 
 .product-card-info-header {
