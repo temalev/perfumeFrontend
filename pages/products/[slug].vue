@@ -29,22 +29,16 @@
         itemprop="image"
       />
       <div class="d-flex-column">
-        <a
+        <NuxtLink
           v-if="product?.brand"
-          :href="`/products/list?brand=${encodeURIComponent(product.brand)}`"
+          :to="`/brand/${slugify(product.brand)}`"
           class="brand-link pointer"
           itemprop="brand"
           itemscope
           itemtype="https://schema.org/Brand"
-          @click.prevent="
-            $router.push({
-              name: 'products-list',
-              query: { brand: product?.brand },
-            })
-          "
         >
           <span itemprop="name">{{ product?.brand }}</span>
-        </a>
+        </NuxtLink>
         <h1 v-if="product?.name" itemprop="name" class="product-title">
           {{ fullProductTitle }}
         </h1>
@@ -223,6 +217,8 @@ const productCategory = computed(() => {
   return list.find(c => c.id === p.categoryIds[0]) || null;
 });
 
+import { slugify } from '~/utils/slugify.js';
+
 const breadcrumbs = computed(() => {
   const p = product.value;
   const items = [{ name: 'Главная', path: '/' }];
@@ -230,13 +226,13 @@ const breadcrumbs = computed(() => {
   if (cat?.name) {
     items.push({
       name: cat.name,
-      path: `/products/list?categoryId=${cat.id}`,
+      path: `/category/${slugify(cat.name)}`,
     });
   }
   if (p?.brand) {
     items.push({
       name: p.brand,
-      path: `/products/list?brand=${encodeURIComponent(p.brand)}`,
+      path: `/brand/${slugify(p.brand)}`,
     });
   }
   items.push({ name: fullProductTitle.value || p?.name || 'Товар' });
@@ -277,11 +273,11 @@ if (product.value) {
     { name: 'Главная', item: 'https://parfburo.com' },
     ...(cat?.name ? [{
       name: cat.name,
-      item: `https://parfburo.com/products/list?categoryId=${cat.id}`,
+      item: `https://parfburo.com/category/${slugify(cat.name)}`,
     }] : []),
     ...(p.brand ? [{
       name: p.brand,
-      item: `https://parfburo.com/products/list?brand=${encodeURIComponent(p.brand)}`,
+      item: `https://parfburo.com/brand/${slugify(p.brand)}`,
     }] : []),
     { name: fullName || p.name, item: productUrlStr },
   ];

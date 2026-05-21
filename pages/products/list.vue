@@ -181,20 +181,12 @@ const collectionJsonLd = {
   },
 };
 
-const hasFilterQuery = Boolean(
-  route.query.orderBy
-  || route.query.order
-  || route.query.fromPrice
-  || route.query.toPrice
-  || route.query.isSale,
-);
-
 const pageTitle = params.brand
-  ? `${params.brand} — купить в ПарфБюро по выгодной цене`
+  ? `${params.brand} — каталог в ПарфБюро`
   : 'Каталог парфюмерии — ПарфБюро';
 
 const pageDescription = params.brand
-  ? `Купить парфюмерию ${params.brand} в Москве по выгодной цене в интернет-магазине ПарфБюро. Подробное описание, состав, фото. Быстрая доставка по всей России.`
+  ? `Парфюмерия ${params.brand} в интернет-магазине ПарфБюро. Быстрая доставка по Москве, Рязани и СДЭК по всей России.`
   : 'Каталог оригинальной парфюмерии в интернет-магазине ПарфБюро. Сотни брендов, удобный поиск по нотам и категориям. Быстрая доставка по Москве, Рязани и СДЭК по России.';
 
 useSiteSeo({
@@ -203,7 +195,7 @@ useSiteSeo({
   keywords: `${params.brand || 'парфюмерия'} купить, цена, интернет-магазин, каталог, бесплатная доставка, Москва, Рязань, оригинал`,
   url: collectionUrl,
   canonical: collectionUrl,
-  robots: hasFilterQuery ? 'noindex,follow' : undefined,
+  robots: 'noindex,follow',
 });
 
 injectJsonLd([breadcrumbJsonLd, collectionJsonLd]);

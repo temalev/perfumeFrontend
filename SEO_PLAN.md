@@ -90,13 +90,16 @@
 - [x] Попутно вычищены остатки опечаток: невалидный `property: 'title'`, `name: 'title'`, `og:logo` с хеш-URL `_nuxt/logo.3sM_t13Y.webp`, дубликаты `og:url`.
 - [x] Auto-import composable подтверждён билдом — `useSiteSeo-*.mjs` появляется в чанках Nitro.
 
-### 3.5. Чистые URL для каталога
-- Сейчас: `/products/list?brand=Dior` — слабо ранжируется по бренду.
-- **Что сделать**: добавить маршруты:
-  - `/brand/[slug]` — лендинг бренда (H1, описание бренда, товары, JSON-LD `Brand`)
-  - `/category/[slug]` — категория
-  - `/category/[cat]/brand/[brand]` — пересечение
-- `/products/list` оставить как fallback с `noindex`.
+### 3.5. Чистые URL для каталога ✅ (частично)
+- [x] Добавлена транслитерация: [utils/slugify.js](utils/slugify.js) (RU→latin + дефисы, чистит кавычки и не-alnum).
+- [x] Новый маршрут [pages/brand/[slug].vue](pages/brand/[slug].vue) — SSR-лендинг бренда: `<h1>Парфюмерия {brand} — купить в ПарфБюро</h1>`, описание, сетка товаров с прямым SSR-фетчем `/products?brand={name}`, JSON-LD `BreadcrumbList` + `CollectionPage(about: Brand)`. Slug резолвится из списка брендов; не найден → `createError(404)`.
+- [x] Новый маршрут [pages/category/[slug].vue](pages/category/[slug].vue) — аналогично для категории, через `categoryId`.
+- [x] [pages/products/list.vue](pages/products/list.vue) теперь всегда `robots: noindex,follow` — это UX-страница с фильтрами, не для индекса. Дубли по query-параметрам больше не попадут в индекс.
+- [x] Хлебные крошки и `BreadcrumbList` JSON-LD в карточке товара ([pages/products/[slug].vue](pages/products/[slug].vue)) переключены на `/brand/<slug>` и `/category/<slug>`.
+- [x] Бренд-линк в карточке товара переехал на `<NuxtLink :to="/brand/...">` — больше не нужен `@click.prevent + router.push`.
+- [x] [components/ui/BrandsModal.vue](components/ui/BrandsModal.vue) — пункты модалки брендов теперь `<NuxtLink :to="/brand/<slug>">` вместо `$router.push` с query.
+- [ ] Пересечение `/category/[cat]/brand/[brand]` — пока не сделано (можно позже, после оценки трафика на одиночные лендинги).
+- [ ] Cascader категорий ([components/ui/Cascader/Cascader.vue](components/ui/Cascader/Cascader.vue)) пока ведёт на `/products/list?categoryId=` — это допустимо, страница `noindex`. Перевести на `/category/<slug>` потребует пробросить имя категории из `CascaderItem` (косметика, не блокер).
 
 ---
 
