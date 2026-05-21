@@ -1,16 +1,34 @@
 <template>
-  <nav class="breadcrumb">
-    <ul class="breadcrumb-list">
+  <nav class="breadcrumb" aria-label="Хлебные крошки">
+    <ol class="breadcrumb-list">
       <li
         v-for="(item, i) in data"
-        :key="item.name"
+        :key="`${i}-${item.name}`"
         class="breadcrumb-item"
-        @click="$router.push({ name: item.route })"
       >
-        <span class="breadcrumb-item-text">{{ item.name }}</span>
-        <span>{{ separate(i) }}</span>
+        <NuxtLink
+          v-if="item.path && i < data.length - 1"
+          :to="item.path"
+          class="breadcrumb-item-link"
+        >
+          {{ item.name }}
+        </NuxtLink>
+        <span
+          v-else
+          class="breadcrumb-item-current"
+          aria-current="page"
+        >
+          {{ item.name }}
+        </span>
+        <span
+          v-if="i < data.length - 1"
+          class="breadcrumb-sep"
+          aria-hidden="true"
+        >
+          /
+        </span>
       </li>
-    </ul>
+    </ol>
   </nav>
 </template>
 
@@ -22,34 +40,46 @@ export default {
       default: () => [],
     },
   },
-  methods: {
-    separate(index) {
-      return this.data.length - 1 == index ? '' : ' / ';
-    },
-  },
 };
 </script>
 
-<style scope lang="scss">
+<style scoped lang="scss">
 .breadcrumb-list {
   display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
 }
 
 .breadcrumb-item {
-  &-text {
-    cursor: pointer;
-    &:hover {
-      color: $color-light;
-    }
-  }
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
 
-  &:last-child {
-    margin-left: 4px;
+.breadcrumb-item-link {
+  color: inherit;
+  text-decoration: none;
+  cursor: pointer;
+
+  &:hover {
+    color: $color-light;
+    text-decoration: underline;
   }
 }
 
+.breadcrumb-item-current {
+  color: #888;
+}
+
+.breadcrumb-sep {
+  color: #c8c8c8;
+}
+
 @media (max-width: 800px) {
-  li {
+  .breadcrumb-list {
     font-size: 14px;
   }
 }
