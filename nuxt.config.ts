@@ -10,6 +10,15 @@ export default defineNuxtConfig({
         { property: 'og:site_name', content: 'ПарфБюро' },
         { property: 'og:image', content: '/img/parf.png' },
       ],
+      link: [
+        {
+          rel: 'preload',
+          as: 'font',
+          type: 'font/woff2',
+          href: '/fonts/anselmsans.woff2',
+          crossorigin: 'anonymous',
+        },
+      ],
       htmlAttrs: {
         lang: 'ru',
       },
@@ -45,7 +54,12 @@ export default defineNuxtConfig({
       custom: '~/providers/custom',
     },
     families: [
-      { name: 'anselmSans', src: '/fonts/anselmsans.woff2' },
+      {
+        name: 'anselmSans',
+        src: '/fonts/anselmsans.woff2',
+        display: 'swap',
+        preload: true,
+      },
     ],
     defaults: {
       fallbacks: {

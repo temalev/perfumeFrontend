@@ -1,4 +1,13 @@
 @import 'variables';
+
+@font-face {
+    font-family: 'anselmSans';
+    src: url('/fonts/anselmsans.woff2') format('woff2');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
 * {
     margin: 0;
     padding: 0;
