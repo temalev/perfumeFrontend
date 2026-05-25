@@ -2,12 +2,12 @@
   <div class="body-home-page">
     <VitePwaManifest />
 
-    <div class="hero" style="position: relative">
+    <section class="hero">
       <picture>
         <source media="(max-width: 500px)" srcset="/img/bg_max-500.webp" type="image/webp" />
         <img
           src="/img/bg.webp"
-          alt="parfBuro background"
+          alt="Оригинальная парфюмерия мировых брендов в ПарфБюро"
           class="bg-img"
           width="2133"
           height="1200"
@@ -15,13 +15,21 @@
           decoding="async"
         />
       </picture>
-      <div class="text-container">
-        <div class="text">
-          <!-- <h1>TORRICELUMN –50%</h1>
-          <p>тут может быть любой текст, также как и картинка / видео</p> -->
-        </div>
+      <div class="hero-overlay" aria-hidden="true" />
+      <div class="hero-content">
+        <p class="hero-eyebrow">ПарфБюро</p>
+        <h1 class="hero-title">
+          Оригинальная парфюмерия<br />мировых брендов
+        </h1>
+        <p class="hero-subtitle">
+          Эксклюзивные ароматы с курьерской доставкой по Москве и Рязани.
+          СДЭК по всей России — бесплатно от 7&nbsp;000&nbsp;₽.
+        </p>
+        <NuxtLink to="/products/list" class="hero-cta">
+          Смотреть каталог
+        </NuxtLink>
       </div>
-    </div>
+    </section>
     <div ref="info" class="info">
       <media-card v-for="item in media" :key="item.id" :data="item" />
     </div>
@@ -35,7 +43,7 @@
       />
     </div>
     <div class="offers mt-4">
-      <h3>Специальные предложения</h3>
+      <h2>Специальные предложения</h2>
       <div class="slider">
         <product-card
           v-for="product in productsHit"
@@ -45,7 +53,7 @@
       </div>
     </div>
     <div class="offers">
-      <h3>Хиты</h3>
+      <h2>Хиты</h2>
       <div class="slider">
         <product-card
           v-for="product in productsSale"
@@ -136,6 +144,7 @@ const openedVideo = ref(null);
 }
 
 .hero {
+  position: relative;
   width: 100%;
   height: 600px;
   overflow: hidden;
@@ -147,7 +156,7 @@ const openedVideo = ref(null);
   }
 
   @media (max-width: 600px) {
-    height: 360px;
+    height: 460px;
   }
 }
 
@@ -157,19 +166,112 @@ const openedVideo = ref(null);
   height: 100%;
   object-fit: cover;
 }
-.text-container {
+
+.hero-overlay {
   position: absolute;
-  top: 0;
-  left: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  height: 100%;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    rgba(0, 0, 0, 0.6) 0%,
+    rgba(0, 0, 0, 0.35) 40%,
+    rgba(0, 0, 0, 0.05) 80%,
+    transparent 100%
+  );
+  pointer-events: none;
+
+  @media (max-width: 600px) {
+    background: linear-gradient(
+      180deg,
+      rgba(0, 0, 0, 0.15) 0%,
+      rgba(0, 0, 0, 0.55) 100%
+    );
+  }
 }
 
-.text {
-  color: white;
+.hero-content {
+  position: absolute;
+  top: 50%;
+  left: 8%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+  max-width: 580px;
+  color: #fff;
+  z-index: 1;
+
+  @media (max-width: 600px) {
+    left: 0;
+    right: 0;
+    padding: 0 24px;
+    max-width: none;
+    align-items: flex-start;
+  }
+}
+
+.hero-eyebrow {
+  margin: 0;
+  font-size: 14px;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  opacity: 0.85;
+}
+
+.hero-title {
+  margin: 0;
+  font-size: 56px;
+  line-height: 1.05;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  text-shadow: 0 2px 16px rgba(0, 0, 0, 0.35);
+
+  @media (max-width: 900px) {
+    font-size: 40px;
+  }
+
+  @media (max-width: 600px) {
+    font-size: 32px;
+
+    & br {
+      display: none;
+    }
+  }
+}
+
+.hero-subtitle {
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.5;
+  max-width: 480px;
+  opacity: 0.92;
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.35);
+
+  @media (max-width: 600px) {
+    font-size: 14px;
+  }
+}
+
+.hero-cta {
+  margin-top: 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 14px 32px;
+  border-radius: 999px;
+  background: #fff;
+  color: #111;
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  text-decoration: none;
+  transition: transform 0.2s ease, background 0.2s ease, color 0.2s ease;
+
+  &:hover {
+    background: #2a4d84;
+    color: #fff;
+    transform: translateY(-1px);
+  }
 }
 
 .slider {
@@ -231,8 +333,10 @@ const openedVideo = ref(null);
   flex-direction: column;
   gap: 12px;
   position: relative;
-  & h3 {
+  & h2 {
     margin: 0 28px;
+    font-size: 22px;
+    font-weight: 500;
   }
 }
 </style>
