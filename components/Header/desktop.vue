@@ -1,57 +1,25 @@
 <template>
-  <header>
-    <img
-      src="~/public/img/logo.webp"
-      alt=""
-      width="140"
-      height="50px"
-      class="pointer"
-      @click="
-        $router.push('/');
-        $emit('closeModal');
-      "
-    />
+  <div class="hd-wrap">
+    <header class="nav">
+      <a
+        class="nav-logo pointer"
+        @click="
+          $router.push('/');
+          $emit('closeModal');
+        "
+      >
+        <img src="~/public/img/logo.webp" alt="ПарфБюро" />
+      </a>
 
-    <nav>
-      <ul class="d-flex gap-4">
-        <li>
-          <button class="text" @click="$emit('openCatalog')">КАТАЛОГ</button>
-        </li>
-        <li>
-          <button class="text" @click="$emit('openBrands')">БРЕНДЫ</button>
-        </li>
-        <li>
-          <button
-            class="text"
-            @click="
-              $router.push({ name: 'products-list', query: { isSale: true } })
-            "
-          >
-            СКИДКИ
-          </button>
-        </li>
-      </ul>
-    </nav>
-    <ul class="icons d-flex gap-6">
-      <li class="pointer search">
-        <!-- <el-input
-          ref="input"
-          class="search-input"
-          v-if="isSearch"
-          v-model="search"
-          @blur="isSearch = false"
-          autofocus
-        /> -->
+      <label class="nav-search">
+        <Icon name="ph:magnifying-glass-bold" class="nav-search-ico" />
         <el-autocomplete
           ref="input"
-          class="search-input"
-          v-if="isSearch"
           v-model="search"
-          autofocus
-          @blur="isSearch = false"
+          class="nav-search-input"
           :fetch-suggestions="querySearch"
           popper-class="my-autocomplete"
-          placeholder="Поиск..."
+          placeholder="Поиск среди 20 000+ ароматов и брендов"
           @select="handleSelect"
         >
           <template #default="{ item }">
@@ -59,7 +27,7 @@
               <img
                 width="40"
                 height="40"
-                :src="imgUrl(item?.images[0])"
+                :src="imgUrl(item?.images?.[0])"
                 :alt="item?.name"
               />
               <div class="ml-2">{{ item.name }}</div>
@@ -67,42 +35,37 @@
             </div>
           </template>
         </el-autocomplete>
-        <Icon
-          @click.prevent="onInput"
-          name="ph:magnifying-glass-bold"
-          style="font-size: 20px"
-          class="ml-2"
-        />
-      </li>
-      <li class="pointer">
-        <Icon
-          name="ri:account-circle-line"
-          style="font-size: 20px"
+      </label>
+
+      <div class="nav-right">
+        <a class="nav-tg" href="https://t.me/parfburoo">Telegram</a>
+        <button
+          class="nav-icon"
+          aria-label="Избранное"
           @click="user ? $router.push({ name: 'userCard' }) : $emit('login')"
-        />
-      </li>
-      <li
-        class="pointer"
-        @click="user ? $router.push({ name: 'userCard' }) : $emit('login')"
-      >
-        <Icon name="ph:tag-bold" style="font-size: 20px" />
-      </li>
-      <el-badge
-        :value="ordersSlugs?.length"
-        class="item"
-        :hidden="!ordersSlugs?.length"
-      >
-        <li class="pointer" @click="$emit('openShopBag')">
-          <!-- <div v-if="ordersSlugs?.length" class="counter">
-          <Transition>
-            <span>{{ ordersSlugs?.length }}</span>
-          </Transition>
-        </div> -->
-          <Icon name="ph:shopping-cart-simple-bold" style="font-size: 20px" />
-        </li>
-      </el-badge>
-    </ul>
-  </header>
+        >
+          <Icon name="ph:heart" style="font-size: 20px" />
+        </button>
+        <el-badge
+          :value="ordersSlugs?.length"
+          :hidden="!ordersSlugs?.length"
+        >
+          <button class="nav-cart" @click="$emit('openShopBag')">
+            Корзина
+          </button>
+        </el-badge>
+      </div>
+    </header>
+
+    <nav class="subnav">
+      <a class="nav-cat active" @click="$emit('openCatalog')">Парфюмерия</a>
+      <a class="nav-cat" @click="$emit('openBrands')">Бренды</a>
+      <NuxtLink class="nav-cat" to="/decantInfo">Отливанты</NuxtLink>
+      <NuxtLink class="nav-cat" to="/#find">Не нашли аромат?</NuxtLink>
+      <a class="nav-cat" @click="$emit('openInfo', 'about')">О нас</a>
+      <NuxtLink class="nav-cat" to="/#corp">Опт</NuxtLink>
+    </nav>
+  </div>
 </template>
 
 <script>
@@ -124,7 +87,6 @@ export default {
   data() {
     return {
       search: '',
-      isSearch: false,
     };
   },
   watch: {
@@ -133,12 +95,6 @@ export default {
     },
   },
   methods: {
-    onInput() {
-      this.isSearch = true;
-      setTimeout(() => {
-        this.$refs.input.focus();
-      }, 100);
-    },
     imgUrl(url) {
       return url ? url : '/img/no_image.png';
     },
@@ -147,83 +103,164 @@ export default {
         name: 'products-slug',
         params: { slug: val.slug },
       });
-      this.isSearch = false;
     },
   },
 };
 </script>
 
 <style scoped lang="scss">
-header {
+.hd-wrap {
   width: 100%;
   display: flex;
-  align-items: center;
-  /* From https://css.glass */
-  background: #fff;
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-  backdrop-filter: blur(5px);
-  -webkit-backdrop-filter: blur(5px);
-  height: 50px;
-  justify-content: space-around;
+  flex-direction: column;
+  background: rgba(255, 255, 255, 0.96);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  border-bottom: 0.5px solid var(--border);
   z-index: 2;
+}
 
-  & img {
-    object-fit: cover;
-    object-position: center;
-    image-rendering: crisp-edges;
+.nav {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 14px 26px;
+}
+
+.nav-logo img {
+  height: 26px;
+  width: auto;
+  display: block;
+  object-fit: contain;
+}
+
+.nav-search {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  background: var(--surface2);
+  border: 0.5px solid var(--border);
+  border-radius: 8px;
+  padding: 0 13px;
+  height: 38px;
+  max-width: 440px;
+
+  &:focus-within {
+    border-color: var(--blue);
   }
-  nav {
-    & a {
-      font-size: 14px;
-    }
+
+  /* Anchored on .nav-search (the <label>, which carries the scope id);
+     el-autocomplete's root is a fragment and gets no scope attribute,
+     so :deep must start from this element. */
+  :deep(.nav-search-input) {
+    width: 100%;
+  }
+
+  :deep(.el-input),
+  :deep(.el-input__wrapper) {
+    height: 36px;
+    min-height: 0;
+    line-height: 36px;
+  }
+
+  :deep(.el-input__wrapper) {
+    box-shadow: none !important;
+    border: none !important;
+    background: transparent !important;
+    padding: 0 !important;
+  }
+
+  :deep(.el-input__inner) {
+    font-size: 13px !important;
+    height: 36px;
+    color: var(--ink);
+    font-family: var(--sans);
+  }
+
+  :deep(.el-input__inner::placeholder) {
+    color: var(--ink-muted);
+    font-size: 13px;
   }
 }
 
-.search {
-  position: relative;
-  ::v-deep {
-    .search-input {
-      position: absolute;
-      top: -5px;
-      left: -240px;
-      width: 230px;
-      font-size: 16px !important;
-    }
+.nav-search-ico {
+  font-size: 17px;
+  color: var(--ink-muted);
+  flex-shrink: 0;
+}
+
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-left: auto;
+}
+
+.nav-tg {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--blue);
+  white-space: nowrap;
+}
+
+.nav-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--ink-soft);
+  cursor: pointer;
+
+  &:hover {
+    color: var(--ink);
   }
 }
 
-.icons {
-  & li {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-
-    .counter {
-      position: absolute;
-      top: -10px;
-      right: -10px;
-      width: 20px;
-      height: 20px;
-      background-color: red;
-      color: #fff;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 11px;
-      font-weight: 600;
-      z-index: 9;
-      flex-shrink: 0;
-
-      span {
-        height: 13px;
-      }
-    }
-  }
+.nav-cart {
+  background: var(--ink);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 500;
+  padding: 8px 16px;
+  border-radius: 7px;
+  cursor: pointer;
+  white-space: nowrap;
+  font-family: var(--sans);
 }
 
-.my-autocomplete {
-  background-color: red;
+.subnav {
+  display: flex;
+  gap: 0;
+  padding: 0 26px;
+  border-top: 0.5px solid var(--border);
+  overflow-x: auto;
+}
+
+.nav-cat {
+  font-size: 12px;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  padding: 0 17px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  color: var(--ink-soft);
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  white-space: nowrap;
+
+  &:first-child {
+    padding-left: 0;
+  }
+
+  &:hover {
+    color: var(--ink);
+  }
+
+  &.active {
+    color: var(--ink);
+    font-weight: 600;
+    border-bottom-color: var(--ink);
+  }
 }
 </style>

@@ -8,13 +8,38 @@
     font-display: swap;
 }
 
+/* ===== Design tokens (ПарфБюро v8) ===== */
+:root {
+    --ink: #1A1A1E;
+    --ink-soft: #4A4A52;
+    --ink-muted: #8A8A93;
+    --blue: #1E54A0;
+    --blue-deep: #163C72;
+    --blue-tint: #EAF1FA;
+    --surface: #FFFFFF;
+    --surface2: #F7F6F3;
+    --surface3: #ECEBE6;
+    --border: rgba(20, 20, 25, 0.12);
+    --border-strong: rgba(20, 20, 25, 0.22);
+    --r: 10px;
+    --sans: system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    --serif: 'Playfair', Georgia, 'Times New Roman', serif;
+}
+
+/* Serif headings */
+h1, h2, h3,
+.font-serif {
+    font-family: var(--serif);
+    letter-spacing: -0.01em;
+}
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
     text-decoration: none;
     list-style: none;
-    font-family: 'anselmSans', sans-serif;
+    font-family: var(--sans);
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -28,6 +53,9 @@
 
 body {
     overflow: hidden;
+    background: var(--surface);
+    color: var(--ink);
+    line-height: 1.5;
 }
 
 .ico-btn {
