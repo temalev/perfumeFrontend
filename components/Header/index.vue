@@ -1,5 +1,9 @@
 <template>
   <div>
+    <div class="announce">
+      <b>−5%</b> на первый заказ <span>·</span>
+      <b>−5%</b> на флакон, если раньше брали его отливант
+    </div>
     <desktop
       class="desktop"
       :user="user"
@@ -19,6 +23,7 @@
         isCatalog = false;
       "
       @login="$emit('login')"
+      @openInfo="val => $emit('openInfo', val)"
       @onSearch="val => getProducts(val)"
     />
     <mobile
@@ -170,6 +175,32 @@ export default {
 </script>
 
 <style scoped lang="scss">
+.announce {
+  background: var(--surface2);
+  color: var(--ink-soft);
+  text-align: center;
+  font-size: 12px;
+  letter-spacing: 0.02em;
+  padding: 9px 16px;
+  border-bottom: 0.5px solid var(--border);
+
+  b {
+    color: var(--blue);
+    font-weight: 700;
+  }
+
+  span {
+    color: var(--ink-muted);
+    margin: 0 9px;
+  }
+}
+
+@media (max-width: 600px) {
+  .announce span {
+    display: none;
+  }
+}
+
 @media (min-width: 800px) {
   .desktop {
     display: flex;

@@ -165,6 +165,8 @@
 }
 
 a {
+  color: inherit;
+
   &.text-gray {
     transition: .2s;
     &:hover {

@@ -8,10 +8,16 @@
         type="image/x-icon"
       />
     </Head>
-    <Header @login="isLoginModal = true" @openShopBag="isDrawer = true" />
-    <div class="main">
-      <slot />
-      <Footer @onInfoModal="val => (infoModal = val)" />
+    <div class="page-card">
+      <Header
+        @login="isLoginModal = true"
+        @openShopBag="isDrawer = true"
+        @openInfo="val => (infoModal = val)"
+      />
+      <div class="main">
+        <slot />
+        <Footer @onInfoModal="val => (infoModal = val)" />
+      </div>
     </div>
     <mobile-panel @login="isLoginModal = true" @openShopBag="isDrawer = true" />
     <UiModal
@@ -376,13 +382,40 @@ export default {
 .layout {
   display: flex;
   flex-direction: column;
-  overflow: auto;
+  align-items: center;
+  overflow: hidden;
   height: 100vh;
+  background: #e9e8e4;
+  padding: 24px 16px;
+}
+
+.page-card {
+  width: 100%;
+  max-width: 1180px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: var(--surface);
+  border-radius: 14px;
+  overflow: hidden;
+  border: 0.5px solid var(--border);
 }
 
 .main {
+  flex: 1;
+  min-height: 0;
   overflow: auto;
-  height: calc(100vh - 50px);
+}
+
+@media (max-width: 600px) {
+  .layout {
+    padding: 0;
+  }
+
+  .page-card {
+    border-radius: 0;
+    border: none;
+  }
 }
 
 .modal-body {

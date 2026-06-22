@@ -1,72 +1,39 @@
 <template>
-  <article class="card d-flex-column" @click="handleCardClick">
-    <div class="img-container d-flex j-c">
+  <article class="card" @click="handleCardClick">
+    <div class="pcard-img">
       <img :src="image(data?.previewImage)" :alt="data.name" />
-      <!-- <button
-        v-if="isFavorites"
-        class="ico-btn d-flex align-center j-c favorite-ico"
-        @click.stop="addToFavorites(data.slug)"
-      >
-        <Icon name="ph:tag-bold" style="font-size: 20px" />
-      </button> -->
-      <el-button
-        v-if="!data?.isFavorite"
-        style="width: 42px"
-        class="ico-btn"
-        :loading="favoriteLoading"
+      <button
+        class="pcard-wish"
+        :class="{ active: data?.isFavorite }"
+        :disabled="favoriteLoading"
+        aria-label="В избранное"
         @click.stop="
           preventCardClick = true;
-          onAddToFavorites(data.slug);
+          data?.isFavorite ? deleteFavorite(data.id) : onAddToFavorites(data.slug);
         "
       >
         <Icon
-          v-if="!favoriteLoading"
-          name="ph:tag-bold"
-          style="font-size: 20px"
+          :name="data?.isFavorite ? 'ph:heart-fill' : 'ph:heart'"
+          style="font-size: 15px"
         />
-      </el-button>
-      <el-button
-        v-else
-        style="width: 42px"
-        class="ico-btn"
-        :loading="favoriteLoading"
-        @click.stop="deleteFavorite(data.id)"
-      >
-        <Icon
-          v-if="!favoriteLoading"
-          name="ph:tag-fill"
-          style="font-size: 20px; color: black"
-        />
-      </el-button>
+      </button>
     </div>
 
-    <div class="info d-flex-column align-flex-start gap-3">
-      <span class="category">{{ data.type }}</span>
-      <span class="name">{{ `${data?.brand} ${data?.name}` }}</span>
-
-      <div class="pay d-flex-row j-sb w100">
-        <div class="info-price d-flex align-flex-end">
-          <span class="new-price"
-            >{{ new Intl.NumberFormat('ru').format(data.price) }}&nbsp;₽</span
-          >
-          <span v-if="data.discount" class="old-price">
-            {{
-              new Intl.NumberFormat('ru').format(
-                data.price * (1 + data.discount / 100)
-              )
-            }}&nbsp;₽
+    <div class="pcard-body">
+      <div class="pcard-type">{{ data.type }}</div>
+      <div class="pcard-name">{{ `${data?.brand} ${data?.name}` }}</div>
+      <div class="pcard-orig">оригинал · чек</div>
+      <div class="pcard-foot">
+        <div class="pcard-price-wrap">
+          <span class="pcard-price">{{ formatPrice(data.price) }}&nbsp;₽</span>
+          <span v-if="data.discount" class="pcard-old">
+            {{ formatPrice(data.price * (1 + data.discount / 100)) }}&nbsp;₽
           </span>
         </div>
-
-        <button
-          class="ico-btn d-flex align-center j-c shop-bag-ico"
-          @click.stop="addToShopBag(data.slug)"
-        >
-          <span class="plus-ico" style="font-size: 20px">+</span>
-          <Icon name="ph:shopping-cart-simple-bold" style="font-size: 20px" />
-        </button>
+        <button class="btn-add" aria-label="В корзину" @click.stop="addToShopBag(data.slug)">+</button>
       </div>
     </div>
+
     <log-in
       v-if="isLoginModal"
       @close="handleLoginClose"
@@ -121,6 +88,9 @@ export default {
     image(url) {
       return url ? url : '/img/no_image.png';
     },
+    formatPrice(value) {
+      return new Intl.NumberFormat('ru').format(Math.round(value));
+    },
     onAddToFavorites(slug) {
       if (this.user) {
         this.addToFavorites(slug);
@@ -167,16 +137,20 @@ export default {
 
 <style scoped lang="scss">
 .card {
-  scroll-snap-align: center;
-  width: 300px;
-  box-shadow: rgba(50, 50, 93, 0.123) 0px 13px 27px -5px,
-    rgba(0, 0, 0, 0.093) 0px 8px 16px -8px;
+  scroll-snap-align: start;
+  width: 280px;
+  border-radius: var(--r);
+  overflow: hidden;
+  border: 0.5px solid var(--border);
+  background: var(--surface);
   cursor: pointer;
-  transition: 0.2s;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  display: flex;
+  flex-direction: column;
 
   &:hover {
-    box-shadow: rgba(50, 50, 93, 0.044) 0px 13px 27px -5px,
-      rgba(0, 0, 0, 0.034) 0px 8px 16px -8px;
+    border-color: var(--border-strong);
+    box-shadow: 0 6px 20px rgba(20, 20, 25, 0.07);
   }
 
   @media (max-width: 500px) {
@@ -184,95 +158,134 @@ export default {
   }
 }
 
-img {
-  width: 300px;
-  height: 250px;
-  top: 200px;
-  left: 76px;
-  object-fit: contain;
-  background: #fff;
-}
-
-.img-container {
+.pcard-img {
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   position: relative;
+  overflow: hidden;
   background: #fff;
-  & .ico-btn {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-  }
 
-  & ::v-deep {
-    .el-button {
-      height: 20px !important;
-      width: 20px !important;
-      padding: 0 !important;
-    }
+  & img {
+    width: 74%;
+    height: 74%;
+    object-fit: contain;
   }
 }
 
-.product-price {
-  margin-bottom: 1rem;
+.pcard-wish {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: rgba(255, 255, 255, 0.94);
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 0.5px solid var(--border);
+  color: var(--ink-muted);
+  cursor: pointer;
+  transition: color 0.15s, transform 0.15s;
+
+  &:hover {
+    transform: scale(1.08);
+    color: var(--ink);
+  }
+
+  &.active {
+    color: var(--blue);
+  }
 }
-.old-price {
+
+.pcard-body {
+  padding: 13px 14px;
+}
+
+.pcard-type {
+  font-size: 10px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+  margin-bottom: 4px;
+}
+
+.pcard-name {
+  font-family: var(--serif);
+  font-size: 13.5px;
+  font-weight: 600;
+  margin-bottom: 6px;
+  line-height: 1.35;
+  min-height: 36px;
+  color: var(--ink);
+
+  @media (max-width: 500px) {
+    min-height: 0;
+  }
+}
+
+.pcard-orig {
+  font-size: 10px;
+  color: var(--ink-muted);
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+
+  &::before {
+    content: '';
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: #2a8a5a;
+    display: inline-block;
+  }
+}
+
+.pcard-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.pcard-price-wrap {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.pcard-price {
+  font-family: var(--serif);
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.pcard-old {
+  font-size: 12px;
+  color: var(--ink-muted);
   text-decoration: line-through;
-  color: #999;
-  font-family: Anselm Sans;
-  font-size: 16px;
-  font-weight: 400;
-  line-height: 15.43px;
-  text-align: center;
-}
-.new-price {
-  font-family: Anselm Sans;
-  font-size: 16px;
-  font-weight: 400;
-  line-height: 15.43px;
-  text-align: center;
-}
-.info-name {
-  gap: 4px;
-}
-.category {
-  color: #999;
-  font-family: Anselm Sans;
-  font-size: 16px;
-  font-weight: 400;
-  line-height: 14.15px;
-  text-align: center;
-}
-.name {
-  font-family: Anselm Sans;
-  font-size: 16px;
-  font-weight: 400;
-  line-height: 18px;
-}
-.info {
-  padding: 20px;
 }
 
-.info-price {
-  gap: 10px;
-}
+.btn-add {
+  background: var(--ink);
+  color: #fff;
+  border-radius: 6px;
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  flex-shrink: 0;
+  transition: transform 0.15s;
 
-.favorite-ico:hover {
-  transform-origin: 0 0;
-  animation: swaying 0.2s;
-}
-
-@keyframes swaying {
-  0% {
-    transform: rotate(-8deg); /* Начальное положение - наклон влево */
+  &:hover {
+    transform: scale(1.06);
   }
-  50% {
-    transform: rotate(8deg); /* Среднее положение - наклон вправо */
-  }
-  100% {
-    transform: rotate(-8deg); /* Возвращаемся к исходному наклону */
-  }
-}
-
-.shop-bag-ico:hover .plus-ico {
-  margin-right: -5px;
 }
 </style>
