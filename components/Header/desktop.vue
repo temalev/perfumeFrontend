@@ -124,7 +124,7 @@ export default {
   display: flex;
   align-items: center;
   gap: 20px;
-  padding: 14px 26px;
+  padding: 14px 40px;
 }
 
 .nav-logo img {
@@ -231,7 +231,7 @@ export default {
 .subnav {
   display: flex;
   gap: 0;
-  padding: 0 26px;
+  padding: 0 40px;
   border-top: 0.5px solid var(--border);
   overflow-x: auto;
 }

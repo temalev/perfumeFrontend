@@ -547,10 +547,8 @@ const reviews = [
 
 /* SECTION SHELL */
 .sec {
-  padding: 34px 26px;
-  max-width: 1180px;
+  padding: 34px 40px;
   width: 100%;
-  margin: 0 auto;
 
   @media (max-width: 600px) {
     padding: 26px 16px;

@@ -67,7 +67,7 @@ export default {
 .site-footer {
   background: var(--ink);
   color: rgba(255, 255, 255, 0.6);
-  padding: 40px 32px 24px;
+  padding: 40px 40px 24px;
 
   @media (max-width: 600px) {
     padding: 32px 20px 24px;
@@ -80,8 +80,6 @@ export default {
   gap: 30px;
   padding-bottom: 26px;
   border-bottom: 0.5px solid rgba(255, 255, 255, 0.1);
-  max-width: 1180px;
-  margin: 0 auto;
 
   @media (max-width: 900px) {
     grid-template-columns: 1fr 1fr;
@@ -164,7 +162,5 @@ export default {
   font-size: 11px;
   color: rgba(255, 255, 255, 0.4);
   line-height: 1.8;
-  max-width: 1180px;
-  margin: 0 auto;
 }
 </style>
