@@ -12,10 +12,10 @@
         <span></span>
       </div>
       <img
-        src="~/public/img/logo.webp"
-        alt=""
-        width="140"
-        height="50px"
+        src="~/public/img/logo-wordmark.webp"
+        alt="ПарфБюро"
+        width="161"
+        height="24"
         @click="
           $router.push('/');
           isLeftMenu = false;

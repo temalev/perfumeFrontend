@@ -8,7 +8,7 @@
           $emit('closeModal');
         "
       >
-        <img src="~/public/img/logo.webp" alt="ПарфБюро" />
+        <img src="~/public/img/logo-wordmark.webp" alt="ПарфБюро" />
       </a>
 
       <label class="nav-search">
@@ -128,7 +128,7 @@ export default {
 }
 
 .nav-logo img {
-  height: 26px;
+  height: 30px;
   width: auto;
   display: block;
   object-fit: contain;

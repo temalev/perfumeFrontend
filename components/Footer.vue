@@ -40,7 +40,6 @@
         <a class="foot-contact" href="tel:+79156022896">+7 (915) 602-28-96</a>
         <div class="foot-contact-sub">Пн–Вс, 10:00–21:00 МСК</div>
         <a class="foot-contact" href="https://t.me/parfburoo">Telegram @parfburoo</a>
-        <a class="foot-contact" href="https://wa.me/79156022896">WhatsApp</a>
         <a class="foot-contact" href="mailto:info@parfburo.com">info@parfburo.com</a>
       </div>
     </div>
