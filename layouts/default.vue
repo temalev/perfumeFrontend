@@ -107,6 +107,16 @@
           Пожалуйста, оставьте заявку для уточнения наличия интересующего вас
           флакона, мы вернемся к вам с обратной связью в течение 1 рабочего дня.
         </p>
+        <p>
+          Или напишите нам напрямую в Telegram:
+          <a
+            href="https://t.me/parfburoo"
+            target="_blank"
+            rel="noopener"
+            style="color: var(--blue); font-weight: 600"
+            >@parfburoo</a
+          >
+        </p>
         <el-form
           ref="form"
           :model="form"
@@ -145,8 +155,6 @@
           <el-form-item label="Способ связи">
             <el-radio-group v-model="form.communicationTypeId">
               <el-radio :value="1">Telegram</el-radio>
-              <el-radio :value="2">WhatsApp</el-radio>
-              <el-radio :value="3">Позвоните мне</el-radio>
             </el-radio-group>
           </el-form-item>
           <el-form-item
