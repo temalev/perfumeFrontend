@@ -69,11 +69,11 @@
           </div>
         </div>
         <div class="d-flex-column filter-item" style="gap: 6px">
-          <p style="text-wrap: nowrap">
-            Диапазон стоимости от
-            <el-tag type="primary" effect="dark" round> {{ price[0] }} </el-tag>
-            до
-            <el-tag type="primary" effect="dark" round>{{ price[1] }}</el-tag>
+          <p class="price-label">
+            Стоимость
+            <el-tag class="price-tag" round> {{ price[0] }} </el-tag>
+            —
+            <el-tag class="price-tag" round>{{ price[1] }}</el-tag>
           </p>
           <el-slider
             v-model="price"
@@ -88,7 +88,7 @@
           <p>Скидки</p>
           <el-switch
             v-model="queryParams.isSale"
-            active-color="#2A4D84"
+            active-color="#1E54A0"
             label="Со скидкой"
             @change="setQuery()"
           />
@@ -192,7 +192,7 @@ const pageDescription = params.brand
 useSiteSeo({
   title: pageTitle,
   description: pageDescription,
-  keywords: `${params.brand || 'парфюмерия'} купить, цена, интернет-магазин, каталог, бесплатная доставка, Москва, Рязань, оригинал`,
+  keywords: `${params.brand || 'парфюмерия'} купить, цена, интернет-магазин, каталог, доставка, Москва, Рязань, оригинал`,
   url: collectionUrl,
   canonical: collectionUrl,
   robots: 'noindex,follow',
@@ -382,7 +382,7 @@ export default {
 }
 
 .filters {
-  border-bottom: 1px solid #eee;
+  border-bottom: 0.5px solid var(--border);
   padding-bottom: 20px;
   display: flex;
   gap: 16px;
@@ -398,6 +398,21 @@ export default {
   @media (max-width: 1500px) {
     justify-content: space-between;
   }
+}
+
+.filter-item p {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+}
+
+.price-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
 }
 
 .unwrap {
@@ -424,15 +439,54 @@ export default {
 
 ::v-deep {
   .el-select__wrapper {
-    border-radius: 12px;
+    border-radius: 8px;
+    border: 0.5px solid var(--border);
+    box-shadow: none;
+    background: var(--surface2);
+    min-height: 38px;
+    transition: border-color 0.15s;
+
+    &.is-focused,
+    &:hover {
+      border-color: var(--blue);
+      box-shadow: none;
+    }
+  }
+
+  .el-select__placeholder {
+    font-size: 13px;
+    color: var(--ink-muted);
   }
 
   .el-tag {
-    border-radius: 12px;
+    border-radius: 6px;
+  }
+
+  .price-tag.el-tag {
+    background: var(--blue-tint);
+    border: none;
+    color: var(--blue);
+    font-weight: 600;
+  }
+
+  .el-slider__bar {
+    background: var(--blue);
+  }
+
+  .el-slider__button {
+    border-color: var(--blue);
+  }
+
+  .el-segmented {
+    --el-border-radius-base: 8px;
+    background: var(--surface2);
+    border: 0.5px solid var(--border);
   }
 
   .el-button {
-    border-radius: 12px;
+    border-radius: 8px;
+    background: var(--ink);
+    border-color: var(--ink);
   }
 }
 </style>
