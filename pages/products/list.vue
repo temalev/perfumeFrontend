@@ -192,7 +192,7 @@ const pageDescription = params.brand
 useSiteSeo({
   title: pageTitle,
   description: pageDescription,
-  keywords: `${params.brand || 'парфюмерия'} купить, цена, интернет-магазин, каталог, бесплатная доставка, Москва, Рязань, оригинал`,
+  keywords: `${params.brand || 'парфюмерия'} купить, цена, интернет-магазин, каталог, доставка, Москва, Рязань, оригинал`,
   url: collectionUrl,
   canonical: collectionUrl,
   robots: 'noindex,follow',
@@ -412,7 +412,7 @@ export default {
   display: flex;
   align-items: center;
   gap: 6px;
-  text-wrap: nowrap;
+  white-space: nowrap;
 }
 
 .unwrap {
