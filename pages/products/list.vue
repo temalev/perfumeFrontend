@@ -18,43 +18,47 @@
       >
         <div class="d-flex-column gap-2 filter-item">
           <p>Бренды</p>
-          <el-select
-            v-model="queryParams.brand"
-            multiple
-            placeholder="Выберите бренд"
-            style="min-width: 240px"
-            @blur="setQuery()"
-            @remove-tag="setQuery()"
-          >
-            <el-option
-              v-for="item in brands"
-              :key="item"
-              :label="item"
-              :value="item"
-            />
-          </el-select>
+          <div class="filter-control">
+            <el-select
+              v-model="queryParams.brand"
+              multiple
+              placeholder="Выберите бренд"
+              style="min-width: 240px"
+              @blur="setQuery()"
+              @remove-tag="setQuery()"
+            >
+              <el-option
+                v-for="item in brands"
+                :key="item"
+                :label="item"
+                :value="item"
+              />
+            </el-select>
+          </div>
         </div>
         <div class="d-flex-column gap-2 filter-item">
           <p>Категории</p>
-          <el-select
-            v-model="queryParams.categoryId"
-            multiple
-            placeholder="Выберите категорию"
-            style="min-width: 240px"
-            @blur="setQuery()"
-            @remove-tag="setQuery()"
-          >
-            <el-option
-              v-for="item in category"
-              :key="item.name"
-              :label="item.name"
-              :value="item.id"
-            />
-          </el-select>
+          <div class="filter-control">
+            <el-select
+              v-model="queryParams.categoryId"
+              multiple
+              placeholder="Выберите категорию"
+              style="min-width: 240px"
+              @blur="setQuery()"
+              @remove-tag="setQuery()"
+            >
+              <el-option
+                v-for="item in category"
+                :key="item.name"
+                :label="item.name"
+                :value="item.id"
+              />
+            </el-select>
+          </div>
         </div>
         <div class="d-flex-column gap-2 filter-item">
           <p>Сортировать</p>
-          <div class="d-flex gap-2">
+          <div class="filter-control d-flex gap-2">
             <el-segmented
               @change="setQuery()"
               v-model="queryParams.orderBy"
@@ -73,30 +77,34 @@
             </el-segmented>
           </div>
         </div>
-        <div class="d-flex-column filter-item" style="gap: 6px">
+        <div class="d-flex-column gap-2 filter-item">
           <p class="price-label">
             Стоимость
             <el-tag class="price-tag" round> {{ price[0] }} </el-tag>
             —
             <el-tag class="price-tag" round>{{ price[1] }}</el-tag>
           </p>
-          <el-slider
-            v-model="price"
-            range
-            :step="100"
-            :max="100000"
-            style="padding: 0 20px; width: 260px"
-            @change="test"
-          />
+          <div class="filter-control">
+            <el-slider
+              v-model="price"
+              range
+              :step="100"
+              :max="100000"
+              style="padding: 0 20px; width: 260px"
+              @change="test"
+            />
+          </div>
         </div>
         <div class="d-flex-column gap-2 filter-item">
           <p>Скидки</p>
-          <el-switch
-            v-model="queryParams.isSale"
-            active-color="#1E54A0"
-            label="Со скидкой"
-            @change="setQuery()"
-          />
+          <div class="filter-control">
+            <el-switch
+              v-model="queryParams.isSale"
+              active-color="#1E54A0"
+              label="Со скидкой"
+              @change="setQuery()"
+            />
+          </div>
         </div>
       </div>
       <el-button
@@ -442,12 +450,27 @@ export default {
   }
 }
 
+.filter-item {
+  align-self: flex-start;
+}
+
 .filter-item p {
+  display: flex;
+  align-items: center;
+  height: 24px;
+  margin: 0;
   font-size: 11px;
   font-weight: 600;
   letter-spacing: 0.05em;
   text-transform: uppercase;
   color: var(--ink-muted);
+}
+
+/* Единая высота контрола во всех фильтрах */
+.filter-item .filter-control {
+  display: flex;
+  align-items: center;
+  height: 38px;
 }
 
 .price-label {
@@ -521,8 +544,13 @@ export default {
 
   .el-segmented {
     --el-border-radius-base: 8px;
+    height: 38px;
     background: var(--surface2);
     border: 0.5px solid var(--border);
+  }
+
+  .filter-control .el-switch {
+    height: 38px;
   }
 
   .el-button {
