@@ -1,11 +1,16 @@
 <template>
-  <div v-loading="getProductsProcess" class="products">
+  <main v-loading="getProductsProcess" class="catalog-page">
     <Head>
       <Title v-if="params.brand"
         >{{ params.brand }} - Купить в ПарфБюро по выгодной цене</Title
       >
     </Head>
-    <div class="d-flex-column">
+
+    <BreadCrumb :data="breadcrumbs" />
+    <h1 class="catalog-page-title">{{ catalogHeading }}</h1>
+    <p class="catalog-page-desc">{{ catalogDesc }}</p>
+
+    <div class="d-flex-column filters-wrap">
       <div
         v-if="isHydrated"
         class="filters"
@@ -102,18 +107,19 @@
         Фильтры
       </el-button>
     </div>
-    <div v-infinite-scroll="load" class="products-list">
+    <div v-infinite-scroll="load" class="products-grid">
       <product-card
         v-for="product in products"
         :data="product"
         :key="product.id"
       />
     </div>
-  </div>
+  </main>
 </template>
 
 <script setup>
 import { useRoute } from 'vue-router';
+import BreadCrumb from '~/components/ui/BreadCrumb.vue';
 
 const config = useRuntimeConfig();
 const apiUrl = config.public.URL;
@@ -142,6 +148,20 @@ const { data: listProducts } = await useAsyncData(
   () => $fetch(`${apiUrl}/products`, { params }),
   { default: () => [] },
 );
+
+const catalogHeading = params.brand
+  ? `${params.brand} — каталог парфюмерии`
+  : 'Каталог парфюмерии';
+
+const catalogDesc = params.brand
+  ? `Оригинальная парфюмерия ${params.brand} в наличии и под заказ. Быстрая доставка по Москве, Рязани и СДЭК по всей России.`
+  : 'Оригинальная парфюмерия мировых брендов в наличии и под заказ. Подберите аромат с помощью фильтров по бренду, категории и цене.';
+
+const breadcrumbs = [
+  { name: 'Главная', path: '/' },
+  ...(params.brand ? [{ name: 'Каталог', path: '/products/list' }] : []),
+  { name: params.brand || 'Каталог' },
+];
 
 const collectionUrl = `https://parfburo.com/products/list${params.brand ? `?brand=${encodeURIComponent(params.brand)}` : ''}`;
 const collectionName = params.brand
@@ -362,23 +382,45 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.products {
+.catalog-page {
   display: flex;
   flex-direction: column;
-  margin: 40px;
+  padding: 24px 40px 60px;
   min-height: 100vh;
-  // overflow: auto;
-  &-list {
-    margin: 80px 20px;
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 22px;
-  }
 
   @media (max-width: 500px) {
-    margin: 30px 20px;
+    padding: 20px;
   }
+}
+
+.catalog-page-title {
+  margin: 16px 0 8px;
+  font-size: 28px;
+  font-weight: 600;
+
+  @media (max-width: 600px) {
+    font-size: 22px;
+  }
+}
+
+.catalog-page-desc {
+  margin: 0 0 24px;
+  color: var(--ink-soft);
+  max-width: 820px;
+  line-height: 1.5;
+  font-size: 14px;
+}
+
+.filters-wrap {
+  margin-bottom: 8px;
+}
+
+.products-grid {
+  margin-top: 32px;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 22px;
 }
 
 .filters {
