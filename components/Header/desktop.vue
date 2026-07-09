@@ -61,9 +61,11 @@
       <a class="nav-cat active" @click="$emit('openCatalog')">Парфюмерия</a>
       <a class="nav-cat" @click="$emit('openBrands')">Бренды</a>
       <NuxtLink class="nav-cat" to="/decantInfo">Отливанты</NuxtLink>
-      <NuxtLink class="nav-cat" to="/#find">Не нашли аромат?</NuxtLink>
+      <a class="nav-cat pointer" @click="goToAnchor('find')"
+        >Не нашли аромат?</a
+      >
       <a class="nav-cat" @click="$emit('openInfo', 'about')">О нас</a>
-      <NuxtLink class="nav-cat" to="/#corp">Опт</NuxtLink>
+      <a class="nav-cat pointer" @click="goToAnchor('corp')">Опт</a>
     </nav>
   </div>
 </template>
@@ -103,6 +105,19 @@ export default {
         name: 'products-slug',
         params: { slug: val.slug },
       });
+    },
+    scrollToAnchor(id) {
+      const el = document.getElementById(id);
+      if (el) el.scrollIntoView({ behavior: 'smooth' });
+    },
+    async goToAnchor(id) {
+      this.$emit('closeModal');
+      if (this.$route.path === '/') {
+        this.scrollToAnchor(id);
+      } else {
+        await this.$router.push('/');
+        this.$nextTick(() => setTimeout(() => this.scrollToAnchor(id), 100));
+      }
     },
   },
 };
